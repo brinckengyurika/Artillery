@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Artillery"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/satch/Projects/Artillery/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Artillery">
+				<Option output="/home/satch/Projects/Artillery/build/bin/Artillery" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/satch/Projects/Artillery/build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/satch/Projects/Ogre2/install/include"/>
+					<Add directory="/home/satch/Projects/Ogre2/install/include/OGRE"/>
+					<Add directory="/home/satch/Projects/Artillery/src"/>
+					<Add directory="/usr/include/c++/14"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/14"/>
+					<Add directory="/usr/include/c++/14/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/14/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 Artillery"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Artillery/fast">
+				<Option output="/home/satch/Projects/Artillery/build/bin/Artillery" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/satch/Projects/Artillery/build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/satch/Projects/Ogre2/install/include"/>
+					<Add directory="/home/satch/Projects/Ogre2/install/include/OGRE"/>
+					<Add directory="/home/satch/Projects/Artillery/src"/>
+					<Add directory="/usr/include/c++/14"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/14"/>
+					<Add directory="/usr/include/c++/14/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/14/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 Artillery/fast"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/satch/Projects/Artillery/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/satch/Projects/Artillery/build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/satch/Projects/Artillery/build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/satch/Projects/Artillery/src/Engine.cpp">
+			<Option target="Artillery"/>
+		</Unit>
+		<Unit filename="/home/satch/Projects/Artillery/src/Engine.h">
+			<Option target="Artillery"/>
+		</Unit>
+		<Unit filename="/home/satch/Projects/Artillery/src/main.cpp">
+			<Option target="Artillery"/>
+		</Unit>
+		<Unit filename="/home/satch/Projects/Artillery/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
