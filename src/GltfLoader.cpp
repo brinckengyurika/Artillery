@@ -1,25 +1,30 @@
-
-#define TINYGLTF_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-
 #include "GltfLoader.h"
+
+#include <tiny_gltf.h>
 
 #include <iostream>
 
-#include "tiny_gltf.h"
-
 #include "Renderer.h"
 
-GltfLoader::GltfLoader(Renderer &renderer) :
-    mRenderer(renderer)
+GltfLoader::GltfLoader( Renderer &renderer ) :
+    mRenderer( renderer )
 {
 }
 
-bool GltfLoader::load(const std::string &filename)
+bool GltfLoader::load( const std::string &filename )
+{
+    tinygltf::Model model;
+
+    if( !load( filename, model ) )
+        return false;
+
+    return true;
+}
+
+bool GltfLoader::load( const std::string &filename,
+                       tinygltf::Model &model )
 {
     tinygltf::TinyGLTF loader;
-    tinygltf::Model model;
 
     std::string err;
     std::string warn;
@@ -31,23 +36,22 @@ bool GltfLoader::load(const std::string &filename)
         filename
     );
 
-    if(!warn.empty())
-        std::cout << warn << std::endl;
+    if( !warn.empty() )
+        std::cout << "TinyGLTF warning: "
+                  << warn
+                  << std::endl;
 
-    if(!err.empty())
-        std::cerr << err << std::endl;
+    if( !err.empty() )
+        std::cerr << "TinyGLTF error: "
+                  << err
+                  << std::endl;
 
-    if(!ok)
+    if( !ok )
         return false;
 
-    std::cout << "GLTF loaded successfully\n";
-
-    std::cout << "Meshes      : " << model.meshes.size() << std::endl;
-    std::cout << "Nodes       : " << model.nodes.size() << std::endl;
-    std::cout << "Materials   : " << model.materials.size() << std::endl;
-    std::cout << "Textures    : " << model.textures.size() << std::endl;
-    std::cout << "Images      : " << model.images.size() << std::endl;
-    std::cout << "Animations  : " << model.animations.size() << std::endl;
+    std::cout << "Loaded GLB: "
+              << filename
+              << std::endl;
 
     return true;
 }

@@ -1,10 +1,9 @@
 #include "Engine.h"
 
-int main()
-{
+int main() {
     Engine engine;
 
-    if (!engine.initialize())
+    if( !engine.initialize() )
         return 1;
 
     engine.run();

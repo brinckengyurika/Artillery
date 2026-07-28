@@ -16,6 +16,7 @@ public:
     explicit GltfLoader(Renderer &renderer);
 
     bool load(const std::string &filename);
+    bool load(const std::string &filename, tinygltf::Model &model);
 
 private:
     Renderer &mRenderer;

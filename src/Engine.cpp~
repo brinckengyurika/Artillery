@@ -1,0 +1,69 @@
+#include "Engine.h"
+
+#include <iostream>
+
+Engine::Engine()
+{
+}
+
+Engine::~Engine()
+{
+    delete mRoot;
+}
+
+bool Engine::initialize()
+{
+    std::cout << "Creating Ogre Root..." << std::endl;
+
+    mRoot = new Ogre::Root(
+        std::string(ARTILLERY_CFG_DIR) + "/plugins.cfg",
+        "",
+        "Ogre.log"
+    );
+
+    const Ogre::RenderSystemList &renderers =
+    mRoot->getAvailableRenderers();
+
+if( renderers.empty() )
+{
+    std::cerr << "No RenderSystems found!" << std::endl;
+    return false;
+}
+
+mRoot->setRenderSystem( renderers.front() );
+
+mRoot->initialise(false);
+
+mWindow = mRoot->createRenderWindow(
+    "Artillery",
+    1280,
+    720,
+    false
+);
+
+if( !mWindow )
+{
+    std::cerr << "Failed to create window!" << std::endl;
+    return false;
+}
+     std::cout << "Render window created successfully." << std::endl;
+
+return true;
+}
+
+
+void Engine::run()
+{
+    while( !mWindow->isClosed() )
+    {
+        Ogre::WindowEventUtilities::messagePump();
+
+        if( !mRoot->renderOneFrame() )
+            break;
+    }
+}
+
+void Engine::shutdown()
+{
+    std::cout << "Engine shutdown()" << std::endl;
+}

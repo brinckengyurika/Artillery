@@ -14,6 +14,12 @@
 #include "CameraController.h"
 
 #include "GltfLoader.h"
+#include "GltfMeshBuilder.h"
+
+namespace tinygltf
+{
+    class Model;
+}
 
 class Renderer
 {
@@ -64,5 +70,7 @@ private:
 
     Ogre::CompositorWorkspace *mWorkspace{};
     GltfLoader mGltfLoader;
+    GltfMeshBuilder mMeshBuilder;
+
 
 };

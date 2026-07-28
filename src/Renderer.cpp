@@ -5,7 +5,7 @@
 #include <OgreColourValue.h>
 #include <OgreLight.h>
 #include <OgreSceneNode.h>
-
+#include "tiny_gltf.h"
 
 Renderer::Renderer() :
     mRoot( nullptr ),
@@ -15,7 +15,8 @@ Renderer::Renderer() :
     mCameraNode( nullptr ),
     mResources( *this ),
     mScene( *this ),
-    mGltfLoader(*this)
+    mGltfLoader(*this),
+    mMeshBuilder( *this )
 {
 }
 
@@ -159,9 +160,15 @@ bool Renderer::initialize()
     if( !mScene.initialize() )
         return false;
 
+    tinygltf::Model model;
+    mGltfLoader.load(ARTILLERY_MEDIA_DIR "/models/untitled.glb", model);
+    mMeshBuilder.inspect(model);
+/*
     mGltfLoader.load(
         ARTILLERY_MEDIA_DIR "/models/untitled.glb"
     );
+*/
+
 
     return true;
 }

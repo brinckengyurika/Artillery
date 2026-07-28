@@ -22,5 +22,6 @@ void Engine::shutdown()
 {
     std::cout << "Engine shutdown()" << std::endl;
 
+
     mRenderer.shutdown();
 }
