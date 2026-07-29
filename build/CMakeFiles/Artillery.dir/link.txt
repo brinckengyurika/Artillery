@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/Artillery.dir/link.d CMakeFiles/Artillery.dir/src/main.cpp.o CMakeFiles/Artillery.dir/src/Engine.cpp.o -o bin/Artillery   -L/home/satch/Projects/Ogre2/install/lib  -Wl,-rpath,/home/satch/Projects/Ogre2/install/lib -lOgreMain

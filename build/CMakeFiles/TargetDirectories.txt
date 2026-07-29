@@ -1,3 +1,0 @@
-/home/satch/Projects/Artillery/build/CMakeFiles/Artillery.dir
-/home/satch/Projects/Artillery/build/CMakeFiles/edit_cache.dir
-/home/satch/Projects/Artillery/build/CMakeFiles/rebuild_cache.dir

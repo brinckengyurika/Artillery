@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(Artillery VERSION 0.1)
+set(CMAKE_CODEBLOCKS_EXCLUDE_EXTERNAL_FILES ON)
+
+
+find_package(TinyGLTF REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -31,19 +35,23 @@ add_executable(Artillery
     src/MeshFactory.cpp
     src/CameraController.cpp
     src/GltfLoader.cpp
+    src/GltfMeshBuilder.cpp
+    src/TinyGltfImplementation.cpp
 )
 
 target_include_directories(Artillery PRIVATE
     ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_SOURCE_DIR}/thirdparty/tinygltf
+    /usr/include/stb
 )
 
 target_link_libraries(Artillery
     OgreMain
     OgreHlmsUnlit
     OgreHlmsPbs
-)
+    TinyGLTF::TinyGLTF
+    #    TinyGLTF
 
+)
 # Bin könyvtár
 set_target_properties(Artillery PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
@@ -61,3 +69,22 @@ file(COPY ${CMAKE_SOURCE_DIR}/cfg
 # media átmásolása
 file(COPY ${CMAKE_SOURCE_DIR}/media
      DESTINATION ${CMAKE_BINARY_DIR}/bin)
+
+
+
+if(CMAKE_HOST_UNIX AND CMAKE_GENERATOR MATCHES "CodeBlocks")
+    find_program(SED_PROGRAM sed)
+    if(SED_PROGRAM)
+        # Megkeressük a pontos abszolút útvonalat
+        set(ABS_PATH "${CMAKE_SOURCE_DIR}")
+        
+        # 1. parancs: A projekt mappára mutató hivatkozások cseréje
+        # 2. parancs: Bármilyen egyéb, a felhasználói mappára maradt hivatkozás tisztítása
+        execute_process(
+            COMMAND sh -c "${SED_PROGRAM} -i 's|${ABS_PATH}/|../|g; s|${ABS_PATH}|..|g' *.cbp"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+            COMMENT "Minden abszolút hivatkozás kényszerített tisztítása..."
+        )
+    endif()
+endif()
+
