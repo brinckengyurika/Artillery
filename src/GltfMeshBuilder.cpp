@@ -125,14 +125,11 @@ bool GltfMeshBuilder::inspect( const tinygltf::Model &model ) {
         }
 
     }
-
-
-
     return true;
 }
 bool GltfMeshBuilder::build( const tinygltf::Model &model,
-                             const std::string &meshName )
-{
+                             const std::string &meshName ) {
+    std::cout << "Build this mesh: " << meshName << std::endl;
     if( model.meshes.empty() )
         return false;
 
@@ -159,6 +156,7 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
     const tinygltf::BufferView &posView =
         model.bufferViews[posAccessor.bufferView];
 
+
     const tinygltf::Buffer &posBuffer =
         model.buffers[posView.buffer];
 
@@ -169,6 +167,21 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
 
     const float *positions =
         reinterpret_cast<const float *>( posData );
+std::cout << "Meshes: "
+          << model.meshes.size()
+          << std::endl;
+
+std::cout << "Primitives: "
+          << mesh.primitives.size()
+          << std::endl;
+
+std::cout << "Primitive mode = "
+          << primitive.mode
+          << std::endl;
+
+std::cout << "POSITION stride = "
+          << posView.byteStride
+          << std::endl;
 
     //-----------------------------------------------------
     // NORMAL
@@ -178,8 +191,7 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
 
     auto normalIt = primitive.attributes.find( "NORMAL" );
 
-    if( normalIt != primitive.attributes.end() )
-    {
+    if( normalIt != primitive.attributes.end() ) {
         const tinygltf::Accessor &normalAccessor =
             model.accessors[normalIt->second];
 
@@ -194,23 +206,29 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
                 normalBuffer.data.data() +
                 normalView.byteOffset +
                 normalAccessor.byteOffset );
-    }
+std::cout << "NORMAL stride = "
+          << normalView.byteStride
+          << std::endl;
 
+    }
     //-----------------------------------------------------
     // TEXCOORD
     //-----------------------------------------------------
+
 
     const float *uvs = nullptr;
 
     auto uvIt = primitive.attributes.find( "TEXCOORD_0" );
 
-    if( uvIt != primitive.attributes.end() )
-    {
+    if( uvIt != primitive.attributes.end() ) {
         const tinygltf::Accessor &uvAccessor =
             model.accessors[uvIt->second];
 
         const tinygltf::BufferView &uvView =
             model.bufferViews[uvAccessor.bufferView];
+std::cout << "UV stride = "
+          << uvView.byteStride
+          << std::endl;
 
         const tinygltf::Buffer &uvBuffer =
             model.buffers[uvView.buffer];
@@ -221,7 +239,6 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
                 uvView.byteOffset +
                 uvAccessor.byteOffset );
     }
-
     //-----------------------------------------------------
     // INDICES
     //-----------------------------------------------------
@@ -239,10 +256,42 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
         indexBuffer.data.data() +
         indexView.byteOffset +
         indexAccessor.byteOffset;
-
     //-----------------------------------------------------
     // ManualObject
     //-----------------------------------------------------
+
+
+
+std::cout << "Index type = "
+          << indexAccessor.componentType
+          << std::endl;
+
+std::cout << "Vertex count = "
+          << posAccessor.count
+          << std::endl;
+
+
+std::cout << "POSITION accessor.byteOffset = "
+          << posAccessor.byteOffset << std::endl;
+
+std::cout << "POSITION bufferView.byteOffset = "
+          << posView.byteOffset << std::endl;
+
+std::cout << "POSITION bufferView.byteLength = "
+          << posView.byteLength << std::endl;
+
+std::cout << "POSITION accessor.count = "
+          << posAccessor.count << std::endl;
+
+
+std::cout << "INDEX accessor.byteOffset = "
+          << indexAccessor.byteOffset << std::endl;
+
+std::cout << "INDEX bufferView.byteOffset = "
+          << indexView.byteOffset << std::endl;
+
+std::cout << "INDEX count = "
+          << indexAccessor.count << std::endl;
 
     Ogre::ManualObject *manual =
         mRenderer.getSceneManager()->createManualObject();
@@ -255,23 +304,20 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
     // Vertices
     //-----------------------------------------------------
 
-    for( size_t i = 0; i < posAccessor.count; ++i )
-    {
+    for( size_t i = 0; i < posAccessor.count; ++i ) {
         manual->position(
             positions[i * 3 + 0],
             positions[i * 3 + 1],
             positions[i * 3 + 2] );
 
-        if( normals )
-        {
+        if( normals ) {
             manual->normal(
                 normals[i * 3 + 0],
                 normals[i * 3 + 1],
                 normals[i * 3 + 2] );
         }
 
-        if( uvs )
-        {
+        if( uvs ) {
             manual->textureCoord(
                 uvs[i * 2 + 0],
                 uvs[i * 2 + 1] );
@@ -282,45 +328,41 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
     // Indices
     //-----------------------------------------------------
 
-    switch( indexAccessor.componentType )
-    {
-        case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
-        {
-            const uint16_t *indices =
-                reinterpret_cast<const uint16_t *>( indexData );
+    switch( indexAccessor.componentType ) {
+    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT: {
+        const uint16_t *indices =
+            reinterpret_cast<const uint16_t *>( indexData );
 
-            for( size_t i = 0; i < indexAccessor.count; ++i )
-                manual->index( indices[i] );
+        for( size_t i = 0; i < indexAccessor.count; ++i )
+            manual->index( indices[i] );
 
-            break;
-        }
+        break;
+    }
 
-        case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
-        {
-            const uint32_t *indices =
-                reinterpret_cast<const uint32_t *>( indexData );
+    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT: {
+        const uint32_t *indices =
+            reinterpret_cast<const uint32_t *>( indexData );
 
-            for( size_t i = 0; i < indexAccessor.count; ++i )
-                manual->index( indices[i] );
+        for( size_t i = 0; i < indexAccessor.count; ++i )
+            manual->index( indices[i] );
 
-            break;
-        }
+        break;
+    }
 
-        case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
-        {
-            const uint8_t *indices =
-                reinterpret_cast<const uint8_t *>( indexData );
+    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE: {
+        const uint8_t *indices =
+            reinterpret_cast<const uint8_t *>( indexData );
 
-            for( size_t i = 0; i < indexAccessor.count; ++i )
-                manual->index( indices[i] );
+        for( size_t i = 0; i < indexAccessor.count; ++i )
+            manual->index( indices[i] );
 
-            break;
-        }
+        break;
+    }
 
-        default:
-            manual->end();
-            mRenderer.getSceneManager()->destroyManualObject( manual );
-            return false;
+    default:
+        manual->end();
+        mRenderer.getSceneManager()->destroyManualObject( manual );
+        return false;
     }
 
     //-----------------------------------------------------
@@ -332,6 +374,6 @@ bool GltfMeshBuilder::build( const tinygltf::Model &model,
     manual->convertToMesh( meshName );
 
     mRenderer.getSceneManager()->destroyManualObject( manual );
-
+    std::cout << "This mesh ha sbeen builded : " << meshName << std::endl;
     return true;
 }

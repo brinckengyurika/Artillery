@@ -5,6 +5,8 @@ set(CMAKE_CODEBLOCKS_EXCLUDE_EXTERNAL_FILES ON)
 
 
 find_package(TinyGLTF REQUIRED)
+find_package(SDL2 REQUIRED)
+
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -37,11 +39,13 @@ add_executable(Artillery
     src/GltfLoader.cpp
     src/GltfMeshBuilder.cpp
     src/TinyGltfImplementation.cpp
+    src/InputManager.cpp
 )
 
 target_include_directories(Artillery PRIVATE
     ${PROJECT_SOURCE_DIR}/src
     /usr/include/stb
+    ${SDL2_INCLUDE_DIRS}    
 )
 
 target_link_libraries(Artillery
@@ -49,6 +53,7 @@ target_link_libraries(Artillery
     OgreHlmsUnlit
     OgreHlmsPbs
     TinyGLTF::TinyGLTF
+    SDL2::SDL2
     #    TinyGLTF
 
 )

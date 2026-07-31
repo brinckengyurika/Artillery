@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 #include <iostream>
-
+#include <OgreItem.h>
 #include <OgreColourValue.h>
 #include <OgreLight.h>
 #include <OgreSceneNode.h>
@@ -160,9 +160,25 @@ bool Renderer::initialize()
     if( !mScene.initialize() )
         return false;
 
+    const std::string modelname = "cubes";
+
+    const std::string modelpath = "/home/satch/Projects/Artillery/media/models/" + modelname + ".glb";
+
     tinygltf::Model model;
-    mGltfLoader.load(ARTILLERY_MEDIA_DIR "/models/untitled.glb", model);
+    //Ez az eredeti:
+    //mGltfLoader.load(ARTILLERY_MEDIA_DIR "/models/Apollo.glb", model);
+    mGltfLoader.load(modelpath, model);
     mMeshBuilder.inspect(model);
+
+
+    mMeshBuilder.build( model, modelname);
+    Ogre::Item *item =
+    mSceneManager->createItem(modelname);
+
+    Ogre::SceneNode *node =
+    mSceneManager->getRootSceneNode()->createChildSceneNode();
+
+    node->attachObject(item);
 /*
     mGltfLoader.load(
         ARTILLERY_MEDIA_DIR "/models/untitled.glb"
