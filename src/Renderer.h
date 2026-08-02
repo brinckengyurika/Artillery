@@ -15,6 +15,7 @@
 
 #include "GltfLoader.h"
 #include "GltfMeshBuilder.h"
+#include "InputManager.h"
 
 namespace tinygltf
 {
@@ -71,6 +72,7 @@ private:
     Ogre::CompositorWorkspace *mWorkspace{};
     GltfLoader mGltfLoader;
     GltfMeshBuilder mMeshBuilder;
+    InputManager mInputManager;
 
 
 };

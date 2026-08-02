@@ -6,7 +6,7 @@ set(CMAKE_CODEBLOCKS_EXCLUDE_EXTERNAL_FILES ON)
 
 find_package(TinyGLTF REQUIRED)
 find_package(SDL2 REQUIRED)
-
+find_package(X11 REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -45,7 +45,8 @@ add_executable(Artillery
 target_include_directories(Artillery PRIVATE
     ${PROJECT_SOURCE_DIR}/src
     /usr/include/stb
-    ${SDL2_INCLUDE_DIRS}    
+    ${SDL2_INCLUDE_DIRS}
+    ${X11_INCLUDE_DIR}
 )
 
 target_link_libraries(Artillery
@@ -55,7 +56,7 @@ target_link_libraries(Artillery
     TinyGLTF::TinyGLTF
     SDL2::SDL2
     #    TinyGLTF
-
+    ${X11_LIBRARIES}
 )
 # Bin könyvtár
 set_target_properties(Artillery PROPERTIES
@@ -82,7 +83,7 @@ if(CMAKE_HOST_UNIX AND CMAKE_GENERATOR MATCHES "CodeBlocks")
     if(SED_PROGRAM)
         # Megkeressük a pontos abszolút útvonalat
         set(ABS_PATH "${CMAKE_SOURCE_DIR}")
-        
+
         # 1. parancs: A projekt mappára mutató hivatkozások cseréje
         # 2. parancs: Bármilyen egyéb, a felhasználói mappára maradt hivatkozás tisztítása
         execute_process(
