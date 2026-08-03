@@ -52,10 +52,7 @@ public:
         return mCamera;
     }
 
-    Ogre::SceneNode *getCameraNode() const
-    {
-        return mCameraNode;
-    }
+
 
 private:
 
@@ -63,7 +60,7 @@ private:
     Ogre::Window *mWindow{};
     Ogre::SceneManager *mSceneManager{};
     Ogre::Camera *mCamera{};
-    Ogre::SceneNode *mCameraNode{};
+
 
     ResourceManager mResources;
     Scene mScene;

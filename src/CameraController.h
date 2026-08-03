@@ -1,27 +1,21 @@
 #pragma once
 
-namespace Ogre
-{
-    class Camera;
-    class SceneNode;
-}
+#include <OgreCamera.h>
+
+class InputManager;
 
 class CameraController
 {
 public:
     CameraController();
 
-    bool initialize(
-        Ogre::Camera *camera,
-        Ogre::SceneNode *node );
+    bool initialize(Ogre::Camera *camera);
 
-    void update( float dt );
+    void update(const InputManager &input, float dt);
 
 private:
-
     Ogre::Camera *mCamera{};
-    Ogre::SceneNode *mNode{};
 
-    float mMoveSpeed = 10.0f;
-    float mRotateSpeed = 0.2f;
+    float mMoveSpeed = 20.0f;
+    float mMouseSensitivity = 0.0025f;
 };

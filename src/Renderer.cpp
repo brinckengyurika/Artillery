@@ -13,7 +13,6 @@ Renderer::Renderer() :
     mWindow( nullptr ),
     mSceneManager( nullptr ),
     mCamera( nullptr ),
-    mCameraNode( nullptr ),
     mResources( *this ),
     mScene( *this ),
     mGltfLoader(*this),
@@ -90,28 +89,22 @@ bool Renderer::initialize() {
     //-------------------------------------------------------
 
     mSceneManager = mRoot->createSceneManager(
-        Ogre::ST_GENERIC,
-        1
-    );
+                        Ogre::ST_GENERIC,
+                        1
+                    );
     //-------------------------------------------------------
     // Camera
     //-------------------------------------------------------
-    mCamera = mSceneManager->createCamera( "MainCamera" );
+    mCamera =
+        mSceneManager->createCamera( "MainCamera" );
+
     mCamera->setNearClipDistance( 0.1f );
     mCamera->setFarClipDistance( 100000.0f );
     mCamera->setAutoAspectRatio( true );
-    mCameraNode = mSceneManager->getRootSceneNode()->createChildSceneNode();
-//    mCameraNode->attachObject( mCamera );
-    mCameraNode->setPosition( 0.0f, 2.0f, 8.0f );
 
-    //-------------------------------------------------------
-    // Camera controller
-    //-------------------------------------------------------
+    mCamera->setPosition( 0.0f, 2.0f, 8.0f );
 
-    mCameraController.initialize(
-        mCamera,
-        mCameraNode
-    );
+    mCameraController.initialize( mCamera );
 
     //-------------------------------------------------------
     // Workspace
@@ -124,12 +117,12 @@ bool Renderer::initialize() {
         compositorManager->createBasicWorkspaceDef(workspaceDefName, Ogre::ColourValue::Blue);
     }
     mWorkspace = compositorManager->addWorkspace(
-        mSceneManager,
-        mWindow->getTexture(),
-        mCamera,
-        workspaceDefName,
-        true
-    );
+                     mSceneManager,
+                     mWindow->getTexture(),
+                     mCamera,
+                     workspaceDefName,
+                     true
+                 );
 
     //-------------------------------------------------------
     // Scene
@@ -138,6 +131,36 @@ bool Renderer::initialize() {
     if( !mScene.initialize() )
         return false;
     std::cout << "Renderer initialized successfully." << std::endl;
+    const std::string modelname = "Eiffel3";
+    const std::string modelpath = "/home/satch/Projects/Artillery/media/models/" + modelname + ".glb";
+
+    tinygltf::Model model;
+    //Ez az eredeti:
+    //mGltfLoader.load(ARTILLERY_MEDIA_DIR "/models/Apollo.glb", model);
+    mGltfLoader.load(modelpath, model);
+    mMeshBuilder.inspect(model);
+    if( !mMeshBuilder.build(model, modelname) ) {
+        std::cerr << "Mesh build failed!" << std::endl;
+        return false;
+    }
+
+    Ogre::Item *item =
+        mSceneManager->createItem(modelname);
+
+    Ogre::SceneNode *node =
+        mSceneManager->getRootSceneNode()->createChildSceneNode();
+
+    node->attachObject(item);
+
+    // ideiglenesen tegyük a világ origójába
+    node->setPosition(0.0f, 0.0f, 0.0f);
+
+
+
+    std::cout << "Camera parent node   = "
+              << mCamera->getParentNode()
+              << std::endl;
+
 
     return true;
 }
@@ -148,29 +171,19 @@ bool Renderer::renderFrame() {
 
     mInputManager.update();
 
-    if( mInputManager.keyDown( XK_w ) ) {
-        std::cout << "W" << std::endl;
-    }
 
-    if( mInputManager.keyDown( XK_a ) ) {
-        std::cout << "A" << std::endl;
-    }
+    mInputManager.update();
 
-    if( mInputManager.keyDown( XK_s ) ) {
-        std::cout << "S" << std::endl;
-    }
-
-    if( mInputManager.keyDown( XK_d ) ) {
-        std::cout << "D" << std::endl;
-    }
-    if(mInputManager.shouldQuit())
+    if( mInputManager.shouldQuit() )
         return false;
 
-    if(mWindow->isClosed())
+    if( mWindow->isClosed() )
         return false;
 
-    mCameraController.update(0.016f);
-
+    float dt = timer.restart();
+    mCameraController.update(
+        mInputManager,
+        0.016f );
 
     return mRoot->renderOneFrame();
 }
