@@ -1,7 +1,7 @@
 #include "InputManager.h"
 
 #include <iostream>
-
+#include <SDL_mouse.h>
 
 InputManager::InputManager() :
     mDisplay(nullptr),
@@ -49,14 +49,36 @@ void InputManager::update()
     mMouseDx = 0;
     mMouseDy = 0;
 
+    int mouse_x ;      // Koordináta az ablakon belül
+    int mouse_y ;      // Koordináta az ablakon belül
+    int root_x  ; // Koordináta a teljes képernyőn
+    int root_y  ; // Koordináta a teljes képernyőn
+
+
     while(XPending(mDisplay))
     {
         XEvent event;
 
         XNextEvent(mDisplay, &event);
-
         switch(event.type)
         {
+            case MotionNotify:
+            {
+                int mouse_x = event.xmotion.x;      // Koordináta az ablakon belül
+                int mouse_y = event.xmotion.y;      // Koordináta az ablakon belül
+                int root_x  = event.xmotion.x_root; // Koordináta a teljes képernyőn
+                int root_y  = event.xmotion.y_root; // Koordináta a teljes képernyőn
+
+                printf("Egér pozíció: %d, %d\n", mouse_x, mouse_y);
+                mMouseDx += event.xmotion.x - mMouseX;
+                mMouseDy += event.xmotion.y - mMouseY;
+
+                mMouseX = event.xmotion.x;
+                mMouseY = event.xmotion.y;
+
+
+                break;
+            }
             case KeyPress:
             {
                 KeySym key = XLookupKeysym(&event.xkey, 0);
@@ -79,6 +101,7 @@ void InputManager::update()
 
             case ButtonPress:
             {
+                std::cout << "ButtonPress" << std::endl;
                 if(event.xbutton.button == Button3)
                     mRightButton = true;
 
@@ -87,19 +110,9 @@ void InputManager::update()
 
             case ButtonRelease:
             {
+                std::cout << "ButtonPress" << std::endl;
                 if(event.xbutton.button == Button3)
                     mRightButton = false;
-
-                break;
-            }
-
-            case MotionNotify:
-            {
-                mMouseDx += event.xmotion.x - mMouseX;
-                mMouseDy += event.xmotion.y - mMouseY;
-
-                mMouseX = event.xmotion.x;
-                mMouseY = event.xmotion.y;
 
                 break;
             }
@@ -146,3 +159,18 @@ void InputManager::shutdown()
     return;
 }
 
+void InputManager::setRelativeMouseMode(bool enabled)
+{
+    if( enabled == mRelativeMouseMode )
+        return;
+
+    SDL_SetRelativeMouseMode(
+        enabled ? SDL_TRUE : SDL_FALSE );
+
+    mRelativeMouseMode = enabled;
+}
+
+bool InputManager::relativeMouseMode() const
+{
+    return mRelativeMouseMode;
+}

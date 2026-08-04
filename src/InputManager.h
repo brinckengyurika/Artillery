@@ -27,6 +27,9 @@ public:
     int mouseDeltaX() const;
     int mouseDeltaY() const;
 
+    void setRelativeMouseMode(bool enabled);
+    bool relativeMouseMode() const;
+
 private:
 
     Display *mDisplay{};
@@ -43,4 +46,5 @@ private:
 
     int mMouseX{0};
     int mMouseY{0};
+    bool mRelativeMouseMode = false;
 };

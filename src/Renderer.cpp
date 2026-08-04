@@ -180,7 +180,7 @@ bool Renderer::renderFrame() {
     if( mWindow->isClosed() )
         return false;
 
-    float dt = timer.restart();
+
     mCameraController.update(
         mInputManager,
         0.016f );
