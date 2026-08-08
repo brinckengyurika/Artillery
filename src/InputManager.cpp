@@ -1,176 +1,110 @@
 #include "InputManager.h"
 
-#include <iostream>
-#include <SDL_mouse.h>
+#include "Input/LinuxInputBackend.h"
 
-InputManager::InputManager() :
-    mDisplay(nullptr),
-    mWindow(0),
-    mQuit(false),
-    mRightButton(false),
-    mMouseDx(0),
-    mMouseDy(0),
-    mMouseX(0),
-    mMouseY(0)
+InputManager::InputManager()
 {
 }
 
-bool InputManager::initialize(Display *display, ::Window window)
+InputManager::~InputManager()
 {
-    mDisplay = display;
-    mWindow = window;
-
-    if(!mDisplay || !mWindow)
-    {
-        std::cerr << "Invalid X11 handles!" << std::endl;
-        return false;
-    }
-
-    XSelectInput(
-        mDisplay,
-        mWindow,
-        KeyPressMask |
-        KeyReleaseMask |
-        ButtonPressMask |
-        ButtonReleaseMask |
-        PointerMotionMask |
-        StructureNotifyMask
-    );
-
-    XFlush(mDisplay);
-
-    std::cout << "InputManager initialized." << std::endl;
-
-    return true;
+    shutdown();
 }
 
-void InputManager::update()
+bool InputManager::initialize(
+    Display *display,
+    ::Window window)
 {
-    mMouseDx = 0;
-    mMouseDy = 0;
+    mBackend =
+        std::make_unique<LinuxInputBackend>(
+            display,
+            window
+        );
 
-    int mouse_x ;      // Koordináta az ablakon belül
-    int mouse_y ;      // Koordináta az ablakon belül
-    int root_x  ; // Koordináta a teljes képernyőn
-    int root_y  ; // Koordináta a teljes képernyőn
-
-
-    while(XPending(mDisplay))
-    {
-        XEvent event;
-
-        XNextEvent(mDisplay, &event);
-        switch(event.type)
-        {
-            case MotionNotify:
-            {
-                int mouse_x = event.xmotion.x;      // Koordináta az ablakon belül
-                int mouse_y = event.xmotion.y;      // Koordináta az ablakon belül
-                int root_x  = event.xmotion.x_root; // Koordináta a teljes képernyőn
-                int root_y  = event.xmotion.y_root; // Koordináta a teljes képernyőn
-
-                printf("Egér pozíció: %d, %d\n", mouse_x, mouse_y);
-                mMouseDx += event.xmotion.x - mMouseX;
-                mMouseDy += event.xmotion.y - mMouseY;
-
-                mMouseX = event.xmotion.x;
-                mMouseY = event.xmotion.y;
-
-
-                break;
-            }
-            case KeyPress:
-            {
-                KeySym key = XLookupKeysym(&event.xkey, 0);
-
-                if(key != NoSymbol)
-                    mPressedKeys.insert(key);
-
-                break;
-            }
-
-            case KeyRelease:
-            {
-                KeySym key = XLookupKeysym(&event.xkey, 0);
-
-                if(key != NoSymbol)
-                    mPressedKeys.erase(key);
-
-                break;
-            }
-
-            case ButtonPress:
-            {
-                std::cout << "ButtonPress" << std::endl;
-                if(event.xbutton.button == Button3)
-                    mRightButton = true;
-
-                break;
-            }
-
-            case ButtonRelease:
-            {
-                std::cout << "ButtonPress" << std::endl;
-                if(event.xbutton.button == Button3)
-                    mRightButton = false;
-
-                break;
-            }
-
-            case DestroyNotify:
-            {
-                mQuit = true;
-                break;
-            }
-
-            default:
-                break;
-        }
-    }
-}
-
-bool InputManager::keyDown(KeySym key) const
-{
-    return mPressedKeys.find(key) != mPressedKeys.end();
-}
-
-bool InputManager::rightButtonDown() const
-{
-    return mRightButton;
-}
-
-int InputManager::mouseDeltaX() const
-{
-    return mMouseDx;
-}
-
-int InputManager::mouseDeltaY() const
-{
-    return mMouseDy;
-}
-
-bool InputManager::shouldQuit() const
-{
-    return mQuit;
+    return mBackend->initialize();
 }
 
 void InputManager::shutdown()
 {
-    return;
+    if(mBackend)
+        mBackend->shutdown();
+
+    mBackend.reset();
 }
 
-void InputManager::setRelativeMouseMode(bool enabled)
+void InputManager::update()
 {
-    if( enabled == mRelativeMouseMode )
-        return;
-
-    SDL_SetRelativeMouseMode(
-        enabled ? SDL_TRUE : SDL_FALSE );
-
-    mRelativeMouseMode = enabled;
+    if(mBackend)
+        mBackend->update();
 }
 
-bool InputManager::relativeMouseMode() const
+bool InputManager::keyDown(KeySym key) const
 {
-    return mRelativeMouseMode;
+    if(!mBackend)
+        return false;
+
+    return mBackend->keyDown(key);
+}
+
+bool InputManager::mouseButtonDown(
+    unsigned int button) const
+{
+    if(!mBackend)
+        return false;
+
+    return mBackend->mouseButtonDown(button);
+}
+
+bool InputManager::mouseCaptured() const
+{
+    if(!mBackend)
+        return false;
+
+    return mBackend->mouseCaptured();
+}
+
+void InputManager::setMouseCaptured(
+    bool captured)
+{
+    if(mBackend)
+        mBackend->setMouseCaptured(captured);
+}
+
+int InputManager::mouseDeltaX() const
+{
+    if(!mBackend)
+        return 0;
+
+    return mBackend->mouseDeltaX();
+}
+
+int InputManager::mouseDeltaY() const
+{
+    if(!mBackend)
+        return 0;
+
+    return mBackend->mouseDeltaY();
+}
+
+bool InputManager::shouldQuit() const
+{
+    if(!mBackend)
+        return true;
+
+    return mBackend->shouldQuit();
+}
+bool InputManager::mouseWheelForward() const
+{
+    if(!mBackend)
+        return false;
+
+    return mBackend->mouseWheelForward();
+}
+
+bool InputManager::mouseWheelBackward() const
+{
+    if(!mBackend)
+        return false;
+
+    return mBackend->mouseWheelBackward();
 }

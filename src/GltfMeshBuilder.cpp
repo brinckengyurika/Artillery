@@ -5,10 +5,10 @@
 #include "Renderer.h"
 
 #include <iostream>
-
-#include <OgreManualObject2.h>
-#include <OgreMeshManager.h>
 #include <OgreSceneManager.h>
+#include <OgreSceneNode.h>
+#include <OgreManualObject.h>
+
 
 GltfMeshBuilder::GltfMeshBuilder( Renderer &renderer ) :
     mRenderer( renderer ) {
@@ -127,253 +127,332 @@ bool GltfMeshBuilder::inspect( const tinygltf::Model &model ) {
     }
     return true;
 }
-bool GltfMeshBuilder::build( const tinygltf::Model &model,
-                             const std::string &meshName ) {
-    std::cout << "Build this mesh: " << meshName << std::endl;
-    if( model.meshes.empty() )
+
+bool GltfMeshBuilder::build(
+    const tinygltf::Model &model,
+    Ogre::SceneManager *sceneManager,
+    Ogre::SceneNode *parentNode,
+    const std::string &meshName) {
+    if(!sceneManager || !parentNode)
         return false;
 
-    const tinygltf::Mesh &mesh = model.meshes.front();
-
-    if( mesh.primitives.empty() )
+    if(model.meshes.empty())
+    {
+        std::cerr << "GLTF contains no meshes." << std::endl;
         return false;
-
-    const tinygltf::Primitive &primitive =
-        mesh.primitives.front();
-
-    //-----------------------------------------------------
-    // POSITION
-    //-----------------------------------------------------
-
-    auto posIt = primitive.attributes.find( "POSITION" );
-
-    if( posIt == primitive.attributes.end() )
-        return false;
-
-    const tinygltf::Accessor &posAccessor =
-        model.accessors[posIt->second];
-
-    const tinygltf::BufferView &posView =
-        model.bufferViews[posAccessor.bufferView];
-
-
-    const tinygltf::Buffer &posBuffer =
-        model.buffers[posView.buffer];
-
-    const unsigned char *posData =
-        posBuffer.data.data() +
-        posView.byteOffset +
-        posAccessor.byteOffset;
-
-    const float *positions =
-        reinterpret_cast<const float *>( posData );
-std::cout << "Meshes: "
-          << model.meshes.size()
-          << std::endl;
-
-std::cout << "Primitives: "
-          << mesh.primitives.size()
-          << std::endl;
-
-std::cout << "Primitive mode = "
-          << primitive.mode
-          << std::endl;
-
-std::cout << "POSITION stride = "
-          << posView.byteStride
-          << std::endl;
-
-    //-----------------------------------------------------
-    // NORMAL
-    //-----------------------------------------------------
-
-    const float *normals = nullptr;
-
-    auto normalIt = primitive.attributes.find( "NORMAL" );
-
-    if( normalIt != primitive.attributes.end() ) {
-        const tinygltf::Accessor &normalAccessor =
-            model.accessors[normalIt->second];
-
-        const tinygltf::BufferView &normalView =
-            model.bufferViews[normalAccessor.bufferView];
-
-        const tinygltf::Buffer &normalBuffer =
-            model.buffers[normalView.buffer];
-
-        normals =
-            reinterpret_cast<const float *>(
-                normalBuffer.data.data() +
-                normalView.byteOffset +
-                normalAccessor.byteOffset );
-std::cout << "NORMAL stride = "
-          << normalView.byteStride
-          << std::endl;
-
     }
-    //-----------------------------------------------------
-    // TEXCOORD
-    //-----------------------------------------------------
 
+    size_t meshIndex = 0;
 
-    const float *uvs = nullptr;
+    for(const tinygltf::Mesh &mesh : model.meshes)
+    {
+        std::cout
+            << "Build mesh "
+            << meshIndex
+            << ": "
+            << mesh.name
+            << std::endl;
 
-    auto uvIt = primitive.attributes.find( "TEXCOORD_0" );
+        size_t primitiveIndex = 0;
 
-    if( uvIt != primitive.attributes.end() ) {
-        const tinygltf::Accessor &uvAccessor =
-            model.accessors[uvIt->second];
+        for(const tinygltf::Primitive &primitive : mesh.primitives)
+        {
+            std::cout
+                << "  Primitive "
+                << primitiveIndex
+                << std::endl;
 
-        const tinygltf::BufferView &uvView =
-            model.bufferViews[uvAccessor.bufferView];
-std::cout << "UV stride = "
-          << uvView.byteStride
-          << std::endl;
+            if(primitive.mode != TINYGLTF_MODE_TRIANGLES)
+            {
+                std::cerr
+                    << "  Unsupported primitive mode: "
+                    << primitive.mode
+                    << std::endl;
 
-        const tinygltf::Buffer &uvBuffer =
-            model.buffers[uvView.buffer];
+                ++primitiveIndex;
+                continue;
+            }
 
-        uvs =
-            reinterpret_cast<const float *>(
-                uvBuffer.data.data() +
-                uvView.byteOffset +
-                uvAccessor.byteOffset );
-    }
-    //-----------------------------------------------------
-    // INDICES
-    //-----------------------------------------------------
+            auto posIt =
+                primitive.attributes.find("POSITION");
 
-    const tinygltf::Accessor &indexAccessor =
-        model.accessors[primitive.indices];
+            if(posIt == primitive.attributes.end())
+            {
+                std::cerr
+                    << "  Primitive has no POSITION attribute."
+                    << std::endl;
 
-    const tinygltf::BufferView &indexView =
-        model.bufferViews[indexAccessor.bufferView];
+                ++primitiveIndex;
+                continue;
+            }
 
-    const tinygltf::Buffer &indexBuffer =
-        model.buffers[indexView.buffer];
+            const tinygltf::Accessor &posAccessor =
+                model.accessors[posIt->second];
 
-    const unsigned char *indexData =
-        indexBuffer.data.data() +
-        indexView.byteOffset +
-        indexAccessor.byteOffset;
-    //-----------------------------------------------------
-    // ManualObject
-    //-----------------------------------------------------
+            const tinygltf::BufferView &posView =
+                model.bufferViews[posAccessor.bufferView];
 
+            const tinygltf::Buffer &posBuffer =
+                model.buffers[posView.buffer];
 
+            const unsigned char *posData =
+                posBuffer.data.data()
+                + posView.byteOffset
+                + posAccessor.byteOffset;
 
-std::cout << "Index type = "
-          << indexAccessor.componentType
-          << std::endl;
+            const size_t vertexCount =
+                posAccessor.count;
 
-std::cout << "Vertex count = "
-          << posAccessor.count
-          << std::endl;
+            const size_t posStride =
+                posView.byteStride != 0
+                ? posView.byteStride
+                : 3 * sizeof(float);
 
+            std::vector<Ogre::Vector3> positions(
+                vertexCount);
 
-std::cout << "POSITION accessor.byteOffset = "
-          << posAccessor.byteOffset << std::endl;
+            for(size_t i = 0; i < vertexCount; ++i)
+            {
+                const float *p =
+                    reinterpret_cast<const float *>(
+                        posData + i * posStride);
 
-std::cout << "POSITION bufferView.byteOffset = "
-          << posView.byteOffset << std::endl;
+                positions[i] =
+                    Ogre::Vector3(
+                        p[0],
+                        p[1],
+                        p[2]);
+            }
 
-std::cout << "POSITION bufferView.byteLength = "
-          << posView.byteLength << std::endl;
+            //-------------------------------------------------
+            // Normals
+            //-------------------------------------------------
 
-std::cout << "POSITION accessor.count = "
-          << posAccessor.count << std::endl;
+            std::vector<Ogre::Vector3> normals;
 
+            auto normalIt =
+                primitive.attributes.find("NORMAL");
 
-std::cout << "INDEX accessor.byteOffset = "
-          << indexAccessor.byteOffset << std::endl;
+            if(normalIt != primitive.attributes.end())
+            {
+                const tinygltf::Accessor &accessor =
+                    model.accessors[normalIt->second];
 
-std::cout << "INDEX bufferView.byteOffset = "
-          << indexView.byteOffset << std::endl;
+                const tinygltf::BufferView &view =
+                    model.bufferViews[accessor.bufferView];
 
-std::cout << "INDEX count = "
-          << indexAccessor.count << std::endl;
+                const tinygltf::Buffer &buffer =
+                    model.buffers[view.buffer];
 
-    Ogre::ManualObject *manual =
-        mRenderer.getSceneManager()->createManualObject();
+                const unsigned char *data =
+                    buffer.data.data()
+                    + view.byteOffset
+                    + accessor.byteOffset;
 
-    manual->begin(
-        "BaseWhite",
-        Ogre::OT_TRIANGLE_LIST );
+                const size_t stride =
+                    view.byteStride != 0
+                    ? view.byteStride
+                    : 3 * sizeof(float);
 
-    //-----------------------------------------------------
-    // Vertices
-    //-----------------------------------------------------
+                normals.resize(accessor.count);
 
-    for( size_t i = 0; i < posAccessor.count; ++i ) {
-        manual->position(
-            positions[i * 3 + 0],
-            positions[i * 3 + 1],
-            positions[i * 3 + 2] );
+                for(size_t i = 0;
+                    i < accessor.count;
+                    ++i)
+                {
+                    const float *n =
+                        reinterpret_cast<const float *>(
+                            data + i * stride);
 
-        if( normals ) {
-            manual->normal(
-                normals[i * 3 + 0],
-                normals[i * 3 + 1],
-                normals[i * 3 + 2] );
+                    normals[i] =
+                        Ogre::Vector3(
+                            n[0],
+                            n[1],
+                            n[2]);
+                }
+            }
+
+            //-------------------------------------------------
+            // UV
+            //-------------------------------------------------
+
+            std::vector<Ogre::Vector2> uvs;
+
+            auto uvIt =
+                primitive.attributes.find("TEXCOORD_0");
+
+            if(uvIt != primitive.attributes.end())
+            {
+                const tinygltf::Accessor &accessor =
+                    model.accessors[uvIt->second];
+
+                const tinygltf::BufferView &view =
+                    model.bufferViews[accessor.bufferView];
+
+                const tinygltf::Buffer &buffer =
+                    model.buffers[view.buffer];
+
+                const unsigned char *data =
+                    buffer.data.data()
+                    + view.byteOffset
+                    + accessor.byteOffset;
+
+                const size_t stride =
+                    view.byteStride != 0
+                    ? view.byteStride
+                    : 2 * sizeof(float);
+
+                uvs.resize(accessor.count);
+
+                for(size_t i = 0;
+                    i < accessor.count;
+                    ++i)
+                {
+                    const float *uv =
+                        reinterpret_cast<const float *>(
+                            data + i * stride);
+
+                    uvs[i] =
+                        Ogre::Vector2(
+                            uv[0],
+                            uv[1]);
+                }
+            }
+
+            //-------------------------------------------------
+            // Indices
+            //-------------------------------------------------
+
+            if(primitive.indices < 0)
+            {
+                std::cerr
+                    << "  Primitive has no indices."
+                    << std::endl;
+
+                ++primitiveIndex;
+                continue;
+            }
+
+            const tinygltf::Accessor &indexAccessor =
+                model.accessors[primitive.indices];
+
+            const tinygltf::BufferView &indexView =
+                model.bufferViews[indexAccessor.bufferView];
+
+            const tinygltf::Buffer &indexBuffer =
+                model.buffers[indexView.buffer];
+
+            const unsigned char *indexData =
+                indexBuffer.data.data()
+                + indexView.byteOffset
+                + indexAccessor.byteOffset;
+
+            std::vector<unsigned int> indices(
+                indexAccessor.count);
+
+            for(size_t i = 0;
+                i < indexAccessor.count;
+                ++i)
+            {
+                switch(indexAccessor.componentType)
+                {
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
+                        indices[i] =
+                            reinterpret_cast<
+                                const unsigned char *>(
+                                    indexData)[i];
+                        break;
+
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
+                        indices[i] =
+                            reinterpret_cast<
+                                const unsigned short *>(
+                                    indexData)[i];
+                        break;
+
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
+                        indices[i] =
+                            reinterpret_cast<
+                                const unsigned int *>(
+                                    indexData)[i];
+                        break;
+
+                    default:
+                        std::cerr
+                            << "Unsupported index component type: "
+                            << indexAccessor.componentType
+                            << std::endl;
+
+                        indices.clear();
+                        break;
+                }
+
+                if(indices.empty())
+                    break;
+            }
+
+            if(indices.empty())
+            {
+                ++primitiveIndex;
+                continue;
+            }
+
+            //-------------------------------------------------
+            // Ogre ManualObject
+            //-------------------------------------------------
+
+            std::string objectName =
+                meshName
+                + "_mesh_"
+                + std::to_string(meshIndex)
+                + "_primitive_"
+                + std::to_string(primitiveIndex);
+
+            Ogre::ManualObject *manual =
+                sceneManager->createManualObject(
+                    objectName);
+
+            manual->begin(
+                "BaseWhite",
+                Ogre::RenderOperation::OT_TRIANGLE_LIST);
+
+            for(size_t i = 0;
+                i < positions.size();
+                ++i)
+            {
+                manual->position(
+                    positions[i]);
+
+                if(i < normals.size())
+                    manual->normal(
+                        normals[i]);
+
+                if(i < uvs.size())
+                    manual->textureCoord(
+                        uvs[i]);
+            }
+
+            for(unsigned int index : indices)
+                manual->index(index);
+
+            manual->end();
+
+            Ogre::SceneNode *node =
+                parentNode->createChildSceneNode();
+
+            node->attachObject(manual);
+
+            std::cout
+                << "  Created Ogre object: "
+                << objectName
+                << std::endl;
+
+            ++primitiveIndex;
         }
 
-        if( uvs ) {
-            manual->textureCoord(
-                uvs[i * 2 + 0],
-                uvs[i * 2 + 1] );
-        }
+        ++meshIndex;
     }
 
-    //-----------------------------------------------------
-    // Indices
-    //-----------------------------------------------------
-
-    switch( indexAccessor.componentType ) {
-    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT: {
-        const uint16_t *indices =
-            reinterpret_cast<const uint16_t *>( indexData );
-
-        for( size_t i = 0; i < indexAccessor.count; ++i )
-            manual->index( indices[i] );
-
-        break;
-    }
-
-    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT: {
-        const uint32_t *indices =
-            reinterpret_cast<const uint32_t *>( indexData );
-
-        for( size_t i = 0; i < indexAccessor.count; ++i )
-            manual->index( indices[i] );
-
-        break;
-    }
-
-    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE: {
-        const uint8_t *indices =
-            reinterpret_cast<const uint8_t *>( indexData );
-
-        for( size_t i = 0; i < indexAccessor.count; ++i )
-            manual->index( indices[i] );
-
-        break;
-    }
-
-    default:
-        manual->end();
-        mRenderer.getSceneManager()->destroyManualObject( manual );
-        return false;
-    }
-
-    //-----------------------------------------------------
-    // Convert
-    //-----------------------------------------------------
-
-    manual->end();
-
-    manual->convertToMesh( meshName );
-
-    mRenderer.getSceneManager()->destroyManualObject( manual );
-    std::cout << "This mesh ha sbeen builded : " << meshName << std::endl;
     return true;
 }
+

@@ -3,48 +3,33 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
+#include <memory>
 
-
-#include <unordered_set>
+class IInputBackend;
 
 class InputManager
 {
 public:
     InputManager();
-    ~InputManager() = default;
+    ~InputManager();
 
     bool initialize(Display *display, ::Window window);
     void shutdown();
 
     void update();
 
-    bool shouldQuit() const;
-
     bool keyDown(KeySym key) const;
+    bool mouseButtonDown(unsigned int button) const;
 
-    bool rightButtonDown() const;
-
+    bool mouseCaptured() const;
+    void setMouseCaptured(bool captured);
+    bool mouseWheelForward() const;
+    bool mouseWheelBackward() const;
     int mouseDeltaX() const;
     int mouseDeltaY() const;
 
-    void setRelativeMouseMode(bool enabled);
-    bool relativeMouseMode() const;
+    bool shouldQuit() const;
 
 private:
-
-    Display *mDisplay{};
-    ::Window mWindow{};
-
-    bool mQuit{false};
-
-    std::unordered_set<KeySym> mPressedKeys;
-
-    bool mRightButton{false};
-
-    int mMouseDx{0};
-    int mMouseDy{0};
-
-    int mMouseX{0};
-    int mMouseY{0};
-    bool mRelativeMouseMode = false;
+    std::unique_ptr<IInputBackend> mBackend;
 };

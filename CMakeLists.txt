@@ -40,6 +40,7 @@ add_executable(Artillery
     src/GltfMeshBuilder.cpp
     src/TinyGltfImplementation.cpp
     src/InputManager.cpp
+    src/Input/LinuxInputBackend.cpp
 )
 
 target_include_directories(Artillery PRIVATE
@@ -48,6 +49,8 @@ target_include_directories(Artillery PRIVATE
     ${SDL2_INCLUDE_DIRS}
     ${X11_INCLUDE_DIR}
 )
+#target_link_libraries(Artillery PRIVATE Xi)
+
 
 target_link_libraries(Artillery
     OgreMain
@@ -57,6 +60,7 @@ target_link_libraries(Artillery
     SDL2::SDL2
     #    TinyGLTF
     ${X11_LIBRARIES}
+    Xi
 )
 # Bin könyvtár
 set_target_properties(Artillery PROPERTIES

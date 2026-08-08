@@ -137,12 +137,18 @@ bool Renderer::initialize() {
     tinygltf::Model model;
     //Ez az eredeti:
     //mGltfLoader.load(ARTILLERY_MEDIA_DIR "/models/Apollo.glb", model);
+
     mGltfLoader.load(modelpath, model);
     mMeshBuilder.inspect(model);
-    if( !mMeshBuilder.build(model, modelname) ) {
-        std::cerr << "Mesh build failed!" << std::endl;
-        return false;
-    }
+
+    mMeshBuilder.build(
+        model,
+        mSceneManager,
+        mSceneManager->getRootSceneNode(),
+        modelname
+    );
+
+
 
     Ogre::Item *item =
         mSceneManager->createItem(modelname);
@@ -171,8 +177,6 @@ bool Renderer::renderFrame() {
 
     mInputManager.update();
 
-
-    mInputManager.update();
 
     if( mInputManager.shouldQuit() )
         return false;
