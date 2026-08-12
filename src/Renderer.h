@@ -16,6 +16,8 @@
 #include "GltfLoader.h"
 #include "GltfMeshBuilder.h"
 #include "InputManager.h"
+#include <OgreHlmsPbs.h>
+#include <OgreHlmsUnlit.h>
 
 namespace tinygltf
 {
@@ -55,6 +57,9 @@ public:
 
 
 private:
+private:
+    Ogre::HlmsPbs   *mHlmsPbs = nullptr;
+    Ogre::HlmsUnlit *mHlmsUnlit = nullptr;
 
     Ogre::Root *mRoot{};
     Ogre::Window *mWindow{};

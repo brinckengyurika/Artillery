@@ -5,8 +5,12 @@
 #include <OgreColourValue.h>
 #include <OgreLight.h>
 #include <OgreSceneNode.h>
+#include <OgreMeshManager2.h>
+#include <OgreResourceManager.h>
+#include <OgreArchiveManager.h>
 #include "tiny_gltf.h"
-
+#include <vector>
+#include <map>
 
 Renderer::Renderer() :
     mRoot( nullptr ),
@@ -42,32 +46,45 @@ bool Renderer::initialize() {
     }
 
     Ogre::RenderSystem *rs = renderers.front();
+
     rs->setConfigOption( "Full Screen", "No" );
     rs->setConfigOption( "Video Mode", "1280x720" );
     rs->setConfigOption( "VSync", "No" );
+
     mRoot->setRenderSystem( rs );
 
+
+
     mWindow = mRoot->initialise(
-                  true,
-                  "Artillery"
-              );
+        true,
+        "Artillery"
+    );
+
     //-------------------------------------------------------
     // Native X11 handles
     //-------------------------------------------------------
 
     size_t windowHandle = 0;
-    mWindow->getCustomAttribute( "WINDOW", &windowHandle );
+    mWindow->getCustomAttribute(
+        "WINDOW",
+        &windowHandle
+    );
 
     size_t displayHandle = 0;
-    mWindow->getCustomAttribute( "DISPLAY", &displayHandle );
+    mWindow->getCustomAttribute(
+        "DISPLAY",
+        &displayHandle
+    );
 
-    std::cout << "Window handle  = "
-              << windowHandle
-              << std::endl;
+    std::cout
+        << "Window handle  = "
+        << windowHandle
+        << std::endl;
 
-    std::cout << "Display handle = "
-              << displayHandle
-              << std::endl;
+    std::cout
+        << "Display handle = "
+        << displayHandle
+        << std::endl;
 
     Display *display =
         reinterpret_cast<Display *>(displayHandle);
@@ -77,6 +94,7 @@ bool Renderer::initialize() {
 
     if( !mInputManager.initialize(display, window) )
         return false;
+
     //-------------------------------------------------------
     // Resources
     //-------------------------------------------------------
@@ -88,41 +106,62 @@ bool Renderer::initialize() {
     // Scene Manager
     //-------------------------------------------------------
 
-    mSceneManager = mRoot->createSceneManager(
-                        Ogre::ST_GENERIC,
-                        1
-                    );
+    mSceneManager =
+        mRoot->createSceneManager(
+            Ogre::ST_GENERIC,
+            1
+        );
+
     //-------------------------------------------------------
     // Camera
     //-------------------------------------------------------
+
     mCamera =
-        mSceneManager->createCamera( "MainCamera" );
+        mSceneManager->createCamera(
+            "MainCamera"
+        );
 
     mCamera->setNearClipDistance( 0.1f );
     mCamera->setFarClipDistance( 100000.0f );
     mCamera->setAutoAspectRatio( true );
 
-    mCamera->setPosition( 0.0f, 2.0f, 8.0f );
+    mCamera->setPosition(
+        0.0f,
+        2.0f,
+        8.0f
+    );
 
-    mCameraController.initialize( mCamera );
+    mCameraController.initialize(
+        mCamera
+    );
 
     //-------------------------------------------------------
     // Workspace
     //-------------------------------------------------------
-    Ogre::CompositorManager2 *compositorManager = mRoot->getCompositorManager2();
-    const Ogre::String workspaceDefName = "Default Workspace";
-    if (!compositorManager->hasWorkspaceDefinition(workspaceDefName))    {
-        // 3. Ha az Ogre alapértelmezett beállításait szeretnéd használni (Clear + Render Scene)
-        // Ez automatikusan létrehozza a belső Node-okat és magát a definíciót is.
-        compositorManager->createBasicWorkspaceDef(workspaceDefName, Ogre::ColourValue::Blue);
+
+    Ogre::CompositorManager2 *compositorManager =
+        mRoot->getCompositorManager2();
+
+    const Ogre::String workspaceDefName =
+        "Default Workspace";
+
+    if( !compositorManager->hasWorkspaceDefinition(
+            workspaceDefName ) )
+    {
+        compositorManager->createBasicWorkspaceDef(
+            workspaceDefName,
+            Ogre::ColourValue::Blue
+        );
     }
-    mWorkspace = compositorManager->addWorkspace(
-                     mSceneManager,
-                     mWindow->getTexture(),
-                     mCamera,
-                     workspaceDefName,
-                     true
-                 );
+
+    mWorkspace =
+        compositorManager->addWorkspace(
+            mSceneManager,
+            mWindow->getTexture(),
+            mCamera,
+            workspaceDefName,
+            true
+        );
 
     //-------------------------------------------------------
     // Scene
@@ -130,46 +169,11 @@ bool Renderer::initialize() {
 
     if( !mScene.initialize() )
         return false;
-    std::cout << "Renderer initialized successfully." << std::endl;
-    const std::string modelname = "Eiffel3";
-    const std::string modelpath = "/home/satch/Projects/Artillery/media/models/" + modelname + ".glb";
-
-    tinygltf::Model model;
-    //Ez az eredeti:
-    //mGltfLoader.load(ARTILLERY_MEDIA_DIR "/models/Apollo.glb", model);
-
-    mGltfLoader.load(modelpath, model);
-    mMeshBuilder.inspect(model);
-
-    mMeshBuilder.build(
-        model,
-        mSceneManager,
-        mSceneManager->getRootSceneNode(),
-        modelname
-    );
-
-
-
-    Ogre::Item *item =
-        mSceneManager->createItem(modelname);
-
-    Ogre::SceneNode *node =
-        mSceneManager->getRootSceneNode()->createChildSceneNode();
-
-    node->attachObject(item);
-
-    // ideiglenesen tegyük a világ origójába
-    node->setPosition(0.0f, 0.0f, 0.0f);
-
-
-
-    std::cout << "Camera parent node   = "
-              << mCamera->getParentNode()
-              << std::endl;
-
 
     return true;
+    // ...
 }
+
 
 bool Renderer::renderFrame() {
 

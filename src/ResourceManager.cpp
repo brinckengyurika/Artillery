@@ -22,14 +22,17 @@ ResourceManager::ResourceManager(Renderer &renderer) :
 {
     if( !setupResources() )
         return false;
-
     if( !registerHlms() )
         return false;
 
     return true;
 }
+
 bool ResourceManager::registerHlms()
 {
+std::cout << "========================================\n";
+std::cout << "ResourceManager::registerHlms()\n";
+std::cout << "========================================\n";
     Ogre::ConfigFile cf;
     cf.load( ARTILLERY_CFG_DIR "/resources2.cfg" );
 
@@ -58,6 +61,8 @@ bool ResourceManager::registerHlms()
         libraryFolders
     );
 
+
+
     Ogre::Archive *archiveUnlit =
         archiveManager.load(
             rootHlmsFolder + mainFolder,
@@ -80,10 +85,11 @@ bool ResourceManager::registerHlms()
             archiveUnlit,
             &archiveUnlitLibraries );
 
+std::cout << "Registering HLMS Unlit..." << std::endl;
     mRenderer.getRoot()
         ->getHlmsManager()
         ->registerHlms( hlmsUnlit );
-
+std::cout << "HLMS Unlit registered." << std::endl;
     //
     // HLMS PBS
     //
@@ -93,6 +99,7 @@ bool ResourceManager::registerHlms()
     Ogre::HlmsPbs::getDefaultPaths(
         mainFolder,
         libraryFolders );
+
 
     Ogre::Archive *archivePbs =
         archiveManager.load(
@@ -116,10 +123,11 @@ bool ResourceManager::registerHlms()
             archivePbs,
             &archivePbsLibraries );
 
+std::cout << "Registering HLMS PBS..." << std::endl;
     mRenderer.getRoot()
         ->getHlmsManager()
         ->registerHlms( hlmsPbs );
-
+std::cout << "HLMS PBS registered." << std::endl;
     return true;
 }
 
