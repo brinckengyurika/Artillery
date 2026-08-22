@@ -19,13 +19,11 @@
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsUnlit.h>
 
-namespace tinygltf
-{
-    class Model;
+namespace tinygltf {
+class Model;
 }
 
-class Renderer
-{
+class Renderer {
 public:
     Renderer();
     ~Renderer();
@@ -34,29 +32,37 @@ public:
     bool renderFrame();
     void shutdown();
 
-    Ogre::Root *getRoot() const
-    {
+    Ogre::Root *getRoot() const {
         return mRoot;
     }
 
-    Ogre::SceneManager *getSceneManager() const
-    {
+    Ogre::SceneManager *getSceneManager() const {
         return mSceneManager;
     }
 
-    Ogre::Window *getWindow() const
-    {
+    Ogre::Window *getWindow() const {
         return mWindow;
     }
 
-    Ogre::Camera *getCamera() const
-    {
+    Ogre::Camera *getCamera() const {
         return mCamera;
     }
 
+    Ogre::HlmsUnlit *getHlmsUnlit() const {
+        return mHlmsUnlit;
+    }
 
+    Ogre::HlmsPbs *getHlmsPbs() const {
+        return mHlmsPbs;
+    }
+    void setHlmsUnlit(Ogre::HlmsUnlit *hlms) {
+        mHlmsUnlit = hlms;
+    }
 
-private:
+    void setHlmsPbs(Ogre::HlmsPbs *hlms) {
+        mHlmsPbs = hlms;
+    }
+
 private:
     Ogre::HlmsPbs   *mHlmsPbs = nullptr;
     Ogre::HlmsUnlit *mHlmsUnlit = nullptr;

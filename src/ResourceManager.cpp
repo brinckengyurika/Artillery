@@ -12,27 +12,51 @@
 #include <Hlms/Unlit/OgreHlmsUnlit.h>
 #include <Hlms/Pbs/OgreHlmsPbs.h>
 
+#include <OgreHlmsDatablock.h>
+#include <OgrePrerequisites.h>
+#include <Hlms/Unlit/OgreHlmsUnlitDatablock.h>
+
 
 ResourceManager::ResourceManager(Renderer &renderer) :
-    mRenderer(renderer)
-{
+    mRenderer(renderer) {
 }
 
- bool ResourceManager::initialize()
-{
+bool ResourceManager::initialize() {
     if( !setupResources() )
         return false;
     if( !registerHlms() )
         return false;
 
+        Ogre::HlmsDatablock *test =
+    mRenderer.getRoot()
+        ->getHlmsManager()
+        ->getDatablock("GltfDefault");
+
+if( test )
+{
+    std::cout
+        << "HLMS lookup OK: "
+        << test->getNameStr()
+        << " ptr="
+        << test
+        << std::endl;
+}
+else
+{
+    std::cout
+        << "ERROR: GltfDefault not found in HlmsManager!"
+        << std::endl;
+}
+
+
     return true;
 }
 
-bool ResourceManager::registerHlms()
-{
-std::cout << "========================================\n";
-std::cout << "ResourceManager::registerHlms()\n";
-std::cout << "========================================\n";
+bool ResourceManager::registerHlms() {
+    std::cout << "MEGHIVODIK" << std::endl;
+    std::cout << "========================================\n";
+    std::cout << "ResourceManager::registerHlms()\n";
+    std::cout << "========================================\n";
     Ogre::ConfigFile cf;
     cf.load( ARTILLERY_CFG_DIR "/resources2.cfg" );
 
@@ -61,8 +85,6 @@ std::cout << "========================================\n";
         libraryFolders
     );
 
-
-
     Ogre::Archive *archiveUnlit =
         archiveManager.load(
             rootHlmsFolder + mainFolder,
@@ -71,8 +93,7 @@ std::cout << "========================================\n";
 
     Ogre::ArchiveVec archiveUnlitLibraries;
 
-    for( const auto &folder : libraryFolders )
-    {
+    for( const auto &folder : libraryFolders ) {
         archiveUnlitLibraries.push_back(
             archiveManager.load(
                 rootHlmsFolder + folder,
@@ -85,14 +106,73 @@ std::cout << "========================================\n";
             archiveUnlit,
             &archiveUnlitLibraries );
 
-std::cout << "Registering HLMS Unlit..." << std::endl;
+    std::cout << "Registering HLMS Unlit..." << std::endl;
     mRenderer.getRoot()
-        ->getHlmsManager()
-        ->registerHlms( hlmsUnlit );
-std::cout << "HLMS Unlit registered." << std::endl;
+    ->getHlmsManager()
+    ->registerHlms( hlmsUnlit );
+    std::cout << "HLMS Unlit registered." << std::endl;
+
+    Ogre::HlmsMacroblock macroblock;
+    Ogre::HlmsBlendblock blendblock;
+    Ogre::HlmsParamVec params;
+
+    Ogre::HlmsDatablock *defaultDatablock =
+        hlmsUnlit->createDatablock(
+            "GltfDefault",
+            "GltfDefault",
+            macroblock,
+            blendblock,
+            params
+        );
+
+    if( !defaultDatablock ) {
+        std::cerr
+                << "ERROR: Failed to create GltfDefault datablock!"
+                << std::endl;
+
+        return false;
+    }
+
+    Ogre::HlmsUnlitDatablock *unlit =
+        static_cast<Ogre::HlmsUnlitDatablock *>(
+            defaultDatablock
+        );
+unlit->setUseColour(true);
+unlit->setColour(Ogre::ColourValue(0.9f, 0.9f, 0.1f, 1.0f));
+
+std::cout << "UNLIT datablock: " ;
+std::cout << "hasColour=" << unlit->hasColour();
+std::cout << " colour="
+    << unlit->getColour().r << ", "
+    << unlit->getColour().g << ", "
+    << unlit->getColour().b << ", "
+    << unlit->getColour().a
+    << std::endl;
+/*
+unlitDatablock->setColour(
+    Ogre::ColourValue( 1.0f, 0.0f, 0.0f, 1.0f )
+);
+*/
+    Ogre::HlmsDatablock *test =
+        hlmsUnlit->getDatablock("GltfDefault");
+
+    if(test) {
+        std::cout
+                << "GltfDefault FOUND in Unlit HLMS"
+                << std::endl;
+    } else {
+        std::cout
+                << "GltfDefault NOT FOUND in Unlit HLMS"
+                << std::endl;
+    }
+    std::cout
+            << "Created HLMS datablock: GltfDefault"
+            << std::endl;
+
     //
     // HLMS PBS
     //
+    mRenderer.setHlmsUnlit(hlmsUnlit);
 
     libraryFolders.clear();
 
@@ -109,8 +189,7 @@ std::cout << "HLMS Unlit registered." << std::endl;
 
     Ogre::ArchiveVec archivePbsLibraries;
 
-    for( const auto &folder : libraryFolders )
-    {
+    for( const auto &folder : libraryFolders ) {
         archivePbsLibraries.push_back(
             archiveManager.load(
                 rootHlmsFolder + folder,
@@ -123,16 +202,17 @@ std::cout << "HLMS Unlit registered." << std::endl;
             archivePbs,
             &archivePbsLibraries );
 
-std::cout << "Registering HLMS PBS..." << std::endl;
+    std::cout << "Registering HLMS PBS..." << std::endl;
     mRenderer.getRoot()
-        ->getHlmsManager()
-        ->registerHlms( hlmsPbs );
-std::cout << "HLMS PBS registered." << std::endl;
+    ->getHlmsManager()
+    ->registerHlms( hlmsPbs );
+    std::cout << "HLMS PBS registered." << std::endl;
+    mRenderer.setHlmsPbs(hlmsPbs);
+
     return true;
 }
 
-bool ResourceManager::setupResources()
-{
+bool ResourceManager::setupResources() {
     Ogre::ConfigFile cf;
 
 
@@ -144,8 +224,7 @@ bool ResourceManager::setupResources()
     Ogre::String typeName;
     Ogre::String archName;
 
-    while( seci.hasMoreElements() )
-    {
+    while( seci.hasMoreElements() ) {
         secName = seci.peekNextKey();
 
         Ogre::ConfigFile::SettingsMultiMap *settings =
@@ -154,8 +233,7 @@ bool ResourceManager::setupResources()
         if( secName == "Hlms" )
             continue;
 
-        for( auto &entry : *settings )
-        {
+        for( auto &entry : *settings ) {
             typeName = entry.first;
             archName = entry.second;
 
@@ -174,7 +252,6 @@ bool ResourceManager::setupResources()
     return true;
 }
 
-void ResourceManager::shutdown()
-{
+void ResourceManager::shutdown() {
     std::cout << "Shutting down resources..." << std::endl;
 }

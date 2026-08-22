@@ -9,6 +9,7 @@
 #include <OgreManualObject2.h>
 #include <OgreMeshManager.h>
 #include <OgreSceneManager.h>
+#include <OgreMatrix3.h>
 
 GltfMeshBuilder::GltfMeshBuilder( Renderer &renderer ) :
     mRenderer( renderer ) {
@@ -203,6 +204,23 @@ bool GltfMeshBuilder::build(
     //---------------------------------------------------------
     // Build all root nodes
     //---------------------------------------------------------
+    std::cout << "Scene root nodes:" << std::endl;
+
+    for( int nodeIndex : scene.nodes ) {
+        const tinygltf::Node &n = model.nodes[nodeIndex];
+
+        std::cout
+                << "  root node "
+                << nodeIndex
+                << " name='"
+                << n.name
+                << "' mesh="
+                << n.mesh
+                << " children="
+                << n.children.size()
+                << std::endl;
+    }
+
 
     for(int nodeIndex : scene.nodes) {
         buildNode(
@@ -231,8 +249,36 @@ Ogre::SceneNode* GltfMeshBuilder::buildNode(
         return nullptr;
     }
 
+
     const tinygltf::Node &gltfNode =
         model.nodes[nodeIndex];
+    std::cout
+            << "NODE "
+            << nodeIndex
+            << " name='" << gltfNode.name
+            << "' mesh=" << gltfNode.mesh
+            << " children=" << gltfNode.children.size()
+            << " matrix=" << gltfNode.matrix.size()
+            << " translation=" << gltfNode.translation.size()
+            << " rotation=" << gltfNode.rotation.size()
+            << " scale=" << gltfNode.scale.size()
+            << std::endl;
+    if( !gltfNode.matrix.empty() ) {
+        std::cout
+                << "NODE "
+                << nodeIndex
+                << " name='" << gltfNode.name
+                << "' USES MATRIX"
+                << std::endl;
+    }
+
+    std::cout
+            << "NODE "
+            << nodeIndex
+            << " name='" << gltfNode.name
+            << "' mesh=" << gltfNode.mesh
+            << " children=" << gltfNode.children.size()
+            << std::endl;
 
     //---------------------------------------------------------
     // Create Ogre node
@@ -252,54 +298,98 @@ Ogre::SceneNode* GltfMeshBuilder::buildNode(
     }
 
     node->setName(nodeName);
+    if(gltfNode.matrix.size() == 16) {
+        const double *m = gltfNode.matrix.data();
 
-    //---------------------------------------------------------
-    // Translation
-    //---------------------------------------------------------
+        Ogre::Matrix4 transform(
+            static_cast<Ogre::Real>(m[0]),
+            static_cast<Ogre::Real>(m[4]),
+            static_cast<Ogre::Real>(m[8]),
+            static_cast<Ogre::Real>(m[12]),
 
-    if(gltfNode.translation.size() == 3) {
-        node->setPosition(
-            static_cast<Ogre::Real>(gltfNode.translation[0]),
-            static_cast<Ogre::Real>(gltfNode.translation[1]),
-            static_cast<Ogre::Real>(gltfNode.translation[2])
-        );
-    }
+            static_cast<Ogre::Real>(m[1]),
+            static_cast<Ogre::Real>(m[5]),
+            static_cast<Ogre::Real>(m[9]),
+            static_cast<Ogre::Real>(m[13]),
 
-    //---------------------------------------------------------
-    // Rotation
-    //
-    // glTF quaternion order:
-    // x, y, z, w
-    //---------------------------------------------------------
+            static_cast<Ogre::Real>(m[2]),
+            static_cast<Ogre::Real>(m[6]),
+            static_cast<Ogre::Real>(m[10]),
+            static_cast<Ogre::Real>(m[14]),
 
-    if(gltfNode.rotation.size() == 4) {
-        Ogre::Quaternion q(
-            static_cast<Ogre::Real>(gltfNode.rotation[3]),
-            static_cast<Ogre::Real>(gltfNode.rotation[0]),
-            static_cast<Ogre::Real>(gltfNode.rotation[1]),
-            static_cast<Ogre::Real>(gltfNode.rotation[2])
+            static_cast<Ogre::Real>(m[3]),
+            static_cast<Ogre::Real>(m[7]),
+            static_cast<Ogre::Real>(m[11]),
+            static_cast<Ogre::Real>(m[15])
         );
 
-        node->setOrientation(q);
-    }
+        Ogre::Vector3 position;
+        Ogre::Vector3 scale;
+        Ogre::Quaternion orientation;
 
-    //---------------------------------------------------------
-    // Scale
-    //---------------------------------------------------------
-
-    if(gltfNode.scale.size() == 3) {
-        node->setScale(
-            static_cast<Ogre::Real>(gltfNode.scale[0]),
-            static_cast<Ogre::Real>(gltfNode.scale[1]),
-            static_cast<Ogre::Real>(gltfNode.scale[2])
+        transform.decomposition(
+            position,
+            scale,
+            orientation
         );
-    }
 
+        node->setPosition(position);
+        node->setScale(scale);
+        node->setOrientation(orientation);
+
+        std::cout
+                << "  MATRIX transform:"
+                << " pos=("
+                << position.x << ", "
+                << position.y << ", "
+                << position.z << ")"
+                << " scale=("
+                << scale.x << ", "
+                << scale.y << ", "
+                << scale.z << ")"
+                << std::endl;
+    } else {
+        if(gltfNode.translation.size() == 3) {
+            node->setPosition(
+                static_cast<Ogre::Real>(gltfNode.translation[0]),
+                static_cast<Ogre::Real>(gltfNode.translation[1]),
+                static_cast<Ogre::Real>(gltfNode.translation[2])
+            );
+        }
+
+        if(gltfNode.rotation.size() == 4) {
+            Ogre::Quaternion q(
+                static_cast<Ogre::Real>(gltfNode.rotation[3]),
+                static_cast<Ogre::Real>(gltfNode.rotation[0]),
+                static_cast<Ogre::Real>(gltfNode.rotation[1]),
+                static_cast<Ogre::Real>(gltfNode.rotation[2])
+            );
+
+            node->setOrientation(q);
+        }
+
+        if(gltfNode.scale.size() == 3) {
+            node->setScale(
+                static_cast<Ogre::Real>(gltfNode.scale[0]),
+                static_cast<Ogre::Real>(gltfNode.scale[1]),
+                static_cast<Ogre::Real>(gltfNode.scale[2])
+            );
+        }
+    }
     //---------------------------------------------------------
     // Mesh
     //---------------------------------------------------------
 
     if(gltfNode.mesh >= 0) {
+        std::cout
+                << "  ATTACH MESH "
+                << gltfNode.mesh
+                << " TO NODE "
+                << nodeIndex
+                << " ('"
+                << node->getName()
+                << "')"
+                << std::endl;
         buildMesh(
             model,
             gltfNode.mesh,
@@ -335,6 +425,8 @@ void GltfMeshBuilder::buildMesh(
     Ogre::SceneNode *parentNode,
     const std::string &meshName,
     int nodeIndex) {
+
+
     if(meshIndex < 0 ||
             meshIndex >= static_cast<int>(model.meshes.size())) {
         std::cerr
@@ -353,6 +445,16 @@ void GltfMeshBuilder::buildMesh(
             << meshIndex
             << ": "
             << mesh.name
+            << " primitives="
+            << mesh.primitives.size()
+            << std::endl;
+
+
+    std::cout
+            << "Build mesh "
+            << meshIndex
+            << ": "
+            << mesh.name
             << std::endl;
 
     size_t primitiveIndex = 0;
@@ -362,7 +464,45 @@ void GltfMeshBuilder::buildMesh(
         std::cout
                 << "  Primitive "
                 << primitiveIndex
+                << ": "
+                << "material="
+                << primitive.material
+                << " mode="
+                << primitive.mode
+                << " indices="
+                << primitive.indices
                 << std::endl;
+
+
+        std::cout << "    Attributes:" << std::endl;
+
+        for(const auto &attribute : primitive.attributes) {
+            std::cout
+                    << "      "
+                    << attribute.first
+                    << " -> accessor "
+                    << attribute.second
+                    << std::endl;
+        }
+
+
+        std::cout
+                << "  Primitive "
+                << primitiveIndex
+                << " mode=" << primitive.mode
+                << " material=" << primitive.material
+                << " indices=" << primitive.indices
+                << " attributes=" << primitive.attributes.size()
+                << std::endl;
+
+        for( const auto &attr : primitive.attributes ) {
+            std::cout
+                    << "      "
+                    << attr.first
+                    << " -> accessor "
+                    << attr.second
+                    << std::endl;
+        }
 
         //-----------------------------------------------------
         // Only triangles for now
@@ -625,17 +765,95 @@ void GltfMeshBuilder::buildMesh(
         Ogre::ManualObject *manual =
             sceneManager->createManualObject();
 
-        manual->setName(objectName);
+        Ogre::ColourValue baseColour =
+            Ogre::ColourValue::White;
+
+        if(primitive.material >= 0 &&
+                primitive.material <
+                static_cast<int>(model.materials.size())) {
+            const tinygltf::Material &material =
+                model.materials[primitive.material];
+
+            const auto &factor =
+                material.pbrMetallicRoughness.baseColorFactor;
+
+            if(factor.size() >= 4) {
+                baseColour =
+                    Ogre::ColourValue(
+                        static_cast<float>(factor[0]),
+                        static_cast<float>(factor[1]),
+                        static_cast<float>(factor[2]),
+                        static_cast<float>(factor[3])
+                    );
+
+                std::cout
+                        << "GLTF material "
+                        << primitive.material
+                        << " baseColorFactor = "
+                        << factor[0] << ", "
+                        << factor[1] << ", "
+                        << factor[2] << ", "
+                        << factor[3]
+                        << std::endl;
+            }
+        }
+
+
+
+
+
+
+
+
+//        manual->setName(objectName);
+//-----------------------------------------------------
+// Get GltfDefault datablock from our Unlit HLMS
+//-----------------------------------------------------
+
+        Ogre::HlmsUnlit *hlmsUnlit =
+            mRenderer.getHlmsUnlit();
+
+        if(!hlmsUnlit) {
+            std::cerr
+                    << "ERROR: HLMS Unlit is NULL!"
+                    << std::endl;
+
+            sceneManager->destroyManualObject(manual);
+            return;
+        }
+
+        Ogre::HlmsDatablock *datablock =
+            hlmsUnlit->getDatablock("GltfDefault");
+
+        if(!datablock) {
+            std::cerr
+                    << "ERROR: GltfDefault datablock not found!"
+                    << std::endl;
+
+            sceneManager->destroyManualObject(manual);
+            return;
+        }
+
+        std::cout
+                << "Using datablock: "
+                << datablock->getNameStr()
+                << std::endl;
+
+
+
+//-----------------------------------------------------
+// Begin ManualObject
+//-----------------------------------------------------
 
         manual->begin(
             "GltfDefault",
             Ogre::OT_TRIANGLE_LIST
         );
 
+
         //-----------------------------------------------------
         // Vertices
         //-----------------------------------------------------
-
         for(size_t i = 0; i < positions.size(); ++i) {
             manual->position(positions[i]);
 
@@ -646,10 +864,6 @@ void GltfMeshBuilder::buildMesh(
                 manual->textureCoord(uvs[i]);
         }
 
-        for(unsigned int index : indices)
-            manual->index(index);
-
-        manual->end();
         //-----------------------------------------------------
         // Indices
         //-----------------------------------------------------
@@ -658,8 +872,45 @@ void GltfMeshBuilder::buildMesh(
             manual->index(index);
         }
 
-        manual->end();
+//        manual->end();
+        Ogre::ManualObject::ManualObjectSection *section =
+            manual->end();
+        if( section ) {
+            Ogre::HlmsDatablock *db =
+                mRenderer.getHlmsUnlit()->getDatablock(
+                    "GltfDefault"
+                );
 
+            if( db ) {
+                section->setDatablock( db );
+
+                std::cout
+                        << "Using datablock pointer: "
+                        << db
+                        << " name="
+                        << db->getNameStr()
+                        << std::endl;
+            } else {
+                std::cerr
+                        << "ERROR: GltfDefault datablock not found!"
+                        << std::endl;
+            }
+        } else {
+            std::cerr
+                    << "ERROR: ManualObject section is NULL!"
+                    << std::endl;
+        }
+
+        std::cout
+                << "  FINALIZED mesh="
+                << meshIndex
+                << " primitive="
+                << primitiveIndex
+                << " node="
+                << nodeIndex
+                << std::endl;
+        manual->setCastShadows(true);
+        manual->setVisibilityFlags(0xFFFFFFFF);
         //-----------------------------------------------------
         // Attach
         //-----------------------------------------------------
@@ -671,6 +922,17 @@ void GltfMeshBuilder::buildMesh(
                 << objectName
                 << std::endl;
 
-        ++primitiveIndex;
+        std::cout
+                << "  vertices="
+                << positions.size()
+                << " indices="
+                << indices.size()
+                << std::endl;
+
+        std::cout
+                << "  attached="
+                << manual->isAttached()
+                << std::endl;
+
     }
 }
