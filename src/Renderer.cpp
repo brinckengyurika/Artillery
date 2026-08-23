@@ -150,7 +150,7 @@ bool Renderer::initialize() {
     {
         compositorManager->createBasicWorkspaceDef(
             workspaceDefName,
-            Ogre::ColourValue::Blue
+            Ogre::ColourValue::White
         );
     }
 

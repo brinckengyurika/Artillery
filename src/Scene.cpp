@@ -44,6 +44,16 @@ bool Scene::createLight() {
         Ogre::Vector3( -1, -1, -1 ).normalisedCopy()
     );
 
+
+light->setDiffuseColour(
+    Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+);
+
+light->setSpecularColour(
+    Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+);
+
+
     node->attachObject( light );
 
     return true;

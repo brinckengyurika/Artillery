@@ -5,34 +5,44 @@
 #include "Renderer.h"
 
 #include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
 
 #include <OgreManualObject2.h>
 #include <OgreMeshManager.h>
 #include <OgreSceneManager.h>
 #include <OgreMatrix3.h>
+#include <OgreHlmsUnlit.h>
+#include <OgreHlmsUnlitDatablock.h>
 
-GltfMeshBuilder::GltfMeshBuilder( Renderer &renderer ) :
-    mRenderer( renderer ) {
+
+GltfMeshBuilder::GltfMeshBuilder (Renderer & renderer):
+    mRenderer (renderer) {
 }
 
-bool GltfMeshBuilder::inspect( const tinygltf::Model &model ) {
+
+bool
+GltfMeshBuilder::inspect (const tinygltf::Model & model) {
+
     std::cout << std::endl;
     std::cout << "===== glTF Model =====" << std::endl;
 
-    std::cout << "Scenes      : " << model.scenes.size() << std::endl;
-    std::cout << "Nodes       : " << model.nodes.size() << std::endl;
-    std::cout << "Meshes      : " << model.meshes.size() << std::endl;
-    std::cout << "Materials   : " << model.materials.size() << std::endl;
-    std::cout << "Images      : " << model.images.size() << std::endl;
-    std::cout << "Textures    : " << model.textures.size() << std::endl;
-    std::cout << "Accessors   : " << model.accessors.size() << std::endl;
-    std::cout << "BufferViews : " << model.bufferViews.size() << std::endl;
-    std::cout << "Buffers     : " << model.buffers.size() << std::endl;
+    std::cout << "Scenes      : " << model.scenes.size () << std::endl;
+    std::cout << "Nodes       : " << model.nodes.size () << std::endl;
+    std::cout << "Meshes      : " << model.meshes.size () << std::endl;
+    std::cout << "Materials   : " << model.materials.size () << std::endl;
+    std::cout << "Images      : " << model.images.size () << std::endl;
+    std::cout << "Textures    : " << model.textures.size () << std::endl;
+    std::cout << "Accessors   : " << model.accessors.size () << std::endl;
+    std::cout << "BufferViews : " << model.bufferViews.size () << std::endl;
+    std::cout << "Buffers     : " << model.buffers.size () << std::endl;
 
     std::cout << "\nMeshes:\n";
 
-    for( size_t i = 0; i < model.meshes.size(); ++i ) {
-        const tinygltf::Mesh &mesh = model.meshes[i];
+    for (size_t i = 0; i < model.meshes.size (); ++i) {
+
+        const tinygltf::Mesh & mesh = model.meshes[i];
 
         std::cout
                 << "Mesh "
@@ -43,49 +53,80 @@ bool GltfMeshBuilder::inspect( const tinygltf::Model &model ) {
 
         std::cout
                 << "  Primitives: "
-                << mesh.primitives.size()
+                << mesh.primitives.size ()
                 << std::endl;
-        for (size_t p = 0 ; p < mesh.primitives.size(); ++p) {
-            ;
-            auto it = mesh.primitives.at(p).attributes.find( "POSITION" );
 
-            if( it == mesh.primitives.at(p).attributes.end() ) {
-                std::cout << "No POSITION attribute!" << std::endl;
+        for (size_t p = 0; p < mesh.primitives.size (); ++p) {
+
+            auto it =
+                mesh.primitives.at (p).attributes.find ("POSITION");
+
+            if (it == mesh.primitives.at (p).attributes.end ()) {
+
+                std::cout
+                        << "No POSITION attribute!"
+                        << std::endl;
+
                 return false;
             }
 
             int accessorIndex = it->second;
-            const tinygltf::Accessor &accessor =
-                model.accessors[accessorIndex];
-            std::cout << "\t\tPOSITION accessor" << std::endl;
-            std::cout << "\t\tcount = " << accessor.count << std::endl;
-            std::cout << "\t\ttype = " << accessor.type << std::endl;
-            std::cout << "\t\tcomponentType = " << accessor.componentType << std::endl;
 
-            if( accessor.componentType != TINYGLTF_COMPONENT_TYPE_FLOAT ||
-                    accessor.type != TINYGLTF_TYPE_VEC3 ) {
-                std::cout << "Unsupported POSITION format!" << std::endl;
+            const tinygltf::Accessor & accessor =
+                model.accessors[accessorIndex];
+
+            std::cout
+                    << "\t\tPOSITION accessor"
+                    << std::endl;
+
+            std::cout
+                    << "\t\tcount = "
+                    << accessor.count
+                    << std::endl;
+
+            std::cout
+                    << "\t\ttype = "
+                    << accessor.type
+                    << std::endl;
+
+            std::cout
+                    << "\t\tcomponentType = "
+                    << accessor.componentType
+                    << std::endl;
+
+            if (accessor.componentType !=
+                    TINYGLTF_COMPONENT_TYPE_FLOAT ||
+                    accessor.type != TINYGLTF_TYPE_VEC3) {
+
+                std::cout
+                        << "Unsupported POSITION format!"
+                        << std::endl;
+
                 return false;
             }
 
-            const tinygltf::BufferView &bufferView =
+            const tinygltf::BufferView & bufferView =
                 model.bufferViews[accessor.bufferView];
 
-            const tinygltf::Buffer &buffer =
+            const tinygltf::Buffer & buffer =
                 model.buffers[bufferView.buffer];
 
             const unsigned char *data =
-                buffer.data.data() +
+                buffer.data.data () +
                 bufferView.byteOffset +
                 accessor.byteOffset;
 
             const float *vertices =
-                reinterpret_cast<const float *>( data );
-            std::cout << "\nFirst vertices:\n";
+                reinterpret_cast < const float * >(data);
 
-            size_t count = std::min<size_t>( accessor.count, 10 );
+            std::cout
+                    << "\nFirst vertices:\n";
 
-            for( size_t i = 0; i < count; ++i ) {
+            size_t count =
+                std::min < size_t >(accessor.count, 10);
+
+            for (size_t i = 0; i < count; ++i) {
+
                 float x = vertices[i * 3 + 0];
                 float y = vertices[i * 3 + 1];
                 float z = vertices[i * 3 + 2];
@@ -93,22 +134,27 @@ bool GltfMeshBuilder::inspect( const tinygltf::Model &model ) {
                 std::cout
                         << i
                         << ": "
-                        << x << ", "
-                        << y << ", "
+                        << x
+                        << ", "
+                        << y
+                        << ", "
                         << z
                         << std::endl;
             }
 
-            const tinygltf::Accessor &indexAccessor =
-                model.accessors[ mesh.primitives.at(p).indices ];
-            const tinygltf::BufferView &indexBufferView =
-                model.bufferViews[ indexAccessor.bufferView ];
+            const tinygltf::Accessor & indexAccessor =
+                model.accessors[
+                    mesh.primitives.at (p).indices
+                ];
 
-            const tinygltf::Buffer &indexBuffer =
-                model.buffers[ indexBufferView.buffer ];
+            const tinygltf::BufferView & indexBufferView =
+                model.bufferViews[indexAccessor.bufferView];
+
+            const tinygltf::Buffer & indexBuffer =
+                model.buffers[indexBufferView.buffer];
 
             const unsigned char *indexData =
-                indexBuffer.data.data() +
+                indexBuffer.data.data () +
                 indexBufferView.byteOffset +
                 indexAccessor.byteOffset;
 
@@ -121,24 +167,22 @@ bool GltfMeshBuilder::inspect( const tinygltf::Model &model ) {
                     << "Index count: "
                     << indexAccessor.count
                     << std::endl;
-
-
         }
-
     }
+
     return true;
 }
 
 
+bool
+GltfMeshBuilder::build (const tinygltf::Model & model,
+                        Ogre::SceneManager *sceneManager,
+                        Ogre::SceneNode *parentNode,
+                        const std::string & meshName) {
 
-bool GltfMeshBuilder::build(
-    const tinygltf::Model &model,
-    Ogre::SceneManager *sceneManager,
-    Ogre::SceneNode *parentNode,
-    const std::string &meshName) {
     std::cout
             << "Invoking build, parent name : "
-            << parentNode->getName()
+            << parentNode->getName ()
             << std::endl;
 
     std::cout
@@ -146,10 +190,11 @@ bool GltfMeshBuilder::build(
             << meshName
             << std::endl;
 
-    if(!sceneManager || !parentNode)
+    if (!sceneManager || !parentNode)
         return false;
 
-    if(model.meshes.empty()) {
+    if (model.meshes.empty ()) {
+
         std::cerr
                 << "GLTF contains no meshes."
                 << std::endl;
@@ -157,7 +202,8 @@ bool GltfMeshBuilder::build(
         return false;
     }
 
-    if(model.nodes.empty()) {
+    if (model.nodes.empty ()) {
+
         std::cerr
                 << "GLTF contains no nodes."
                 << std::endl;
@@ -169,10 +215,10 @@ bool GltfMeshBuilder::build(
     // Root node for the imported model
     //---------------------------------------------------------
 
-    Ogre::SceneNode *mainNode =
-        parentNode->createChildSceneNode();
+    Ogre::SceneNode * mainNode =
+        parentNode->createChildSceneNode ();
 
-    mainNode->setName(meshName);
+    mainNode->setName (meshName);
 
     //---------------------------------------------------------
     // Find glTF scene
@@ -180,12 +226,15 @@ bool GltfMeshBuilder::build(
 
     int sceneIndex = model.defaultScene;
 
-    if(sceneIndex < 0 ||
-            sceneIndex >= static_cast<int>(model.scenes.size())) {
+    if (sceneIndex < 0 ||
+            sceneIndex >=
+            static_cast < int >(model.scenes.size ())) {
+
         sceneIndex = 0;
     }
 
-    if(model.scenes.empty()) {
+    if (model.scenes.empty ()) {
+
         std::cerr
                 << "GLTF contains no scenes."
                 << std::endl;
@@ -193,7 +242,7 @@ bool GltfMeshBuilder::build(
         return false;
     }
 
-    const tinygltf::Scene &scene =
+    const tinygltf::Scene & scene =
         model.scenes[sceneIndex];
 
     std::cout
@@ -204,10 +253,15 @@ bool GltfMeshBuilder::build(
     //---------------------------------------------------------
     // Build all root nodes
     //---------------------------------------------------------
-    std::cout << "Scene root nodes:" << std::endl;
 
-    for( int nodeIndex : scene.nodes ) {
-        const tinygltf::Node &n = model.nodes[nodeIndex];
+    std::cout
+            << "Scene root nodes:"
+            << std::endl;
+
+    for (int nodeIndex : scene.nodes) {
+
+        const tinygltf::Node & n =
+            model.nodes[nodeIndex];
 
         std::cout
                 << "  root node "
@@ -217,57 +271,66 @@ bool GltfMeshBuilder::build(
                 << "' mesh="
                 << n.mesh
                 << " children="
-                << n.children.size()
+                << n.children.size ()
                 << std::endl;
     }
 
+    for (int nodeIndex : scene.nodes) {
 
-    for(int nodeIndex : scene.nodes) {
-        buildNode(
-            model,
-            nodeIndex,
-            sceneManager,
-            mainNode,
-            meshName
-        );
+        buildNode (model,
+                   nodeIndex,
+                   sceneManager,
+                   mainNode,
+                   meshName);
     }
 
     return true;
 }
 
 
+Ogre::SceneNode *
+GltfMeshBuilder::buildNode (const tinygltf::Model & model,
+                            int nodeIndex,
+                            Ogre::SceneManager *sceneManager,
+                            Ogre::SceneNode *parentNode,
+                            const std::string & meshName) {
 
+    if (nodeIndex < 0 ||
+            nodeIndex >=
+            static_cast < int >(model.nodes.size ())) {
 
-Ogre::SceneNode* GltfMeshBuilder::buildNode(
-    const tinygltf::Model &model,
-    int nodeIndex,
-    Ogre::SceneManager *sceneManager,
-    Ogre::SceneNode *parentNode,
-    const std::string &meshName) {
-    if(nodeIndex < 0 ||
-            nodeIndex >= static_cast<int>(model.nodes.size())) {
         return nullptr;
     }
 
-
-    const tinygltf::Node &gltfNode =
+    const tinygltf::Node & gltfNode =
         model.nodes[nodeIndex];
+
     std::cout
             << "NODE "
             << nodeIndex
-            << " name='" << gltfNode.name
-            << "' mesh=" << gltfNode.mesh
-            << " children=" << gltfNode.children.size()
-            << " matrix=" << gltfNode.matrix.size()
-            << " translation=" << gltfNode.translation.size()
-            << " rotation=" << gltfNode.rotation.size()
-            << " scale=" << gltfNode.scale.size()
+            << " name='"
+            << gltfNode.name
+            << "' mesh="
+            << gltfNode.mesh
+            << " children="
+            << gltfNode.children.size ()
+            << " matrix="
+            << gltfNode.matrix.size ()
+            << " translation="
+            << gltfNode.translation.size ()
+            << " rotation="
+            << gltfNode.rotation.size ()
+            << " scale="
+            << gltfNode.scale.size ()
             << std::endl;
-    if( !gltfNode.matrix.empty() ) {
+
+    if (!gltfNode.matrix.empty ()) {
+
         std::cout
                 << "NODE "
                 << nodeIndex
-                << " name='" << gltfNode.name
+                << " name='"
+                << gltfNode.name
                 << "' USES MATRIX"
                 << std::endl;
     }
@@ -275,122 +338,160 @@ Ogre::SceneNode* GltfMeshBuilder::buildNode(
     std::cout
             << "NODE "
             << nodeIndex
-            << " name='" << gltfNode.name
-            << "' mesh=" << gltfNode.mesh
-            << " children=" << gltfNode.children.size()
+            << " name='"
+            << gltfNode.name
+            << "' mesh="
+            << gltfNode.mesh
+            << " children="
+            << gltfNode.children.size ()
             << std::endl;
 
     //---------------------------------------------------------
     // Create Ogre node
     //---------------------------------------------------------
 
-    Ogre::SceneNode *node =
-        parentNode->createChildSceneNode();
+    Ogre::SceneNode * node =
+        parentNode->createChildSceneNode ();
 
     std::string nodeName =
         gltfNode.name;
 
-    if(nodeName.empty()) {
+    if (nodeName.empty ()) {
+
         nodeName =
-            meshName
-            + "_node_"
-            + std::to_string(nodeIndex);
+            meshName +
+            "_node_" +
+            std::to_string (nodeIndex);
     }
 
-    node->setName(nodeName);
-    if(gltfNode.matrix.size() == 16) {
-        const double *m = gltfNode.matrix.data();
+    node->setName (nodeName);
 
-        Ogre::Matrix4 transform(
-            static_cast<Ogre::Real>(m[0]),
-            static_cast<Ogre::Real>(m[4]),
-            static_cast<Ogre::Real>(m[8]),
-            static_cast<Ogre::Real>(m[12]),
+    //---------------------------------------------------------
+    // Node transformation
+    //---------------------------------------------------------
 
-            static_cast<Ogre::Real>(m[1]),
-            static_cast<Ogre::Real>(m[5]),
-            static_cast<Ogre::Real>(m[9]),
-            static_cast<Ogre::Real>(m[13]),
+    if (gltfNode.matrix.size () == 16) {
 
-            static_cast<Ogre::Real>(m[2]),
-            static_cast<Ogre::Real>(m[6]),
-            static_cast<Ogre::Real>(m[10]),
-            static_cast<Ogre::Real>(m[14]),
+        const double *m =
+            gltfNode.matrix.data ();
 
-            static_cast<Ogre::Real>(m[3]),
-            static_cast<Ogre::Real>(m[7]),
-            static_cast<Ogre::Real>(m[11]),
-            static_cast<Ogre::Real>(m[15])
+        Ogre::Matrix4 transform (
+            static_cast < Ogre::Real >(m[0]),
+            static_cast < Ogre::Real >(m[4]),
+            static_cast < Ogre::Real >(m[8]),
+            static_cast < Ogre::Real >(m[12]),
+
+            static_cast < Ogre::Real >(m[1]),
+            static_cast < Ogre::Real >(m[5]),
+            static_cast < Ogre::Real >(m[9]),
+            static_cast < Ogre::Real >(m[13]),
+
+            static_cast < Ogre::Real >(m[2]),
+            static_cast < Ogre::Real >(m[6]),
+            static_cast < Ogre::Real >(m[10]),
+            static_cast < Ogre::Real >(m[14]),
+
+            static_cast < Ogre::Real >(m[3]),
+            static_cast < Ogre::Real >(m[7]),
+            static_cast < Ogre::Real >(m[11]),
+            static_cast < Ogre::Real >(m[15])
         );
 
         Ogre::Vector3 position;
         Ogre::Vector3 scale;
         Ogre::Quaternion orientation;
 
-        transform.decomposition(
+        transform.decomposition (
             position,
             scale,
             orientation
         );
 
-        node->setPosition(position);
-        node->setScale(scale);
-        node->setOrientation(orientation);
+        node->setPosition (position);
+        node->setScale (scale);
+        node->setOrientation (orientation);
 
         std::cout
                 << "  MATRIX transform:"
                 << " pos=("
                 << position.x << ", "
                 << position.y << ", "
-                << position.z << ")"
+                << position.z
+                << ")"
                 << " scale=("
                 << scale.x << ", "
                 << scale.y << ", "
-                << scale.z << ")"
+                << scale.z
+                << ")"
                 << std::endl;
-    } else {
-        if(gltfNode.translation.size() == 3) {
-            node->setPosition(
-                static_cast<Ogre::Real>(gltfNode.translation[0]),
-                static_cast<Ogre::Real>(gltfNode.translation[1]),
-                static_cast<Ogre::Real>(gltfNode.translation[2])
+    }
+    else {
+
+        if (gltfNode.translation.size () == 3) {
+
+            node->setPosition (
+                static_cast < Ogre::Real >(
+                    gltfNode.translation[0]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.translation[1]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.translation[2])
             );
         }
 
-        if(gltfNode.rotation.size() == 4) {
-            Ogre::Quaternion q(
-                static_cast<Ogre::Real>(gltfNode.rotation[3]),
-                static_cast<Ogre::Real>(gltfNode.rotation[0]),
-                static_cast<Ogre::Real>(gltfNode.rotation[1]),
-                static_cast<Ogre::Real>(gltfNode.rotation[2])
+        if (gltfNode.rotation.size () == 4) {
+
+            Ogre::Quaternion q (
+                static_cast < Ogre::Real >(
+                    gltfNode.rotation[3]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.rotation[0]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.rotation[1]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.rotation[2])
             );
 
-            node->setOrientation(q);
+            node->setOrientation (q);
         }
 
-        if(gltfNode.scale.size() == 3) {
-            node->setScale(
-                static_cast<Ogre::Real>(gltfNode.scale[0]),
-                static_cast<Ogre::Real>(gltfNode.scale[1]),
-                static_cast<Ogre::Real>(gltfNode.scale[2])
+        if (gltfNode.scale.size () == 3) {
+
+            node->setScale (
+                static_cast < Ogre::Real >(
+                    gltfNode.scale[0]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.scale[1]),
+
+                static_cast < Ogre::Real >(
+                    gltfNode.scale[2])
             );
         }
     }
+
     //---------------------------------------------------------
     // Mesh
     //---------------------------------------------------------
 
-    if(gltfNode.mesh >= 0) {
+    if (gltfNode.mesh >= 0) {
+
         std::cout
                 << "  ATTACH MESH "
                 << gltfNode.mesh
                 << " TO NODE "
                 << nodeIndex
                 << " ('"
-                << node->getName()
+                << node->getName ()
                 << "')"
                 << std::endl;
-        buildMesh(
+
+        buildMesh (
             model,
             gltfNode.mesh,
             sceneManager,
@@ -404,8 +505,9 @@ Ogre::SceneNode* GltfMeshBuilder::buildNode(
     // Children
     //---------------------------------------------------------
 
-    for(int childIndex : gltfNode.children) {
-        buildNode(
+    for (int childIndex : gltfNode.children) {
+
+        buildNode (
             model,
             childIndex,
             sceneManager,
@@ -418,17 +520,19 @@ Ogre::SceneNode* GltfMeshBuilder::buildNode(
 }
 
 
-void GltfMeshBuilder::buildMesh(
-    const tinygltf::Model &model,
+void
+GltfMeshBuilder::buildMesh (
+    const tinygltf::Model & model,
     int meshIndex,
     Ogre::SceneManager *sceneManager,
     Ogre::SceneNode *parentNode,
-    const std::string &meshName,
+    const std::string & meshName,
     int nodeIndex) {
 
+    if (meshIndex < 0 ||
+            meshIndex >=
+            static_cast < int >(model.meshes.size ())) {
 
-    if(meshIndex < 0 ||
-            meshIndex >= static_cast<int>(model.meshes.size())) {
         std::cerr
                 << "Invalid mesh index: "
                 << meshIndex
@@ -437,7 +541,7 @@ void GltfMeshBuilder::buildMesh(
         return;
     }
 
-    const tinygltf::Mesh &mesh =
+    const tinygltf::Mesh & mesh =
         model.meshes[meshIndex];
 
     std::cout
@@ -446,9 +550,8 @@ void GltfMeshBuilder::buildMesh(
             << ": "
             << mesh.name
             << " primitives="
-            << mesh.primitives.size()
+            << mesh.primitives.size ()
             << std::endl;
-
 
     std::cout
             << "Build mesh "
@@ -459,8 +562,9 @@ void GltfMeshBuilder::buildMesh(
 
     size_t primitiveIndex = 0;
 
-    for(const tinygltf::Primitive &primitive :
+    for (const tinygltf::Primitive & primitive :
             mesh.primitives) {
+
         std::cout
                 << "  Primitive "
                 << primitiveIndex
@@ -473,10 +577,13 @@ void GltfMeshBuilder::buildMesh(
                 << primitive.indices
                 << std::endl;
 
+        std::cout
+                << "    Attributes:"
+                << std::endl;
 
-        std::cout << "    Attributes:" << std::endl;
+        for (const auto & attribute :
+                primitive.attributes) {
 
-        for(const auto &attribute : primitive.attributes) {
             std::cout
                     << "      "
                     << attribute.first
@@ -485,17 +592,22 @@ void GltfMeshBuilder::buildMesh(
                     << std::endl;
         }
 
-
         std::cout
                 << "  Primitive "
                 << primitiveIndex
-                << " mode=" << primitive.mode
-                << " material=" << primitive.material
-                << " indices=" << primitive.indices
-                << " attributes=" << primitive.attributes.size()
+                << " mode="
+                << primitive.mode
+                << " material="
+                << primitive.material
+                << " indices="
+                << primitive.indices
+                << " attributes="
+                << primitive.attributes.size ()
                 << std::endl;
 
-        for( const auto &attr : primitive.attributes ) {
+        for (const auto & attr :
+                primitive.attributes) {
+
             std::cout
                     << "      "
                     << attr.first
@@ -508,7 +620,8 @@ void GltfMeshBuilder::buildMesh(
         // Only triangles for now
         //-----------------------------------------------------
 
-        if(primitive.mode != TINYGLTF_MODE_TRIANGLES) {
+        if (primitive.mode != TINYGLTF_MODE_TRIANGLES) {
+
             std::cerr
                     << "  Unsupported primitive mode: "
                     << primitive.mode
@@ -523,9 +636,11 @@ void GltfMeshBuilder::buildMesh(
         //-----------------------------------------------------
 
         auto posIt =
-            primitive.attributes.find("POSITION");
+            primitive.attributes.find ("POSITION");
 
-        if(posIt == primitive.attributes.end()) {
+        if (posIt ==
+                primitive.attributes.end ()) {
+
             std::cerr
                     << "  Primitive has no POSITION attribute."
                     << std::endl;
@@ -534,40 +649,43 @@ void GltfMeshBuilder::buildMesh(
             continue;
         }
 
-        const tinygltf::Accessor &posAccessor =
+        const tinygltf::Accessor & posAccessor =
             model.accessors[posIt->second];
 
-        const tinygltf::BufferView &posView =
+        const tinygltf::BufferView & posView =
             model.bufferViews[posAccessor.bufferView];
 
-        const tinygltf::Buffer &posBuffer =
+        const tinygltf::Buffer & posBuffer =
             model.buffers[posView.buffer];
 
         const unsigned char *posData =
-            posBuffer.data.data()
-            + posView.byteOffset
-            + posAccessor.byteOffset;
+            posBuffer.data.data () +
+            posView.byteOffset +
+            posAccessor.byteOffset;
 
         const size_t vertexCount =
             posAccessor.count;
 
         const size_t posStride =
-            posView.byteStride != 0
-            ? posView.byteStride
-            : 3 * sizeof(float);
+            posView.byteStride != 0 ?
+            posView.byteStride :
+            3 * sizeof (float);
 
-        std::vector<Ogre::Vector3> positions(
-            vertexCount);
+        std::vector < Ogre::Vector3 > positions (
+            vertexCount
+        );
 
-        for(size_t i = 0;
+        for (size_t i = 0;
                 i < vertexCount;
                 ++i) {
+
             const float *p =
-                reinterpret_cast<const float *>(
-                    posData + i * posStride);
+                reinterpret_cast < const float * >(
+                    posData + i * posStride
+                );
 
             positions[i] =
-                Ogre::Vector3(
+                Ogre::Vector3 (
                     p[0],
                     p[1],
                     p[2]
@@ -578,42 +696,46 @@ void GltfMeshBuilder::buildMesh(
         // NORMAL
         //-----------------------------------------------------
 
-        std::vector<Ogre::Vector3> normals;
+        std::vector < Ogre::Vector3 > normals;
 
         auto normalIt =
-            primitive.attributes.find("NORMAL");
+            primitive.attributes.find ("NORMAL");
 
-        if(normalIt != primitive.attributes.end()) {
-            const tinygltf::Accessor &accessor =
+        if (normalIt !=
+                primitive.attributes.end ()) {
+
+            const tinygltf::Accessor & accessor =
                 model.accessors[normalIt->second];
 
-            const tinygltf::BufferView &view =
+            const tinygltf::BufferView & view =
                 model.bufferViews[accessor.bufferView];
 
-            const tinygltf::Buffer &buffer =
+            const tinygltf::Buffer & buffer =
                 model.buffers[view.buffer];
 
             const unsigned char *data =
-                buffer.data.data()
-                + view.byteOffset
-                + accessor.byteOffset;
+                buffer.data.data () +
+                view.byteOffset +
+                accessor.byteOffset;
 
             const size_t stride =
-                view.byteStride != 0
-                ? view.byteStride
-                : 3 * sizeof(float);
+                view.byteStride != 0 ?
+                view.byteStride :
+                3 * sizeof (float);
 
-            normals.resize(accessor.count);
+            normals.resize (accessor.count);
 
-            for(size_t i = 0;
+            for (size_t i = 0;
                     i < accessor.count;
                     ++i) {
+
                 const float *n =
-                    reinterpret_cast<const float *>(
-                        data + i * stride);
+                    reinterpret_cast < const float * >(
+                        data + i * stride
+                    );
 
                 normals[i] =
-                    Ogre::Vector3(
+                    Ogre::Vector3 (
                         n[0],
                         n[1],
                         n[2]
@@ -625,42 +747,46 @@ void GltfMeshBuilder::buildMesh(
         // TEXCOORD_0
         //-----------------------------------------------------
 
-        std::vector<Ogre::Vector2> uvs;
+        std::vector < Ogre::Vector2 > uvs;
 
         auto uvIt =
-            primitive.attributes.find("TEXCOORD_0");
+            primitive.attributes.find ("TEXCOORD_0");
 
-        if(uvIt != primitive.attributes.end()) {
-            const tinygltf::Accessor &accessor =
+        if (uvIt !=
+                primitive.attributes.end ()) {
+
+            const tinygltf::Accessor & accessor =
                 model.accessors[uvIt->second];
 
-            const tinygltf::BufferView &view =
+            const tinygltf::BufferView & view =
                 model.bufferViews[accessor.bufferView];
 
-            const tinygltf::Buffer &buffer =
+            const tinygltf::Buffer & buffer =
                 model.buffers[view.buffer];
 
             const unsigned char *data =
-                buffer.data.data()
-                + view.byteOffset
-                + accessor.byteOffset;
+                buffer.data.data () +
+                view.byteOffset +
+                accessor.byteOffset;
 
             const size_t stride =
-                view.byteStride != 0
-                ? view.byteStride
-                : 2 * sizeof(float);
+                view.byteStride != 0 ?
+                view.byteStride :
+                2 * sizeof (float);
 
-            uvs.resize(accessor.count);
+            uvs.resize (accessor.count);
 
-            for(size_t i = 0;
+            for (size_t i = 0;
                     i < accessor.count;
                     ++i) {
+
                 const float *uv =
-                    reinterpret_cast<const float *>(
-                        data + i * stride);
+                    reinterpret_cast < const float * >(
+                        data + i * stride
+                    );
 
                 uvs[i] =
-                    Ogre::Vector2(
+                    Ogre::Vector2 (
                         uv[0],
                         uv[1]
                     );
@@ -671,7 +797,8 @@ void GltfMeshBuilder::buildMesh(
         // INDICES
         //-----------------------------------------------------
 
-        if(primitive.indices < 0) {
+        if (primitive.indices < 0) {
+
             std::cerr
                     << "  Primitive has no indices."
                     << std::endl;
@@ -680,51 +807,54 @@ void GltfMeshBuilder::buildMesh(
             continue;
         }
 
-        const tinygltf::Accessor &indexAccessor =
+        const tinygltf::Accessor & indexAccessor =
             model.accessors[primitive.indices];
 
-        const tinygltf::BufferView &indexView =
+        const tinygltf::BufferView & indexView =
             model.bufferViews[indexAccessor.bufferView];
 
-        const tinygltf::Buffer &indexBuffer =
+        const tinygltf::Buffer & indexBuffer =
             model.buffers[indexView.buffer];
 
         const unsigned char *indexData =
-            indexBuffer.data.data()
-            + indexView.byteOffset
-            + indexAccessor.byteOffset;
+            indexBuffer.data.data () +
+            indexView.byteOffset +
+            indexAccessor.byteOffset;
 
-        std::vector<unsigned int> indices(
-            indexAccessor.count);
+        std::vector < unsigned int > indices (
+            indexAccessor.count
+        );
 
-        for(size_t i = 0;
+        for (size_t i = 0;
                 i < indexAccessor.count;
                 ++i) {
-            switch(indexAccessor.componentType) {
+
+            switch (indexAccessor.componentType) {
+
             case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
 
                 indices[i] =
-                    reinterpret_cast<
-                    const unsigned char *>(
-                        indexData)[i];
+                    reinterpret_cast <
+                        const unsigned char *
+                    >(indexData)[i];
 
                 break;
 
             case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
 
                 indices[i] =
-                    reinterpret_cast<
-                    const unsigned short *>(
-                        indexData)[i];
+                    reinterpret_cast <
+                        const unsigned short *
+                    >(indexData)[i];
 
                 break;
 
             case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
 
                 indices[i] =
-                    reinterpret_cast<
-                    const unsigned int *>(
-                        indexData)[i];
+                    reinterpret_cast <
+                        const unsigned int *
+                    >(indexData)[i];
 
                 break;
 
@@ -735,16 +865,17 @@ void GltfMeshBuilder::buildMesh(
                         << indexAccessor.componentType
                         << std::endl;
 
-                indices.clear();
+                indices.clear ();
 
                 break;
             }
 
-            if(indices.empty())
+            if (indices.empty ())
                 break;
         }
 
-        if(indices.empty()) {
+        if (indices.empty ()) {
+
             ++primitiveIndex;
             continue;
         }
@@ -756,150 +887,316 @@ void GltfMeshBuilder::buildMesh(
         std::string objectName =
             meshName
             + "_mesh_"
-            + std::to_string(meshIndex)
+            + std::to_string (meshIndex)
             + "_node_"
-            + std::to_string(nodeIndex)
+            + std::to_string (nodeIndex)
             + "_primitive_"
-            + std::to_string(primitiveIndex);
+            + std::to_string (primitiveIndex);
 
-        Ogre::ManualObject *manual =
-            sceneManager->createManualObject();
+        Ogre::ManualObject * manual =
+            sceneManager->createManualObject ();
+
+        //-----------------------------------------------------
+        // GLTF material
+        //-----------------------------------------------------
 
         Ogre::ColourValue baseColour =
             Ogre::ColourValue::White;
 
-        if(primitive.material >= 0 &&
+        bool hasGltfMaterial = false;
+
+        if (primitive.material >= 0 &&
                 primitive.material <
-                static_cast<int>(model.materials.size())) {
-            const tinygltf::Material &material =
+                static_cast < int >(
+                    model.materials.size ())) {
+
+            const tinygltf::Material & material =
                 model.materials[primitive.material];
 
-            const auto &factor =
+            const auto & factor =
                 material.pbrMetallicRoughness.baseColorFactor;
 
-            if(factor.size() >= 4) {
+            std::cout
+                    << "Material "
+                    << primitive.material
+                    << " baseColorFactor = ";
+
+            for (double v : factor)
+                std::cout << v << " ";
+
+            std::cout
+                    << std::endl;
+
+            if (factor.size () >= 4) {
+
                 baseColour =
-                    Ogre::ColourValue(
-                        static_cast<float>(factor[0]),
-                        static_cast<float>(factor[1]),
-                        static_cast<float>(factor[2]),
-                        static_cast<float>(factor[3])
+                    Ogre::ColourValue (
+                        static_cast < float >(factor[0]),
+                        static_cast < float >(factor[1]),
+                        static_cast < float >(factor[2]),
+                        static_cast < float >(factor[3])
                     );
+
+                hasGltfMaterial = true;
 
                 std::cout
                         << "GLTF material "
                         << primitive.material
                         << " baseColorFactor = "
-                        << factor[0] << ", "
-                        << factor[1] << ", "
-                        << factor[2] << ", "
+                        << factor[0]
+                        << ", "
+                        << factor[1]
+                        << ", "
+                        << factor[2]
+                        << ", "
                         << factor[3]
                         << std::endl;
             }
         }
+        else {
 
+            std::cout
+                    << "Primitive "
+                    << primitiveIndex
+                    << " has no valid material"
+                    << std::endl;
+        }
 
+        //-----------------------------------------------------
+        // Get our default Unlit HLMS
+        //-----------------------------------------------------
 
+        Ogre::HlmsUnlit * hlmsUnlit =
+            mRenderer.getHlmsUnlit ();
 
+        if (!hlmsUnlit) {
 
-
-
-
-//        manual->setName(objectName);
-//-----------------------------------------------------
-// Get GltfDefault datablock from our Unlit HLMS
-//-----------------------------------------------------
-
-        Ogre::HlmsUnlit *hlmsUnlit =
-            mRenderer.getHlmsUnlit();
-
-        if(!hlmsUnlit) {
             std::cerr
                     << "ERROR: HLMS Unlit is NULL!"
                     << std::endl;
 
-            sceneManager->destroyManualObject(manual);
+            sceneManager->destroyManualObject (manual);
+
             return;
         }
 
-        Ogre::HlmsDatablock *datablock =
-            hlmsUnlit->getDatablock("GltfDefault");
+        //-----------------------------------------------------
+        // Find the default datablock
+        //-----------------------------------------------------
 
-        if(!datablock) {
+        Ogre::HlmsDatablock * defaultDatablock =
+            hlmsUnlit->getDatablock ("GltfDefault");
+
+        if (!defaultDatablock) {
+
             std::cerr
                     << "ERROR: GltfDefault datablock not found!"
                     << std::endl;
 
-            sceneManager->destroyManualObject(manual);
+            sceneManager->destroyManualObject (manual);
+
             return;
         }
 
         std::cout
-                << "Using datablock: "
-                << datablock->getNameStr()
+                << "Using default datablock: "
+                << defaultDatablock->getNameStr ()
                 << std::endl;
 
+        //-----------------------------------------------------
+        // Select material datablock
+        //
+        // IMPORTANT:
+        //
+        // We do NOT modify GltfDefault itself.
+        //
+        // A separate datablock is created for every glTF
+        // material. This prevents one primitive's colour
+        // from changing the colour of every other primitive.
+        //-----------------------------------------------------
+
+        Ogre::HlmsDatablock * datablock =
+            defaultDatablock;
+
+        if (hasGltfMaterial) {
+
+            const std::string materialDatablockName =
+                meshName
+                + "_GltfMaterial_"
+                + std::to_string (primitive.material);
 
 
-//-----------------------------------------------------
-// Begin ManualObject
-//-----------------------------------------------------
+            //-------------------------------------------------
+            // Check whether we already created this material
+            //-------------------------------------------------
 
-        manual->begin(
-            "GltfDefault",
+            datablock =
+                hlmsUnlit->getDatablock (
+                    materialDatablockName
+                );
+
+            //-------------------------------------------------
+            // Create it if it doesn't exist
+            //-------------------------------------------------
+
+            if (!datablock) {
+
+                Ogre::HlmsDatablock * cloned =
+                    defaultDatablock->clone (
+                        materialDatablockName
+                    );
+
+                if (!cloned) {
+
+                    std::cerr
+                            << "ERROR: Could not clone GltfDefault "
+                            << "for material "
+                            << primitive.material
+                            << std::endl;
+
+                    sceneManager->destroyManualObject (
+                        manual
+                    );
+
+                    return;
+                }
+
+                datablock = cloned;
+
+                std::cout
+                        << "Created GLTF material datablock: "
+                        << materialDatablockName
+                        << std::endl;
+            }
+
+            //-------------------------------------------------
+            // Convert to the actual Unlit datablock.
+            //
+            // OgreHlmsUnlitDatablock.h is explicitly included
+            // above, so this is NOT an incomplete type.
+            //-------------------------------------------------
+
+            Ogre::HlmsUnlitDatablock * unlitDatablock =
+                dynamic_cast < Ogre::HlmsUnlitDatablock * >(
+                    datablock
+                );
+
+            if (!unlitDatablock) {
+
+                std::cerr
+                        << "ERROR: Datablock '"
+                        << materialDatablockName
+                        << "' is not an HlmsUnlitDatablock!"
+                        << std::endl;
+
+                sceneManager->destroyManualObject (
+                    manual
+                );
+
+                return;
+            }
+
+            //-------------------------------------------------
+            // Enable colour and assign glTF baseColorFactor
+            //-------------------------------------------------
+
+            unlitDatablock->setUseColour (true);
+
+            unlitDatablock->setColour (
+                baseColour
+            );
+
+const Ogre::ColourValue appliedColour =
+    unlitDatablock->getColour();
+
+std::cout
+    << "Applied GLTF colour to datablock "
+    << materialDatablockName
+    << ": "
+    << appliedColour.r << ", "
+    << appliedColour.g << ", "
+    << appliedColour.b << ", "
+    << appliedColour.a
+    << std::endl;
+
+        }
+
+        //-----------------------------------------------------
+        // Begin ManualObject
+        //-----------------------------------------------------
+
+        std::cout << "NameStr: " << *datablock->getNameStr() << std::endl;
+
+
+        manual->begin (
+            *datablock->getNameStr(),
             Ogre::OT_TRIANGLE_LIST
         );
 
-
+//manual->begin ("GltfDefault", Ogre::OT_TRIANGLE_LIST);
         //-----------------------------------------------------
         // Vertices
         //-----------------------------------------------------
-        for(size_t i = 0; i < positions.size(); ++i) {
-            manual->position(positions[i]);
 
-            if(i < normals.size())
-                manual->normal(normals[i]);
+        for (size_t i = 0;
+                i < positions.size ();
+                ++i) {
 
-            if(i < uvs.size())
-                manual->textureCoord(uvs[i]);
+            manual->position (
+                positions[i]
+            );
+
+            if (i < normals.size ()) {
+
+                manual->normal (
+                    normals[i]
+                );
+            }
+
+            if (i < uvs.size ()) {
+
+                manual->textureCoord (
+                    uvs[i]
+                );
+            }
         }
 
         //-----------------------------------------------------
         // Indices
         //-----------------------------------------------------
 
-        for(unsigned int index : indices) {
-            manual->index(index);
+        for (unsigned int index : indices) {
+
+            manual->index (
+                index
+            );
         }
 
-//        manual->end();
-        Ogre::ManualObject::ManualObjectSection *section =
-            manual->end();
-        if( section ) {
-            Ogre::HlmsDatablock *db =
-                mRenderer.getHlmsUnlit()->getDatablock(
-                    "GltfDefault"
-                );
+        //-----------------------------------------------------
+        // Finish ManualObject
+        //-----------------------------------------------------
 
-            if( db ) {
-                section->setDatablock( db );
 
-                std::cout
-                        << "Using datablock pointer: "
-                        << db
-                        << " name="
-                        << db->getNameStr()
-                        << std::endl;
-            } else {
-                std::cerr
-                        << "ERROR: GltfDefault datablock not found!"
-                        << std::endl;
-            }
-        } else {
-            std::cerr
-                    << "ERROR: ManualObject section is NULL!"
-                    << std::endl;
-        }
+        Ogre::ManualObject::ManualObjectSection * section =
+            manual->end ();
+
+
+
+if (section && datablock)
+{
+    section->setDatablock(datablock);
+
+    std::cout
+        << "Using datablock pointer: "
+        << datablock
+        << " name="
+        << *datablock->getNameStr()
+        << std::endl;
+}
+
+        //-----------------------------------------------------
+        // Finalize
+        //-----------------------------------------------------
 
         std::cout
                 << "  FINALIZED mesh="
@@ -909,13 +1206,20 @@ void GltfMeshBuilder::buildMesh(
                 << " node="
                 << nodeIndex
                 << std::endl;
-        manual->setCastShadows(true);
-        manual->setVisibilityFlags(0xFFFFFFFF);
+
+        manual->setCastShadows (true);
+
+        manual->setVisibilityFlags (
+            0xFFFFFFFF
+        );
+
         //-----------------------------------------------------
         // Attach
         //-----------------------------------------------------
 
-        parentNode->attachObject(manual);
+        parentNode->attachObject (
+            manual
+        );
 
         std::cout
                 << "  Created Ogre object: "
@@ -924,15 +1228,16 @@ void GltfMeshBuilder::buildMesh(
 
         std::cout
                 << "  vertices="
-                << positions.size()
+                << positions.size ()
                 << " indices="
-                << indices.size()
+                << indices.size ()
                 << std::endl;
 
         std::cout
                 << "  attached="
-                << manual->isAttached()
+                << manual->isAttached ()
                 << std::endl;
 
+        ++primitiveIndex;
     }
 }

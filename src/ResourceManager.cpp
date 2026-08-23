@@ -53,7 +53,6 @@ else
 }
 
 bool ResourceManager::registerHlms() {
-    std::cout << "MEGHIVODIK" << std::endl;
     std::cout << "========================================\n";
     std::cout << "ResourceManager::registerHlms()\n";
     std::cout << "========================================\n";
@@ -137,8 +136,9 @@ bool ResourceManager::registerHlms() {
         static_cast<Ogre::HlmsUnlitDatablock *>(
             defaultDatablock
         );
+
 unlit->setUseColour(true);
-unlit->setColour(Ogre::ColourValue(0.9f, 0.9f, 0.1f, 1.0f));
+unlit->setColour(Ogre::ColourValue::White);
 
 std::cout << "UNLIT datablock: " ;
 std::cout << "hasColour=" << unlit->hasColour();
