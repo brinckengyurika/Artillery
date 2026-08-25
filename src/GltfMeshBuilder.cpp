@@ -16,6 +16,9 @@
 #include <OgreHlmsUnlit.h>
 #include <OgreHlmsUnlitDatablock.h>
 
+#include <OgreHlmsPbs.h>
+#include <OgreHlmsPbsDatablock.h>
+
 
 GltfMeshBuilder::GltfMeshBuilder (Renderer & renderer):
     mRenderer (renderer) {
@@ -145,7 +148,7 @@ GltfMeshBuilder::inspect (const tinygltf::Model & model) {
             const tinygltf::Accessor & indexAccessor =
                 model.accessors[
                     mesh.primitives.at (p).indices
-                ];
+            ];
 
             const tinygltf::BufferView & indexBufferView =
                 model.bufferViews[indexAccessor.bufferView];
@@ -424,8 +427,7 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
                 << scale.z
                 << ")"
                 << std::endl;
-    }
-    else {
+    } else {
 
         if (gltfNode.translation.size () == 3) {
 
@@ -835,7 +837,7 @@ GltfMeshBuilder::buildMesh (
 
                 indices[i] =
                     reinterpret_cast <
-                        const unsigned char *
+                    const unsigned char *
                     >(indexData)[i];
 
                 break;
@@ -844,7 +846,7 @@ GltfMeshBuilder::buildMesh (
 
                 indices[i] =
                     reinterpret_cast <
-                        const unsigned short *
+                    const unsigned short *
                     >(indexData)[i];
 
                 break;
@@ -853,7 +855,7 @@ GltfMeshBuilder::buildMesh (
 
                 indices[i] =
                     reinterpret_cast <
-                        const unsigned int *
+                    const unsigned int *
                     >(indexData)[i];
 
                 break;
@@ -883,7 +885,6 @@ GltfMeshBuilder::buildMesh (
         //-----------------------------------------------------
         // ManualObject
         //-----------------------------------------------------
-
         std::string objectName =
             meshName
             + "_mesh_"
@@ -895,7 +896,6 @@ GltfMeshBuilder::buildMesh (
 
         Ogre::ManualObject * manual =
             sceneManager->createManualObject ();
-
         //-----------------------------------------------------
         // GLTF material
         //-----------------------------------------------------
@@ -952,8 +952,7 @@ GltfMeshBuilder::buildMesh (
                         << factor[3]
                         << std::endl;
             }
-        }
-        else {
+        } else {
 
             std::cout
                     << "Primitive "
@@ -1106,18 +1105,18 @@ GltfMeshBuilder::buildMesh (
                 baseColour
             );
 
-const Ogre::ColourValue appliedColour =
-    unlitDatablock->getColour();
+            const Ogre::ColourValue appliedColour =
+                unlitDatablock->getColour();
 
-std::cout
-    << "Applied GLTF colour to datablock "
-    << materialDatablockName
-    << ": "
-    << appliedColour.r << ", "
-    << appliedColour.g << ", "
-    << appliedColour.b << ", "
-    << appliedColour.a
-    << std::endl;
+            std::cout
+                    << "Applied GLTF colour to datablock "
+                    << materialDatablockName
+                    << ": "
+                    << appliedColour.r << ", "
+                    << appliedColour.g << ", "
+                    << appliedColour.b << ", "
+                    << appliedColour.a
+                    << std::endl;
 
         }
 
@@ -1182,17 +1181,16 @@ std::cout
 
 
 
-if (section && datablock)
-{
-    section->setDatablock(datablock);
+        if (section && datablock) {
+            section->setDatablock(datablock);
 
-    std::cout
-        << "Using datablock pointer: "
-        << datablock
-        << " name="
-        << *datablock->getNameStr()
-        << std::endl;
-}
+            std::cout
+                    << "Using datablock pointer: "
+                    << datablock
+                    << " name="
+                    << *datablock->getNameStr()
+                    << std::endl;
+        }
 
         //-----------------------------------------------------
         // Finalize

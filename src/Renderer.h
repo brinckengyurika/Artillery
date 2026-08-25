@@ -16,6 +16,10 @@
 #include "GltfLoader.h"
 #include "GltfMeshBuilder.h"
 #include "InputManager.h"
+
+#ifdef None
+#undef None
+#endif
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsUnlit.h>
 
