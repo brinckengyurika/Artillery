@@ -15,6 +15,7 @@
 #include <OgreHlmsDatablock.h>
 #include <OgrePrerequisites.h>
 #include <Hlms/Unlit/OgreHlmsUnlitDatablock.h>
+#include <Hlms/Pbs/OgreHlmsPbsDatablock.h>
 
 
 ResourceManager::ResourceManager(Renderer &renderer) :
@@ -27,26 +28,23 @@ bool ResourceManager::initialize() {
     if( !registerHlms() )
         return false;
 
-        Ogre::HlmsDatablock *test =
-    mRenderer.getRoot()
+    Ogre::HlmsDatablock *test =
+        mRenderer.getRoot()
         ->getHlmsManager()
         ->getDatablock("GltfDefault");
 
-if( test )
-{
-    std::cout
-        << "HLMS lookup OK: "
-        << test->getNameStr()
-        << " ptr="
-        << test
-        << std::endl;
-}
-else
-{
-    std::cout
-        << "ERROR: GltfDefault not found in HlmsManager!"
-        << std::endl;
-}
+    if( test ) {
+        std::cout
+                << "HLMS lookup OK: "
+                << test->getNameStr()
+                << " ptr="
+                << test
+                << std::endl;
+    } else {
+        std::cout
+                << "ERROR: GltfDefault not found in HlmsManager!"
+                << std::endl;
+    }
 
 
     return true;
@@ -137,22 +135,22 @@ bool ResourceManager::registerHlms() {
             defaultDatablock
         );
 
-unlit->setUseColour(true);
-unlit->setColour(Ogre::ColourValue::White);
+    unlit->setUseColour(true);
+    unlit->setColour(Ogre::ColourValue::White);
 
-std::cout << "UNLIT datablock: " ;
-std::cout << "hasColour=" << unlit->hasColour();
-std::cout << " colour="
-    << unlit->getColour().r << ", "
-    << unlit->getColour().g << ", "
-    << unlit->getColour().b << ", "
-    << unlit->getColour().a
-    << std::endl;
-/*
-unlitDatablock->setColour(
-    Ogre::ColourValue( 1.0f, 0.0f, 0.0f, 1.0f )
-);
-*/
+    std::cout << "UNLIT datablock: " ;
+    std::cout << "hasColour=" << unlit->hasColour();
+    std::cout << " colour="
+              << unlit->getColour().r << ", "
+              << unlit->getColour().g << ", "
+              << unlit->getColour().b << ", "
+              << unlit->getColour().a
+              << std::endl;
+    /*
+    unlitDatablock->setColour(
+        Ogre::ColourValue( 1.0f, 0.0f, 0.0f, 1.0f )
+    );
+    */
     Ogre::HlmsDatablock *test =
         hlmsUnlit->getDatablock("GltfDefault");
 
@@ -208,8 +206,62 @@ unlitDatablock->setColour(
     ->registerHlms( hlmsPbs );
     std::cout << "HLMS PBS registered." << std::endl;
     mRenderer.setHlmsPbs(hlmsPbs);
+//---------------------------------------------------------
+// Create default PBS datablock for glTF meshes
+//---------------------------------------------------------
+
+
+
+    Ogre::HlmsParamVec paramVec;
+
+    Ogre::HlmsDatablock *datablock =
+        hlmsPbs->createDatablock(
+            Ogre::IdString("GltfPbsTest"),
+            "GltfPbsTest",
+            macroblock,
+            blendblock,
+            paramVec
+        );
+
+    if (!datablock) {
+        std::cerr
+                << "ERROR: Failed to create GltfPbsTest datablock!"
+                << std::endl;
+
+        return false;
+    }
+
+
+// Átalakítás PBS datablock-ra
+Ogre::HlmsPbsDatablock *pbsDatablock =
+    dynamic_cast<Ogre::HlmsPbsDatablock *>(datablock);
+
+if (!pbsDatablock)
+{
+    std::cerr
+        << "ERROR: GltfPbsTest is not an HlmsPbsDatablock!"
+        << std::endl;
+
+    return false;
+}
+
+
+    pbsDatablock->setDiffuse(
+        Ogre::Vector3(1.0f, 1.0f, 1.0f)
+    );
+
+    pbsDatablock->setSpecular(
+        Ogre::Vector3(0.5f, 0.5f, 0.5f)
+    );
+
+    pbsDatablock->setRoughness(0.6f);
+
+    std::cout
+            << "Created PBS datablock: GltfPbsTest"
+            << std::endl;
 
     return true;
+
 }
 
 bool ResourceManager::setupResources() {
