@@ -17,6 +17,8 @@
 #include <Hlms/Unlit/OgreHlmsUnlitDatablock.h>
 #include <Hlms/Pbs/OgreHlmsPbsDatablock.h>
 
+#include "Terra/Hlms/OgreHlmsTerra.h"
+#include <OgreMaterialManager.h>
 
 ResourceManager::ResourceManager(Renderer &renderer) :
     mRenderer(renderer) {
@@ -46,6 +48,50 @@ bool ResourceManager::initialize() {
                 << std::endl;
     }
 
+
+
+
+    Ogre::MaterialManager &mm =
+        Ogre::MaterialManager::getSingleton();
+
+    std::cout
+            << "Material Terra/GpuNormalMapper exists: "
+            << mm.resourceExists("Terra/GpuNormalMapper")
+            << std::endl;
+
+    std::cout
+            << "Material GpuNormalMapper exists: "
+            << mm.resourceExists("GpuNormalMapper")
+            << std::endl;
+
+
+
+
+    Ogre::ResourceGroupManager &rgm =
+        Ogre::ResourceGroupManager::getSingleton();
+
+    std::cout << "=== RESOURCE GROUPS ===" << std::endl;
+
+    Ogre::StringVector groups =
+        rgm.getResourceGroups();
+
+    for( const auto &group : groups ) {
+        std::cout << "GROUP: " << group << std::endl;
+    }
+
+
+    std::cout << "=== Terra resources ===" << std::endl;
+
+    Ogre::StringVectorPtr resources =
+        rgm.findResourceNames(
+            Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME,
+            "GpuNormalMapper*"
+        );
+
+    if( resources ) {
+        for( const auto &name : *resources )
+            std::cout << "RESOURCE: " << name << std::endl;
+    }
 
     return true;
 }
@@ -211,6 +257,107 @@ bool ResourceManager::registerHlms() {
 //---------------------------------------------------------
 
 
+//
+// HLMS TERRA
+//
+
+    Ogre::String terraMainFolder;
+    Ogre::StringVector terraLibraryFolders;
+
+    Ogre::HlmsTerra::getDefaultPaths(
+        terraMainFolder,
+        terraLibraryFolders
+    );
+
+    std::cout << "Terra main folder: "
+              << terraMainFolder
+              << std::endl;
+
+
+
+    Ogre::ResourceGroupManager &rgm =
+        Ogre::ResourceGroupManager::getSingleton();
+
+    std::cout
+            << "GpuNormalMapper exists: "
+            << rgm.resourceExists(
+                Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME,
+                "GpuNormalMapper.material" )
+            << std::endl;
+
+
+
+    std::cout
+            << "Terra/GpuNormalMapper exists: "
+            << rgm.resourceExists(
+                Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME,
+                "Terra/GpuNormalMapper" )
+            << std::endl;
+
+
+
+
+    Ogre::Archive *archiveTerra =
+        archiveManager.load(
+            rootHlmsFolder + terraMainFolder,
+            archiveType,
+            true
+        );
+
+    Ogre::ArchiveVec archiveTerraLibraries;
+
+    for( const auto &folder : terraLibraryFolders ) {
+        archiveTerraLibraries.push_back(
+            archiveManager.load(
+                rootHlmsFolder + folder,
+                archiveType,
+                true
+            )
+        );
+    }
+
+    Ogre::HlmsTerra *hlmsTerra =
+        OGRE_NEW Ogre::HlmsTerra(
+            archiveTerra,
+            &archiveTerraLibraries
+        );
+
+
+std::cout << "Registering HLMS Terra..." << std::endl;
+
+mRenderer.getRoot()
+    ->getHlmsManager()
+    ->registerHlms( hlmsTerra );
+
+std::cout << "HLMS Terra registered." << std::endl;
+
+mRenderer.setHlmsTerra( hlmsTerra );
+
+mHlmsTerra = hlmsTerra;
+
+Ogre::HlmsDatablock *terraDatablock =
+    hlmsTerra->createDatablock(
+        Ogre::IdString("TerraExampleMaterial"),
+        "TerraExampleMaterial",
+        macroblock,
+        blendblock,
+        params
+    );
+
+if( !terraDatablock )
+{
+    std::cerr << "ERROR: Cannot create Terra datablock!"
+              << std::endl;
+    return false;
+}
+
+mTerraDatablock = terraDatablock;
+
+
+std::cout
+    << "Created Terra datablock: TerraDatablock"
+    << std::endl;
+
 
     Ogre::HlmsParamVec paramVec;
 
@@ -233,17 +380,16 @@ bool ResourceManager::registerHlms() {
 
 
 // Átalakítás PBS datablock-ra
-Ogre::HlmsPbsDatablock *pbsDatablock =
-    dynamic_cast<Ogre::HlmsPbsDatablock *>(datablock);
+    Ogre::HlmsPbsDatablock *pbsDatablock =
+        dynamic_cast<Ogre::HlmsPbsDatablock *>(datablock);
 
-if (!pbsDatablock)
-{
-    std::cerr
-        << "ERROR: GltfPbsTest is not an HlmsPbsDatablock!"
-        << std::endl;
+    if (!pbsDatablock) {
+        std::cerr
+                << "ERROR: GltfPbsTest is not an HlmsPbsDatablock!"
+                << std::endl;
 
-    return false;
-}
+        return false;
+    }
 
 
     pbsDatablock->setDiffuse(
@@ -301,6 +447,21 @@ bool ResourceManager::setupResources() {
         "FileSystem",
         Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
     );
+
+    //---------------------------------------------------------
+    // Initialize resource groups
+    //---------------------------------------------------------
+
+    Ogre::ResourceGroupManager &rgm =
+        Ogre::ResourceGroupManager::getSingleton();
+
+
+    std::cout << "initialiseResourceGroup Start" << std::endl;
+    rgm.initialiseResourceGroup("Essential", False);
+    rgm.initialiseResourceGroup("Popular", False);
+    rgm.initialiseResourceGroup("General", False);
+
+    std::cout << "initialiseResourceGroup End" << std::endl;
     return true;
 }
 

@@ -1,5 +1,5 @@
 #include "Renderer.h"
-
+#include <OgreLight.h>
 #include <iostream>
 #include <OgreItem.h>
 #include <OgreColourValue.h>
@@ -56,9 +56,9 @@ bool Renderer::initialize() {
 
 
     mWindow = mRoot->initialise(
-        true,
-        "Artillery"
-    );
+                  true,
+                  "Artillery"
+              );
 
     //-------------------------------------------------------
     // Native X11 handles
@@ -77,14 +77,14 @@ bool Renderer::initialize() {
     );
 
     std::cout
-        << "Window handle  = "
-        << windowHandle
-        << std::endl;
+            << "Window handle  = "
+            << windowHandle
+            << std::endl;
 
     std::cout
-        << "Display handle = "
-        << displayHandle
-        << std::endl;
+            << "Display handle = "
+            << displayHandle
+            << std::endl;
 
     Display *display =
         reinterpret_cast<Display *>(displayHandle);
@@ -146,8 +146,7 @@ bool Renderer::initialize() {
         "Default Workspace";
 
     if( !compositorManager->hasWorkspaceDefinition(
-            workspaceDefName ) )
-    {
+                workspaceDefName ) ) {
         compositorManager->createBasicWorkspaceDef(
             workspaceDefName,
             Ogre::ColourValue::White
@@ -163,9 +162,162 @@ bool Renderer::initialize() {
             true
         );
 
+
+
+    mTerra =
+        new Ogre::Terra(
+        Ogre::Id::generateNewId<Ogre::MovableObject>(),
+        &mSceneManager->_getEntityMemoryManager(
+            Ogre::SCENE_STATIC ),
+        mSceneManager,
+        11u,
+        mRoot->getCompositorManager2(),
+        mCamera,
+        false
+    );
+
+    Ogre::SceneNode *terrainNode =
+        mSceneManager->getRootSceneNode(
+            Ogre::SCENE_STATIC
+        )->createChildSceneNode(
+            Ogre::SCENE_STATIC
+        );
+
+    terrainNode->attachObject( mTerra );
+
     //-------------------------------------------------------
     // Scene
     //-------------------------------------------------------
+    std::cout << "load heightmap start" << std::endl;
+    mTerra->load(
+        "Heightmap.png",
+        Ogre::Vector3(0.0f, 500.0f, 0.0f),
+        Ogre::Vector3(4096.0f, 1000.0f, 4096.0f),
+        false,
+        false
+    );
+
+
+    /*
+        Ogre::HlmsDatablock *terraDatablock =
+            mResources.getTerraDatablock();
+
+        std::cout << "Terra datablock: "
+                  << terraDatablock << std::endl;
+
+        if( !terraDatablock ) {
+            std::cerr << "ERROR: Terra datablock is NULL!" << std::endl;
+            return false;
+        }
+
+
+        mTerra->setDatablock( terraDatablock );
+    */
+
+    Ogre::HlmsDatablock *terraDatablock =
+        mResources.getTerraDatablock();
+
+    if( !terraDatablock ) {
+        std::cerr << "ERROR: Terra datablock is NULL!"
+                  << std::endl;
+        return false;
+    }
+
+    mTerra->setDatablock( terraDatablock );
+
+    std::cout
+            << "Terra datablock assigned."
+            << std::endl;
+
+
+    Ogre::HlmsDatablock *db =
+        mResources.getTerraDatablock();
+
+    std::cout << "\n========== TERRA DEBUG ==========\n";
+
+    std::cout << "Terra ptr       = " << mTerra << "\n";
+    std::cout << "Datablock ptr   = " << db << "\n";
+
+    if( db ) {
+        std::cout << "Datablock name  = "
+                  << db->getNameStr() << "\n";
+
+        std::cout << "Datablock creator = "
+                  << db->getCreator() << "\n";
+    }
+
+    std::cout << "Visible         = "
+              << mTerra->getVisible() << "\n";
+
+    std::cout << "XZ dimensions   = "
+              << mTerra->getXZDimensions() << "\n";
+
+    std::cout << "World radius    = "
+              << mTerra->getWorldRadius() << "\n";
+
+    const Ogre::Aabb &aabb =
+        mTerra->getWorldAabbUpdated();
+
+    std::cout << "World AABB min  = "
+              << aabb.getMinimum() << "\n";
+
+    std::cout << "World AABB max  = "
+              << aabb.getMaximum() << "\n";
+
+    std::cout << "=================================\n";
+
+
+    /*arnyek kikapcsolasa ideiglenesen
+
+    */
+
+    mTerra->setCastShadows(false);
+
+
+
+
+
+    mTerra->update(
+        Ogre::Vector3( -1.0f, -1.0f, -1.0f ).normalisedCopy()
+    );
+
+    std::cout << "---- END TERRA TEST ----" << std::endl;
+
+    std::cout << "Terra loaded." << std::endl;
+
+
+    std::cout << "load heightmap end" << std::endl;
+
+    /*
+
+        mCamera->setPosition(
+            2048.0f,
+            1500.0f,
+            3000.0f
+        );
+
+        mCamera->lookAt(
+            Ogre::Vector3(
+                2048.0f,
+                0.0f,
+                2048.0f
+            )
+        );
+    */
+
+    mCamera->setPosition(0.0f, 800.0f, 1200.0f);
+    mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
+
+
+
+    mCamera->setNearClipDistance(1.0f);
+    mCamera->setFarClipDistance(10000.0f);
+
+
+
+
+
+
 
     if( !mScene.initialize() )
         return false;
@@ -193,6 +345,11 @@ bool Renderer::renderFrame() {
         mInputManager,
         0.016f );
 
+
+
+    mTerra->update(
+        Ogre::Vector3(0.0f, -1.0f, 0.0f)
+    );
     return mRoot->renderOneFrame();
 }
 

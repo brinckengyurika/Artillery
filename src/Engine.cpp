@@ -5,8 +5,8 @@
 bool Engine::initialize()
 {
     std::cout << "Engine initialize()" << std::endl;
-
     return mRenderer.initialize();
+
 }
 
 void Engine::run()

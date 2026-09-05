@@ -180,7 +180,7 @@ GltfMeshBuilder::inspect (const tinygltf::Model & model) {
 bool
 GltfMeshBuilder::build (const tinygltf::Model & model,
                         Ogre::SceneManager *sceneManager,
-Ogre::SceneNode *parentNode,
+                        Ogre::SceneNode *parentNode,
                         const std::string & meshName) {
 
     std::cout
@@ -886,377 +886,365 @@ GltfMeshBuilder::buildMesh (
 // ManualObject
 //-----------------------------------------------------
 
-std::string objectName =
-    meshName
-    + "_mesh_"
-    + std::to_string(meshIndex)
-    + "_node_"
-    + std::to_string(nodeIndex)
-    + "_primitive_"
-    + std::to_string(primitiveIndex);
+        std::string objectName =
+            meshName
+            + "_mesh_"
+            + std::to_string(meshIndex)
+            + "_node_"
+            + std::to_string(nodeIndex)
+            + "_primitive_"
+            + std::to_string(primitiveIndex);
 
-std::cout
-    << "Creating ManualObject: "
-    << objectName
-    << std::endl;
+        std::cout
+                << "Creating ManualObject: "
+                << objectName
+                << std::endl;
 
-Ogre::ManualObject *manual =
-    sceneManager->createManualObject();
-    manual->setName(objectName);
+        Ogre::ManualObject *manual =
+            sceneManager->createManualObject();
+        manual->setName(objectName);
 //-----------------------------------------------------
 // GLTF material
 //-----------------------------------------------------
 
-Ogre::ColourValue baseColour =
-    Ogre::ColourValue::White;
+        Ogre::ColourValue baseColour =
+            Ogre::ColourValue::White;
 
-bool hasGltfMaterial = false;
+        bool hasGltfMaterial = false;
 
-if (primitive.material >= 0 &&
-    primitive.material <
-        static_cast<int>(model.materials.size()))
-{
-    const tinygltf::Material &material =
-        model.materials[primitive.material];
+        if (primitive.material >= 0 &&
+                primitive.material <
+                static_cast<int>(model.materials.size())) {
+            const tinygltf::Material &material =
+                model.materials[primitive.material];
 
-    const auto &factor =
-        material.pbrMetallicRoughness.baseColorFactor;
+            const auto &factor =
+                material.pbrMetallicRoughness.baseColorFactor;
 
-    std::cout
-        << "Material "
-        << primitive.material
-        << " baseColorFactor = ";
+            std::cout
+                    << "Material "
+                    << primitive.material
+                    << " baseColorFactor = ";
 
-    for (double v : factor)
-        std::cout << v << " ";
+            for (double v : factor)
+                std::cout << v << " ";
 
-    std::cout << std::endl;
+            std::cout << std::endl;
 
-    if (factor.size() >= 4)
-    {
-        baseColour =
-            Ogre::ColourValue(
-                static_cast<float>(factor[0]),
-                static_cast<float>(factor[1]),
-                static_cast<float>(factor[2]),
-                static_cast<float>(factor[3])
-            );
+            if (factor.size() >= 4) {
+                baseColour =
+                    Ogre::ColourValue(
+                        static_cast<float>(factor[0]),
+                        static_cast<float>(factor[1]),
+                        static_cast<float>(factor[2]),
+                        static_cast<float>(factor[3])
+                    );
 
-        hasGltfMaterial = true;
+                hasGltfMaterial = true;
 
-        std::cout
-            << "GLTF material "
-            << primitive.material
-            << " baseColorFactor = "
-            << factor[0]
-            << ", "
-            << factor[1]
-            << ", "
-            << factor[2]
-            << ", "
-            << factor[3]
-            << std::endl;
-    }
-}
-else
-{
-    std::cout
-        << "Primitive "
-        << primitiveIndex
-        << " has no valid material"
-        << std::endl;
-}
+                std::cout
+                        << "GLTF material "
+                        << primitive.material
+                        << " baseColorFactor = "
+                        << factor[0]
+                        << ", "
+                        << factor[1]
+                        << ", "
+                        << factor[2]
+                        << ", "
+                        << factor[3]
+                        << std::endl;
+            }
+        } else {
+            std::cout
+                    << "Primitive "
+                    << primitiveIndex
+                    << " has no valid material"
+                    << std::endl;
+        }
 
 //-----------------------------------------------------
 // Get PBS HLMS
 //-----------------------------------------------------
 
-Ogre::HlmsPbs *hlmsPbs =
-    mRenderer.getHlmsPbs();
+        Ogre::HlmsPbs *hlmsPbs =
+            mRenderer.getHlmsPbs();
 
-if (!hlmsPbs)
-{
-    std::cerr
-        << "ERROR: HLMS PBS is NULL!"
-        << std::endl;
-
-    sceneManager->destroyManualObject(manual);
-    return;
-}
-
-//-----------------------------------------------------
-// Get the base PBS datablock
-//-----------------------------------------------------
-
-Ogre::HlmsDatablock *defaultPbsDatablock =
-    hlmsPbs->getDatablock("GltfPbsTest");
-
-if (!defaultPbsDatablock)
-{
-    std::cerr
-        << "ERROR: GltfPbsTest datablock not found!"
-        << std::endl;
-
-    sceneManager->destroyManualObject(manual);
-    return;
-}
-
-//-----------------------------------------------------
-// Create/select material-specific PBS datablock
-//-----------------------------------------------------
-
-Ogre::HlmsDatablock *datablock =
-    defaultPbsDatablock;
-
-if (hasGltfMaterial)
-{
-    const std::string materialDatablockName =
-        meshName
-        + "_GltfPbsMaterial_"
-        + std::to_string(primitive.material);
-
-    //-------------------------------------------------
-    // Does this material datablock already exist?
-    //-------------------------------------------------
-
-    datablock =
-        hlmsPbs->getDatablock(
-            materialDatablockName
-        );
-
-    //-------------------------------------------------
-    // Create it if necessary
-    //-------------------------------------------------
-
-    if (!datablock)
-    {
-        datablock =
-            defaultPbsDatablock->clone(
-                materialDatablockName
-            );
-
-        if (!datablock)
-        {
+        if (!hlmsPbs) {
             std::cerr
-                << "ERROR: Could not clone GltfPbsTest "
-                << "for material "
-                << primitive.material
-                << std::endl;
+                    << "ERROR: HLMS PBS is NULL!"
+                    << std::endl;
 
             sceneManager->destroyManualObject(manual);
             return;
         }
 
+//-----------------------------------------------------
+// Get the base PBS datablock
+//-----------------------------------------------------
+
+        Ogre::HlmsDatablock *defaultPbsDatablock =
+            hlmsPbs->getDatablock("GltfPbsTest");
+
+        if (!defaultPbsDatablock) {
+            std::cerr
+                    << "ERROR: GltfPbsTest datablock not found!"
+                    << std::endl;
+
+            sceneManager->destroyManualObject(manual);
+            return;
+        }
         std::cout
-            << "Created PBS material datablock: "
-            << materialDatablockName
-            << std::endl;
-    }
+                << "PBS datablock ptr = "
+                << static_cast<void*>(defaultPbsDatablock)
+                << std::endl;
 
-    //-------------------------------------------------
-    // Convert to PBS datablock
-    //-------------------------------------------------
+//-----------------------------------------------------
+// Create/select material-specific PBS datablock
+//-----------------------------------------------------
 
-    Ogre::HlmsPbsDatablock *pbsDatablock =
-        dynamic_cast<Ogre::HlmsPbsDatablock *>(
-            datablock
-        );
+        Ogre::HlmsDatablock *datablock =
+            defaultPbsDatablock;
 
-    if (!pbsDatablock)
-    {
-        std::cerr
-            << "ERROR: Datablock '"
-            << materialDatablockName
-            << "' is not an HlmsPbsDatablock!"
-            << std::endl;
+        if (hasGltfMaterial) {
+            const std::string materialDatablockName =
+                meshName
+                + "_GltfPbsMaterial_"
+                + std::to_string(primitive.material);
 
-        sceneManager->destroyManualObject(manual);
-        return;
-    }
+            //-------------------------------------------------
+            // Does this material datablock already exist?
+            //-------------------------------------------------
 
-    //-------------------------------------------------
-    // Apply glTF baseColorFactor
-    //-------------------------------------------------
+            datablock =
+                hlmsPbs->getDatablock(
+                    materialDatablockName
+                );
 
-    pbsDatablock->setDiffuse(
-        Ogre::Vector3(
-            baseColour.r,
-            baseColour.g,
-            baseColour.b
-        )
-    );
+            //-------------------------------------------------
+            // Create it if necessary
+            //-------------------------------------------------
 
-    //-------------------------------------------------
-    // glTF alpha
-    //-------------------------------------------------
+            if (!datablock) {
+                datablock =
+                    defaultPbsDatablock->clone(
+                        materialDatablockName
+                    );
 
-    // For now we keep the default PBS transparency
-    // handling. Alpha can be implemented separately.
-    //
-    // pbsDatablock->setTransparency(...);
+                if (!datablock) {
+                    std::cerr
+                            << "ERROR: Could not clone GltfPbsTest "
+                            << "for material "
+                            << primitive.material
+                            << std::endl;
 
-    //-------------------------------------------------
-    // Roughness
-    //-------------------------------------------------
+                    sceneManager->destroyManualObject(manual);
+                    return;
+                }
 
-    pbsDatablock->setRoughness(
-        0.6f
-    );
+                std::cout
+                        << "Created PBS material datablock: "
+                        << materialDatablockName
+                        << std::endl;
+            }
 
-    //-------------------------------------------------
-    // Metallic
-    //-------------------------------------------------
+            //-------------------------------------------------
+            // Convert to PBS datablock
+            //-------------------------------------------------
 
-    pbsDatablock->setMetalness(
-        0.0f
-    );
+            Ogre::HlmsPbsDatablock *pbsDatablock =
+                dynamic_cast<Ogre::HlmsPbsDatablock *>(
+                    datablock
+                );
 
-    std::cout
-        << "Applied PBS material colour: "
-        << baseColour.r
-        << ", "
-        << baseColour.g
-        << ", "
-        << baseColour.b
-        << ", "
-        << baseColour.a
-        << std::endl;
-}
+            if (!pbsDatablock) {
+                std::cerr
+                        << "ERROR: Datablock '"
+                        << materialDatablockName
+                        << "' is not an HlmsPbsDatablock!"
+                        << std::endl;
+
+                sceneManager->destroyManualObject(manual);
+                return;
+            }
+
+            //-------------------------------------------------
+            // Apply glTF baseColorFactor
+            //-------------------------------------------------
+
+            pbsDatablock->setDiffuse(
+                Ogre::Vector3(
+                    baseColour.r,
+                    baseColour.g,
+                    baseColour.b
+                )
+            );
+
+            //-------------------------------------------------
+            // glTF alpha
+            //-------------------------------------------------
+
+            // For now we keep the default PBS transparency
+            // handling. Alpha can be implemented separately.
+            //
+            // pbsDatablock->setTransparency(...);
+
+            //-------------------------------------------------
+            // Roughness
+            //-------------------------------------------------
+
+            pbsDatablock->setRoughness(
+                0.6f
+            );
+
+            //-------------------------------------------------
+            // Metallic
+            //-------------------------------------------------
+
+            pbsDatablock->setMetalness(
+                0.0f
+            );
+
+            std::cout
+                    << "Applied PBS material colour: "
+                    << baseColour.r
+                    << ", "
+                    << baseColour.g
+                    << ", "
+                    << baseColour.b
+                    << ", "
+                    << baseColour.a
+                    << std::endl;
+        }
 
 //-----------------------------------------------------
 // Begin ManualObject
 //-----------------------------------------------------
 
-std::cout
-    << "NameStr: "
-    << *datablock->getNameStr()
-    << std::endl;
+        std::cout
+                << "NameStr: "
+                << *datablock->getNameStr()
+                << std::endl;
 
-manual->begin(
-    *datablock->getNameStr(),
-    Ogre::OT_TRIANGLE_LIST
-);
+        manual->begin(
+            *datablock->getNameStr(),
+            Ogre::OT_TRIANGLE_LIST
+        );
 
 //-----------------------------------------------------
 // Vertices
 //-----------------------------------------------------
 
-for (size_t i = 0;
-     i < positions.size();
-     ++i)
-{
-    manual->position(
-        positions[i]
-    );
+        for (size_t i = 0;
+                i < positions.size();
+                ++i) {
+            manual->position(
+                positions[i]
+            );
 
-    if (i < normals.size())
-    {
-        manual->normal(
-            normals[i]
-        );
-    }
+            if (i < normals.size()) {
+                manual->normal(
+                    normals[i]
+                );
+            }
 
-    if (i < uvs.size())
-    {
-        manual->textureCoord(
-            uvs[i]
-        );
-    }
-}
+            if (i < uvs.size()) {
+                manual->textureCoord(
+                    uvs[i]
+                );
+            }
+        }
 
 //-----------------------------------------------------
 // Indices
 //-----------------------------------------------------
 
-for (unsigned int index : indices)
-{
-    manual->index(index);
-}
+        for (unsigned int index : indices) {
+            manual->index(index);
+        }
 
 //-----------------------------------------------------
 // Finish ManualObject
 //-----------------------------------------------------
 
-Ogre::ManualObject::ManualObjectSection *section =
-    manual->end();
+        Ogre::ManualObject::ManualObjectSection *section =
+            manual->end();
 
-if (section && datablock)
-{
-    section->setDatablock(datablock);
+        if (section && datablock) {
+            section->setDatablock(datablock);
 
-    std::cout
-        << "Using PBS datablock pointer: "
-        << datablock
-        << " name="
-        << *datablock->getNameStr()
-        << std::endl;
-}
+            std::cout
+                    << "Using PBS datablock pointer: "
+                    << datablock
+                    << " name="
+                    << *datablock->getNameStr()
+                    << std::endl;
+        }
 
 //-----------------------------------------------------
 // Finalize
 //-----------------------------------------------------
 
-manual->setCastShadows(true);
+        manual->setCastShadows(true);
 
-manual->setVisibilityFlags(
-    0xFFFFFFFF
-);
+        manual->setVisibilityFlags(
+            0xFFFFFFFF
+        );
 
 //-----------------------------------------------------
 // Attach object
 //-----------------------------------------------------
-/* eredeti, szetesett
-Ogre::SceneNode *node =
-    sceneManager->getRootSceneNode()
-        ->createChildSceneNode();
+        /* eredeti, szetesett
+        Ogre::SceneNode *node =
+            sceneManager->getRootSceneNode()
+                ->createChildSceneNode();
 
-node->attachObject(manual);
-*/
-/*Javasolt 1
-Ogre::SceneNode *node = parentNode;
+        node->attachObject(manual);
+        */
+        /*Javasolt 1
+        Ogre::SceneNode *node = parentNode;
 
-if (!node)
-{
-    node =
-        sceneManager->getRootSceneNode()
-            ->createChildSceneNode();
-}
+        if (!node)
+        {
+            node =
+                sceneManager->getRootSceneNode()
+                    ->createChildSceneNode();
+        }
 
-node->attachObject(manual);
-*/
-if (!parentNode)
-{
-    std::cerr
-        << "ERROR: buildMesh() received NULL parentNode!"
-        << std::endl;
+        node->attachObject(manual);
+        */
+        if (!parentNode) {
+            std::cerr
+                    << "ERROR: buildMesh() received NULL parentNode!"
+                    << std::endl;
 
-    sceneManager->destroyManualObject(manual);
-    return;
-}
+            sceneManager->destroyManualObject(manual);
+            return;
+        }
 
-parentNode->attachObject(manual);
+        parentNode->attachObject(manual);
 
 
 //-----------------------------------------------------
 // Debug information
 //-----------------------------------------------------
 
-std::cout
-    << "  Created Ogre ManualObject:"
-    << std::endl
-    << "    name="
-    << manual->getName()
-    << std::endl
-    << "    vertices="
-    << positions.size()
-    << std::endl
-    << "    indices="
-    << indices.size()
-    << std::endl
-    << "    attached="
-    << manual->isAttached()
-    << std::endl;
+        std::cout
+                << "  Created Ogre ManualObject:"
+                << std::endl
+                << "    name="
+                << manual->getName()
+                << std::endl
+                << "    vertices="
+                << positions.size()
+                << std::endl
+                << "    indices="
+                << indices.size()
+                << std::endl
+                << "    attached="
+                << manual->isAttached()
+                << std::endl;
 
-++primitiveIndex;
+        ++primitiveIndex;
     }
 }
