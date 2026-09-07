@@ -30,36 +30,58 @@ bool Scene::initialize() {
 }
 
 bool Scene::createLight() {
-    Ogre::SceneManager *scene = mRenderer.getSceneManager();
+    Ogre::SceneManager *scene =
+        mRenderer.getSceneManager();
 
-    Ogre::Light *light =
-        scene->createLight();
+    if (True) {
+        Ogre::SceneNode *nodeOriginalLight =
+            scene->getRootSceneNode()->createChildSceneNode();
+        Ogre::Light *light =
+            scene->createLight();
+        light->setName("OriginalLight");
+        light->setType( Ogre::Light::LT_DIRECTIONAL );
 
-    light->setType( Ogre::Light::LT_DIRECTIONAL );
+        light->setDiffuseColour(
+            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+        );
+        light->setSpecularColour(
+            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+        );
+        nodeOriginalLight->attachObject( light );
+        nodeOriginalLight->setDirection(
+            Ogre::Vector3( -1, -1, -1 ).normalisedCopy()
+        );
+    }
 
-    Ogre::SceneNode *node =
-        scene->getRootSceneNode()->createChildSceneNode();
+//new light
+    if (True) {
+        Ogre::SceneNode *nodeSunShine =
+            scene->getRootSceneNode()->createChildSceneNode();
+        Ogre::Light *sunLight =
+            scene->createLight();
+        sunLight->setName("Sunligh");
+        sunLight->setType(Ogre::Light::LT_DIRECTIONAL);
 
-    node->setDirection(
-        Ogre::Vector3( -1, -1, -1 ).normalisedCopy()
-    );
+        sunLight->setDiffuseColour(
+            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+        );
+        sunLight->setSpecularColour(
+            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+        );
+        nodeSunShine->attachObject( sunLight );
+        sunLight->setDirection(
+            Ogre::Vector3(-0.5f, -1.0f, -0.3f).normalisedCopy()
+        );
+    }
 
-
-light->setDiffuseColour(
-    Ogre::ColourValue(1.0f, 1.0f, 1.0f)
-);
-
-light->setSpecularColour(
-    Ogre::ColourValue(1.0f, 1.0f, 1.0f)
-);
-
-
-    node->attachObject( light );
-
+    std::cout << "-----------------------Scene Createlihjy finished" << std::endl;
     return true;
 }
-bool Scene::createObjects()
-{
+
+
+
+
+bool Scene::createObjects() {
     //-------------------------------------------------------
     // GLTF model
     //-------------------------------------------------------
@@ -74,8 +96,8 @@ bool Scene::createObjects()
     std::string warn;
 
     std::cout
-        << "Start load."
-        << std::endl;
+            << "Start load."
+            << std::endl;
 
     bool loaded =
         loader.LoadBinaryFromFile(
@@ -85,40 +107,37 @@ bool Scene::createObjects()
             filename
         );
 
-    if(!warn.empty())
-    {
+    if(!warn.empty()) {
         std::cout
-            << "GLTF warning: "
-            << warn
-            << std::endl;
+                << "GLTF warning: "
+                << warn
+                << std::endl;
     }
 
-    if(!err.empty())
-    {
+    if(!err.empty()) {
         std::cerr
-            << "GLTF error: "
-            << err
-            << std::endl;
+                << "GLTF error: "
+                << err
+                << std::endl;
     }
 
-    if(!loaded)
-    {
+    if(!loaded) {
         std::cerr
-            << "Failed to load GLB: "
-            << filename
-            << std::endl;
+                << "Failed to load GLB: "
+                << filename
+                << std::endl;
 
         return false;
     }
 
     std::cout
-        << "Loaded GLB: "
-        << filename
-        << std::endl;
+            << "Loaded GLB: "
+            << filename
+            << std::endl;
 
     std::cout
-        << "Stop load."
-        << std::endl;
+            << "Stop load."
+            << std::endl;
 
 
     //-------------------------------------------------------
@@ -142,27 +161,26 @@ bool Scene::createObjects()
     //-------------------------------------------------------
 
     std::cout
-        << "Start build."
-        << std::endl;
+            << "Start build."
+            << std::endl;
 
     GltfMeshBuilder builder(mRenderer);
 
     if(!builder.build(
-            model,
-            mRenderer.getSceneManager(),
-            parentNode,
-            "2CylinderEngine"))
-    {
+                model,
+                mRenderer.getSceneManager(),
+                parentNode,
+                "2CylinderEngine")) {
         std::cerr
-            << "Failed to build GLTF model."
-            << std::endl;
+                << "Failed to build GLTF model."
+                << std::endl;
 
         return false;
     }
 
     std::cout
-        << "Stop build."
-        << std::endl;
+            << "Stop build."
+            << std::endl;
 
 
     return true;
