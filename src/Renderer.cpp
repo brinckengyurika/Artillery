@@ -162,7 +162,7 @@ bool Renderer::initialize() {
             true
         );
 
-
+/*Refactoring
 
     mTerra =
         new Ogre::Terra(
@@ -175,19 +175,20 @@ bool Renderer::initialize() {
         mCamera,
         false
     );
-
+*/
     Ogre::SceneNode *terrainNode =
         mSceneManager->getRootSceneNode(
             Ogre::SCENE_STATIC
         )->createChildSceneNode(
             Ogre::SCENE_STATIC
         );
-
+/*refactoring
     terrainNode->attachObject( mTerra );
-
+*/
     //-------------------------------------------------------
     // Scene
     //-------------------------------------------------------
+/*refactoring
     std::cout << "load heightmap start" << std::endl;
     mTerra->load(
         "Heightmap.png",
@@ -196,7 +197,7 @@ bool Renderer::initialize() {
         false,
         false
     );
-
+*/
 
     /*
         Ogre::HlmsDatablock *terraDatablock =
@@ -222,9 +223,9 @@ bool Renderer::initialize() {
                   << std::endl;
         return false;
     }
-
+/*Refactoring
     mTerra->setDatablock( terraDatablock );
-
+*/
     std::cout
             << "Terra datablock assigned."
             << std::endl;
@@ -235,7 +236,7 @@ bool Renderer::initialize() {
 
     std::cout << "\n========== TERRA DEBUG ==========\n";
 
-    std::cout << "Terra ptr       = " << mTerra << "\n";
+
     std::cout << "Datablock ptr   = " << db << "\n";
 
     if( db ) {
@@ -245,7 +246,7 @@ bool Renderer::initialize() {
         std::cout << "Datablock creator = "
                   << db->getCreator() << "\n";
     }
-
+/*refactoring
     std::cout << "Visible         = "
               << mTerra->getVisible() << "\n";
 
@@ -266,11 +267,11 @@ bool Renderer::initialize() {
 
     std::cout << "=================================\n";
 
-
+*/
     /*arnyek kikapcsolasa ideiglenesen
 
     */
-
+/*refavtoring
     mTerra->setCastShadows(false);
 
 
@@ -287,7 +288,7 @@ bool Renderer::initialize() {
 
 
     std::cout << "load heightmap end" << std::endl;
-
+*/
     /*
 
         mCamera->setPosition(
@@ -326,7 +327,7 @@ bool Renderer::initialize() {
     // ...
 }
 
-
+/*Refacotring
 bool Renderer::renderFrame() {
 
     Ogre::WindowEventUtilities::messagePump();
@@ -352,6 +353,32 @@ bool Renderer::renderFrame() {
     );
     return mRoot->renderOneFrame();
 }
+*/
+bool Renderer::renderFrame()
+{
+    float timestep = 0.016f;
+    Ogre::WindowEventUtilities::messagePump();
+
+    mInputManager.update();
+
+    if(mInputManager.shouldQuit())
+        return false;
+
+    if(mWindow->isClosed())
+        return false;
+
+    mCameraController.update(
+        mInputManager,
+        timestep
+    );
+/*Refactoring
+    mScene.update(0.016f);
+*/
+    mScene.update(timestep);
+    return mRoot->renderOneFrame();
+}
+
+
 
 
 void Renderer::shutdown() {

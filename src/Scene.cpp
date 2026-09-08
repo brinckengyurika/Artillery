@@ -186,6 +186,13 @@ bool Scene::createObjects() {
     return true;
 }
 
+void Scene::update(float dt)
+{
+    if (mTerra)
+        mTerra->update(
+            Ogre::Vector3(0.0f, -1.0f, 0.0f)
+        );
+}
 
 void Scene::shutdown() {
 }

@@ -23,7 +23,7 @@
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsUnlit.h>
 
-#include "Terra/Terra.h"
+
 #include "Terra/Hlms/OgreHlmsTerra.h"
 
 namespace tinygltf {
@@ -34,8 +34,13 @@ class Renderer {
 public:
     Renderer();
     ~Renderer();
-
+/*Refactoring
     bool initialize();
+    bool renderFrame();
+    void shutdown();
+*/
+    bool initialize();
+    void update(float dt);
     bool renderFrame();
     void shutdown();
 
@@ -78,41 +83,43 @@ public:
     void setHlmsTerra(Ogre::HlmsTerra *hlms) {
         mHlmsTerra = hlms;
     }
-
+/*
     Ogre::Terra *getTerra() const {
         return mTerra;
     }
-
+*/
 Ogre::HlmsDatablock *getTerraDatablock() const
 {
     return mResources.getTerraDatablock();
 }
 
 private:
-
-    Ogre::HlmsTerra *mHlmsTerra = nullptr;
-    Ogre::Terra *mTerra = nullptr;
-
     Ogre::HlmsPbs   *mHlmsPbs = nullptr;
     Ogre::HlmsUnlit *mHlmsUnlit = nullptr;
 
-    Ogre::Root *mRoot{};
-    Ogre::Window *mWindow{};
-    Ogre::SceneManager *mSceneManager{};
-    Ogre::Camera *mCamera{};
+    Ogre::HlmsTerra *mHlmsTerra = nullptr;
 
-
-
+    Ogre::Root          *mRoot          = nullptr;
+    Ogre::Window        *mWindow        = nullptr;
+    Ogre::SceneManager  *mSceneManager  = nullptr;
+    Ogre::Camera        *mCamera        = nullptr;
 
     ResourceManager mResources;
     Scene mScene;
     CameraController mCameraController;
 
-    Ogre::CompositorWorkspace *mWorkspace{};
+    Ogre::CompositorWorkspace *mWorkspace = nullptr;
+
     GltfLoader mGltfLoader;
     GltfMeshBuilder mMeshBuilder;
     InputManager mInputManager;
 
+
+//    Ogre::Terra *mTerra = nullptr;
+
+    bool createLight();
+    bool createTerrain();
+    bool createObjects();
 
 
 };

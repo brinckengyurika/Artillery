@@ -13,9 +13,13 @@ void Engine::run()
 {
     std::cout << "Engine run()" << std::endl;
 
+    while( mRenderer.renderFrame() ) {
+    }
+/*Refactoring
     while( mRenderer.renderFrame() )
     {
     }
+*/
 }
 
 void Engine::shutdown()

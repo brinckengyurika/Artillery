@@ -2,8 +2,7 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Artillery/src/Scene.cpp /usr/include/stdc-predef.h \
  /home/satch/Projects/Artillery/src/Scene.h \
  /home/satch/Projects/Artillery/src/MeshFactory.h \
- /home/satch/Projects/Artillery/src/Renderer.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreRoot.h \
+ /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/Terra.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgrePrerequisites.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgrePlatform.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreConfig.h \
@@ -198,6 +197,7 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/dl_find_object.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMemoryAllocatorConfig.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMemoryAllocatedObject.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgrePrerequisites.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHeaderPrefix.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHeaderSuffix.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMemorySTLAllocator.h \
@@ -239,37 +239,16 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreAssert.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/debugbreak/debugbreak.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreWorkarounds.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManagerEnumerator.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManager.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgrePlane.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreVector3.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreQuaternion.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreMath.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMovableObject.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreAnimable.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreCommon.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hash/MurmurHash3.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreVector2.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreColourValue.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneQuery.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSphere.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreRay.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgrePlaneBoundedVolume.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreAxisAlignedBox.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreMatrix4.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreMatrix3.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMath.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreVector4.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/vector.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreMemorySTLAllocator.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/list.h \
- /usr/include/c++/14/list /usr/include/c++/14/bits/stl_list.h \
- /usr/include/c++/14/bits/list.tcc \
- /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/set.h \
- /usr/include/c++/14/set /usr/include/c++/14/bits/stl_tree.h \
- /usr/include/c++/14/bits/stl_set.h \
- /usr/include/c++/14/bits/stl_multiset.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreAutoParamDataSource.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreLight.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreMovableObject.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreAnimable.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreVector3.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreQuaternion.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreColourValue.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreStringVector.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSharedPtr.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreAtomicScalar.h \
@@ -277,16 +256,25 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/Threading/OgreThreadHeaders.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Threading/OgreThreadDefines.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Threading/OgreThreadDefinesNone.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/vector.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMemorySTLAllocator.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/map.h \
- /usr/include/c++/14/map /usr/include/c++/14/bits/stl_map.h \
+ /usr/include/c++/14/map /usr/include/c++/14/bits/stl_tree.h \
+ /usr/include/c++/14/bits/stl_map.h \
  /usr/include/c++/14/bits/stl_multimap.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneNode.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreNode.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreRenderable.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreIdString.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMatrix4.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMatrix3.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgrePlane.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMaterial.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreResource.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreStringInterface.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/set.h \
+ /usr/include/c++/14/set /usr/include/c++/14/bits/stl_set.h \
+ /usr/include/c++/14/bits/stl_multiset.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreIteratorWrappers.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreIteratorWrapper.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreBlendMode.h \
@@ -297,7 +285,6 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /usr/include/inttypes.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreLodStrategy.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreArrayConfig.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgrePrerequisites.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/xmmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/mmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/mm_malloc.h \
@@ -334,16 +321,9 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/SSE2/Single/OgreArrayAabb.inl \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreVisibilityFlags.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMovableObject.inl \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreTextureGpuListener.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreLight.inl \
- /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreObjectMemoryManager.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreObjectData.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreArrayMemoryManager.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreTransform.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreAnimationState.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreController.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreResourceGroupManager.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSingleton.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreShaderParams.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreGpuProgramParams.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSerializer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreDataStream.h \
  /usr/include/c++/14/istream /usr/include/c++/14/ios \
  /usr/include/c++/14/bits/ios_base.h \
@@ -363,6 +343,34 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /usr/include/c++/14/bits/basic_ios.tcc /usr/include/c++/14/ostream \
  /usr/include/c++/14/bits/ostream.tcc \
  /usr/include/c++/14/bits/istream.tcc \
+ /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/unordered_map.h \
+ /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/TerrainCell.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreRenderable.h \
+ /home/satch/Projects/Artillery/src/Renderer.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreRoot.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManagerEnumerator.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManager.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneQuery.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSphere.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreRay.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgrePlaneBoundedVolume.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreAxisAlignedBox.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/list.h \
+ /usr/include/c++/14/list /usr/include/c++/14/bits/stl_list.h \
+ /usr/include/c++/14/bits/list.tcc \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreAutoParamDataSource.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreLight.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMovableObject.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreTextureGpuListener.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreLight.inl \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreObjectMemoryManager.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreObjectData.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreArrayMemoryManager.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Array/OgreTransform.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreAnimationState.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreController.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreResourceGroupManager.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSingleton.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreArchive.h \
  /usr/include/c++/14/ctime \
  /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/unordered_set.h \
@@ -380,9 +388,6 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreStringConverter.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreConfigOptionMap.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreGpuProgram.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreGpuProgramParams.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSerializer.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/unordered_map.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHardwareVertexBuffer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHardwareBuffer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Vao/OgreVertexBufferPacked.h \
@@ -458,11 +463,6 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Unlit/OgreHlmsUnlit.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Unlit/OgreHlmsUnlitPrerequisites.h \
- /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/Terra.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreMovableObject.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreShaderParams.h \
- /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/TerrainCell.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreRenderable.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreLight.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreItem.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHardwareBufferManager.h \
