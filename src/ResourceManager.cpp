@@ -35,37 +35,8 @@ bool ResourceManager::initialize() {
         ->getHlmsManager()
         ->getDatablock("GltfDefault");
 
-    if( test ) {
-        std::cout
-                << "HLMS lookup OK: "
-                << test->getNameStr()
-                << " ptr="
-                << test
-                << std::endl;
-    } else {
-        std::cout
-                << "ERROR: GltfDefault not found in HlmsManager!"
-                << std::endl;
-    }
-
-
-
-
     Ogre::MaterialManager &mm =
         Ogre::MaterialManager::getSingleton();
-
-    std::cout
-            << "Material Terra/GpuNormalMapper exists: "
-            << mm.resourceExists("Terra/GpuNormalMapper")
-            << std::endl;
-
-    std::cout
-            << "Material GpuNormalMapper exists: "
-            << mm.resourceExists("GpuNormalMapper")
-            << std::endl;
-
-
-
 
     Ogre::ResourceGroupManager &rgm =
         Ogre::ResourceGroupManager::getSingleton();
@@ -184,14 +155,6 @@ bool ResourceManager::registerHlms() {
     unlit->setUseColour(true);
     unlit->setColour(Ogre::ColourValue::White);
 
-    std::cout << "UNLIT datablock: " ;
-    std::cout << "hasColour=" << unlit->hasColour();
-    std::cout << " colour="
-              << unlit->getColour().r << ", "
-              << unlit->getColour().g << ", "
-              << unlit->getColour().b << ", "
-              << unlit->getColour().a
-              << std::endl;
     /*
     unlitDatablock->setColour(
         Ogre::ColourValue( 1.0f, 0.0f, 0.0f, 1.0f )
@@ -199,19 +162,6 @@ bool ResourceManager::registerHlms() {
     */
     Ogre::HlmsDatablock *test =
         hlmsUnlit->getDatablock("GltfDefault");
-
-    if(test) {
-        std::cout
-                << "GltfDefault FOUND in Unlit HLMS"
-                << std::endl;
-    } else {
-        std::cout
-                << "GltfDefault NOT FOUND in Unlit HLMS"
-                << std::endl;
-    }
-    std::cout
-            << "Created HLMS datablock: GltfDefault"
-            << std::endl;
 
     //
     // HLMS PBS
@@ -273,29 +223,8 @@ bool ResourceManager::registerHlms() {
               << terraMainFolder
               << std::endl;
 
-
-
     Ogre::ResourceGroupManager &rgm =
         Ogre::ResourceGroupManager::getSingleton();
-
-    std::cout
-            << "GpuNormalMapper exists: "
-            << rgm.resourceExists(
-                Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME,
-                "GpuNormalMapper.material" )
-            << std::endl;
-
-
-
-    std::cout
-            << "Terra/GpuNormalMapper exists: "
-            << rgm.resourceExists(
-                Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME,
-                "Terra/GpuNormalMapper" )
-            << std::endl;
-
-
-
 
     Ogre::Archive *archiveTerra =
         archiveManager.load(
@@ -331,7 +260,7 @@ mRenderer.getRoot()
 
 std::cout << "HLMS Terra registered." << std::endl;
 
-mRenderer.setHlmsTerra( hlmsTerra );
+//mRenderer.setHlmsTerra( hlmsTerra );
 
 mHlmsTerra = hlmsTerra;
 
@@ -352,11 +281,6 @@ if( !terraDatablock )
 }
 
 mTerraDatablock = terraDatablock;
-
-
-std::cout
-    << "Created Terra datablock: TerraDatablock"
-    << std::endl;
 
 
     Ogre::HlmsParamVec paramVec;

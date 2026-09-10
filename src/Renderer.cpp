@@ -116,7 +116,7 @@ bool Renderer::initialize() {
     // Camera
     //-------------------------------------------------------
 
-    mCamera =
+ mCamera =
         mSceneManager->createCamera(
             "MainCamera"
         );
@@ -124,16 +124,24 @@ bool Renderer::initialize() {
     mCamera->setNearClipDistance( 0.1f );
     mCamera->setFarClipDistance( 100000.0f );
     mCamera->setAutoAspectRatio( true );
-
+/*
     mCamera->setPosition(
         0.0f,
         2.0f,
         8.0f
     );
 
+*/
+    mCamera->setPosition(0.0f, 800.0f, 1200.0f);
+    mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
+
+//    mCamera->setNearClipDistance(1.0f);
+//    mCamera->setFarClipDistance(10000.0f);
+
     mCameraController.initialize(
         mCamera
     );
+
 
     //-------------------------------------------------------
     // Workspace
@@ -161,165 +169,13 @@ bool Renderer::initialize() {
             workspaceDefName,
             true
         );
-
-/*Refactoring
-
-    mTerra =
-        new Ogre::Terra(
-        Ogre::Id::generateNewId<Ogre::MovableObject>(),
-        &mSceneManager->_getEntityMemoryManager(
-            Ogre::SCENE_STATIC ),
-        mSceneManager,
-        11u,
-        mRoot->getCompositorManager2(),
-        mCamera,
-        false
-    );
-*/
-    Ogre::SceneNode *terrainNode =
-        mSceneManager->getRootSceneNode(
-            Ogre::SCENE_STATIC
-        )->createChildSceneNode(
-            Ogre::SCENE_STATIC
-        );
-/*refactoring
-    terrainNode->attachObject( mTerra );
-*/
-    //-------------------------------------------------------
-    // Scene
-    //-------------------------------------------------------
-/*refactoring
-    std::cout << "load heightmap start" << std::endl;
-    mTerra->load(
-        "Heightmap.png",
-        Ogre::Vector3(0.0f, 500.0f, 0.0f),
-        Ogre::Vector3(4096.0f, 1000.0f, 4096.0f),
-        false,
-        false
-    );
-*/
-
-    /*
-        Ogre::HlmsDatablock *terraDatablock =
-            mResources.getTerraDatablock();
-
-        std::cout << "Terra datablock: "
-                  << terraDatablock << std::endl;
-
-        if( !terraDatablock ) {
-            std::cerr << "ERROR: Terra datablock is NULL!" << std::endl;
-            return false;
-        }
-
-
-        mTerra->setDatablock( terraDatablock );
-    */
-
-    Ogre::HlmsDatablock *terraDatablock =
-        mResources.getTerraDatablock();
-
-    if( !terraDatablock ) {
-        std::cerr << "ERROR: Terra datablock is NULL!"
-                  << std::endl;
-        return false;
-    }
-/*Refactoring
-    mTerra->setDatablock( terraDatablock );
-*/
-    std::cout
-            << "Terra datablock assigned."
-            << std::endl;
-
-
-    Ogre::HlmsDatablock *db =
-        mResources.getTerraDatablock();
-
-    std::cout << "\n========== TERRA DEBUG ==========\n";
-
-
-    std::cout << "Datablock ptr   = " << db << "\n";
-
-    if( db ) {
-        std::cout << "Datablock name  = "
-                  << db->getNameStr() << "\n";
-
-        std::cout << "Datablock creator = "
-                  << db->getCreator() << "\n";
-    }
-/*refactoring
-    std::cout << "Visible         = "
-              << mTerra->getVisible() << "\n";
-
-    std::cout << "XZ dimensions   = "
-              << mTerra->getXZDimensions() << "\n";
-
-    std::cout << "World radius    = "
-              << mTerra->getWorldRadius() << "\n";
-
-    const Ogre::Aabb &aabb =
-        mTerra->getWorldAabbUpdated();
-
-    std::cout << "World AABB min  = "
-              << aabb.getMinimum() << "\n";
-
-    std::cout << "World AABB max  = "
-              << aabb.getMaximum() << "\n";
-
-    std::cout << "=================================\n";
-
-*/
-    /*arnyek kikapcsolasa ideiglenesen
-
-    */
-/*refavtoring
-    mTerra->setCastShadows(false);
-
-
-
-
-
-    mTerra->update(
-        Ogre::Vector3( -1.0f, -1.0f, -1.0f ).normalisedCopy()
-    );
-
-    std::cout << "---- END TERRA TEST ----" << std::endl;
-
-    std::cout << "Terra loaded." << std::endl;
-
-
-    std::cout << "load heightmap end" << std::endl;
-*/
-    /*
-
-        mCamera->setPosition(
-            2048.0f,
-            1500.0f,
-            3000.0f
-        );
-
-        mCamera->lookAt(
-            Ogre::Vector3(
-                2048.0f,
-                0.0f,
-                2048.0f
-            )
-        );
-    */
-
+/*
     mCamera->setPosition(0.0f, 800.0f, 1200.0f);
     mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
 
-
-
     mCamera->setNearClipDistance(1.0f);
     mCamera->setFarClipDistance(10000.0f);
-
-
-
-
-
-
-
+*/
     if( !mScene.initialize() )
         return false;
 
@@ -360,13 +216,10 @@ bool Renderer::renderFrame()
     Ogre::WindowEventUtilities::messagePump();
 
     mInputManager.update();
-
     if(mInputManager.shouldQuit())
         return false;
-
     if(mWindow->isClosed())
         return false;
-
     mCameraController.update(
         mInputManager,
         timestep

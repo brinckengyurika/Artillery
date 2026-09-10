@@ -47,29 +47,12 @@ GltfMeshBuilder::inspect (const tinygltf::Model & model) {
 
         const tinygltf::Mesh & mesh = model.meshes[i];
 
-        std::cout
-                << "Mesh "
-                << i
-                << ": "
-                << mesh.name
-                << std::endl;
-
-        std::cout
-                << "  Primitives: "
-                << mesh.primitives.size ()
-                << std::endl;
-
         for (size_t p = 0; p < mesh.primitives.size (); ++p) {
 
             auto it =
                 mesh.primitives.at (p).attributes.find ("POSITION");
 
             if (it == mesh.primitives.at (p).attributes.end ()) {
-
-                std::cout
-                        << "No POSITION attribute!"
-                        << std::endl;
-
                 return false;
             }
 
@@ -78,24 +61,6 @@ GltfMeshBuilder::inspect (const tinygltf::Model & model) {
             const tinygltf::Accessor & accessor =
                 model.accessors[accessorIndex];
 
-            std::cout
-                    << "\t\tPOSITION accessor"
-                    << std::endl;
-
-            std::cout
-                    << "\t\tcount = "
-                    << accessor.count
-                    << std::endl;
-
-            std::cout
-                    << "\t\ttype = "
-                    << accessor.type
-                    << std::endl;
-
-            std::cout
-                    << "\t\tcomponentType = "
-                    << accessor.componentType
-                    << std::endl;
 
             if (accessor.componentType !=
                     TINYGLTF_COMPONENT_TYPE_FLOAT ||
@@ -134,15 +99,6 @@ GltfMeshBuilder::inspect (const tinygltf::Model & model) {
                 float y = vertices[i * 3 + 1];
                 float z = vertices[i * 3 + 2];
 
-                std::cout
-                        << i
-                        << ": "
-                        << x
-                        << ", "
-                        << y
-                        << ", "
-                        << z
-                        << std::endl;
             }
 
             const tinygltf::Accessor & indexAccessor =
@@ -160,16 +116,6 @@ GltfMeshBuilder::inspect (const tinygltf::Model & model) {
                 indexBuffer.data.data () +
                 indexBufferView.byteOffset +
                 indexAccessor.byteOffset;
-
-            std::cout
-                    << "Index component type: "
-                    << indexAccessor.componentType
-                    << std::endl;
-
-            std::cout
-                    << "Index count: "
-                    << indexAccessor.count
-                    << std::endl;
         }
     }
 
@@ -182,16 +128,6 @@ GltfMeshBuilder::build (const tinygltf::Model & model,
                         Ogre::SceneManager *sceneManager,
                         Ogre::SceneNode *parentNode,
                         const std::string & meshName) {
-
-    std::cout
-            << "Invoking build, parent name : "
-            << parentNode->getName ()
-            << std::endl;
-
-    std::cout
-            << "Invoking build, meshName name : "
-            << meshName
-            << std::endl;
 
     if (!sceneManager || !parentNode)
         return false;
@@ -248,34 +184,15 @@ GltfMeshBuilder::build (const tinygltf::Model & model,
     const tinygltf::Scene & scene =
         model.scenes[sceneIndex];
 
-    std::cout
-            << "GLTF scene: "
-            << scene.name
-            << std::endl;
-
     //---------------------------------------------------------
     // Build all root nodes
     //---------------------------------------------------------
 
-    std::cout
-            << "Scene root nodes:"
-            << std::endl;
 
     for (int nodeIndex : scene.nodes) {
 
         const tinygltf::Node & n =
             model.nodes[nodeIndex];
-
-        std::cout
-                << "  root node "
-                << nodeIndex
-                << " name='"
-                << n.name
-                << "' mesh="
-                << n.mesh
-                << " children="
-                << n.children.size ()
-                << std::endl;
     }
 
     for (int nodeIndex : scene.nodes) {
@@ -307,47 +224,6 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
 
     const tinygltf::Node & gltfNode =
         model.nodes[nodeIndex];
-
-    std::cout
-            << "NODE "
-            << nodeIndex
-            << " name='"
-            << gltfNode.name
-            << "' mesh="
-            << gltfNode.mesh
-            << " children="
-            << gltfNode.children.size ()
-            << " matrix="
-            << gltfNode.matrix.size ()
-            << " translation="
-            << gltfNode.translation.size ()
-            << " rotation="
-            << gltfNode.rotation.size ()
-            << " scale="
-            << gltfNode.scale.size ()
-            << std::endl;
-
-    if (!gltfNode.matrix.empty ()) {
-
-        std::cout
-                << "NODE "
-                << nodeIndex
-                << " name='"
-                << gltfNode.name
-                << "' USES MATRIX"
-                << std::endl;
-    }
-
-    std::cout
-            << "NODE "
-            << nodeIndex
-            << " name='"
-            << gltfNode.name
-            << "' mesh="
-            << gltfNode.mesh
-            << " children="
-            << gltfNode.children.size ()
-            << std::endl;
 
     //---------------------------------------------------------
     // Create Ogre node
@@ -414,19 +290,6 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
         node->setScale (scale);
         node->setOrientation (orientation);
 
-        std::cout
-                << "  MATRIX transform:"
-                << " pos=("
-                << position.x << ", "
-                << position.y << ", "
-                << position.z
-                << ")"
-                << " scale=("
-                << scale.x << ", "
-                << scale.y << ", "
-                << scale.z
-                << ")"
-                << std::endl;
     } else {
 
         if (gltfNode.translation.size () == 3) {
@@ -482,17 +345,6 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
     //---------------------------------------------------------
 
     if (gltfNode.mesh >= 0) {
-
-        std::cout
-                << "  ATTACH MESH "
-                << gltfNode.mesh
-                << " TO NODE "
-                << nodeIndex
-                << " ('"
-                << node->getName ()
-                << "')"
-                << std::endl;
-
         buildMesh (
             model,
             gltfNode.mesh,
@@ -546,76 +398,15 @@ GltfMeshBuilder::buildMesh (
     const tinygltf::Mesh & mesh =
         model.meshes[meshIndex];
 
-    std::cout
-            << "Build mesh "
-            << meshIndex
-            << ": "
-            << mesh.name
-            << " primitives="
-            << mesh.primitives.size ()
-            << std::endl;
-
-    std::cout
-            << "Build mesh "
-            << meshIndex
-            << ": "
-            << mesh.name
-            << std::endl;
-
     size_t primitiveIndex = 0;
 
     for (const tinygltf::Primitive & primitive :
             mesh.primitives) {
-
-        std::cout
-                << "  Primitive "
-                << primitiveIndex
-                << ": "
-                << "material="
-                << primitive.material
-                << " mode="
-                << primitive.mode
-                << " indices="
-                << primitive.indices
-                << std::endl;
-
-        std::cout
-                << "    Attributes:"
-                << std::endl;
-
         for (const auto & attribute :
                 primitive.attributes) {
-
-            std::cout
-                    << "      "
-                    << attribute.first
-                    << " -> accessor "
-                    << attribute.second
-                    << std::endl;
         }
-
-        std::cout
-                << "  Primitive "
-                << primitiveIndex
-                << " mode="
-                << primitive.mode
-                << " material="
-                << primitive.material
-                << " indices="
-                << primitive.indices
-                << " attributes="
-                << primitive.attributes.size ()
-                << std::endl;
-
         for (const auto & attr :
                 primitive.attributes) {
-
-            std::cout
-                    << "      "
-                    << attr.first
-                    << " -> accessor "
-                    << attr.second
-                    << std::endl;
         }
 
         //-----------------------------------------------------
@@ -885,7 +676,6 @@ GltfMeshBuilder::buildMesh (
 //-----------------------------------------------------
 // ManualObject
 //-----------------------------------------------------
-
         std::string objectName =
             meshName
             + "_mesh_"
@@ -894,11 +684,6 @@ GltfMeshBuilder::buildMesh (
             + std::to_string(nodeIndex)
             + "_primitive_"
             + std::to_string(primitiveIndex);
-
-        std::cout
-                << "Creating ManualObject: "
-                << objectName
-                << std::endl;
 
         Ogre::ManualObject *manual =
             sceneManager->createManualObject();
@@ -920,17 +705,12 @@ GltfMeshBuilder::buildMesh (
 
             const auto &factor =
                 material.pbrMetallicRoughness.baseColorFactor;
-
-            std::cout
-                    << "Material "
-                    << primitive.material
-                    << " baseColorFactor = ";
-
+/*
             for (double v : factor)
                 std::cout << v << " ";
 
             std::cout << std::endl;
-
+*/
             if (factor.size() >= 4) {
                 baseColour =
                     Ogre::ColourValue(
@@ -941,26 +721,7 @@ GltfMeshBuilder::buildMesh (
                     );
 
                 hasGltfMaterial = true;
-
-                std::cout
-                        << "GLTF material "
-                        << primitive.material
-                        << " baseColorFactor = "
-                        << factor[0]
-                        << ", "
-                        << factor[1]
-                        << ", "
-                        << factor[2]
-                        << ", "
-                        << factor[3]
-                        << std::endl;
             }
-        } else {
-            std::cout
-                    << "Primitive "
-                    << primitiveIndex
-                    << " has no valid material"
-                    << std::endl;
         }
 
 //-----------------------------------------------------
@@ -994,10 +755,6 @@ GltfMeshBuilder::buildMesh (
             sceneManager->destroyManualObject(manual);
             return;
         }
-        std::cout
-                << "PBS datablock ptr = "
-                << static_cast<void*>(defaultPbsDatablock)
-                << std::endl;
 
 //-----------------------------------------------------
 // Create/select material-specific PBS datablock
@@ -1042,10 +799,6 @@ GltfMeshBuilder::buildMesh (
                     return;
                 }
 
-                std::cout
-                        << "Created PBS material datablock: "
-                        << materialDatablockName
-                        << std::endl;
             }
 
             //-------------------------------------------------
@@ -1104,27 +857,12 @@ GltfMeshBuilder::buildMesh (
             pbsDatablock->setMetalness(
                 0.0f
             );
-
-            std::cout
-                    << "Applied PBS material colour: "
-                    << baseColour.r
-                    << ", "
-                    << baseColour.g
-                    << ", "
-                    << baseColour.b
-                    << ", "
-                    << baseColour.a
-                    << std::endl;
         }
 
 //-----------------------------------------------------
 // Begin ManualObject
 //-----------------------------------------------------
 
-        std::cout
-                << "NameStr: "
-                << *datablock->getNameStr()
-                << std::endl;
 
         manual->begin(
             *datablock->getNameStr(),
@@ -1172,13 +910,6 @@ GltfMeshBuilder::buildMesh (
 
         if (section && datablock) {
             section->setDatablock(datablock);
-
-            std::cout
-                    << "Using PBS datablock pointer: "
-                    << datablock
-                    << " name="
-                    << *datablock->getNameStr()
-                    << std::endl;
         }
 
 //-----------------------------------------------------
@@ -1214,10 +945,6 @@ GltfMeshBuilder::buildMesh (
         node->attachObject(manual);
         */
         if (!parentNode) {
-            std::cerr
-                    << "ERROR: buildMesh() received NULL parentNode!"
-                    << std::endl;
-
             sceneManager->destroyManualObject(manual);
             return;
         }
@@ -1229,21 +956,6 @@ GltfMeshBuilder::buildMesh (
 // Debug information
 //-----------------------------------------------------
 
-        std::cout
-                << "  Created Ogre ManualObject:"
-                << std::endl
-                << "    name="
-                << manual->getName()
-                << std::endl
-                << "    vertices="
-                << positions.size()
-                << std::endl
-                << "    indices="
-                << indices.size()
-                << std::endl
-                << "    attached="
-                << manual->isAttached()
-                << std::endl;
 
         ++primitiveIndex;
     }

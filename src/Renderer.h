@@ -23,9 +23,9 @@
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsUnlit.h>
 
-
+/*
 #include "Terra/Hlms/OgreHlmsTerra.h"
-
+*/
 namespace tinygltf {
 class Model;
 }
@@ -75,7 +75,10 @@ public:
         mHlmsPbs = hlms;
     }
 
-
+    const ResourceManager& getResourceManager() const {
+        return mResources;
+    }
+/*
     Ogre::HlmsTerra *getHlmsTerra() const {
         return mHlmsTerra;
     }
@@ -83,21 +86,23 @@ public:
     void setHlmsTerra(Ogre::HlmsTerra *hlms) {
         mHlmsTerra = hlms;
     }
+*/
 /*
     Ogre::Terra *getTerra() const {
         return mTerra;
     }
 */
+/*
 Ogre::HlmsDatablock *getTerraDatablock() const
 {
     return mResources.getTerraDatablock();
 }
-
+*/
 private:
     Ogre::HlmsPbs   *mHlmsPbs = nullptr;
     Ogre::HlmsUnlit *mHlmsUnlit = nullptr;
 
-    Ogre::HlmsTerra *mHlmsTerra = nullptr;
+//    Ogre::HlmsTerra *mHlmsTerra = nullptr;
 
     Ogre::Root          *mRoot          = nullptr;
     Ogre::Window        *mWindow        = nullptr;
@@ -116,10 +121,10 @@ private:
 
 
 //    Ogre::Terra *mTerra = nullptr;
-
+/*
     bool createLight();
     bool createTerrain();
     bool createObjects();
-
+*/
 
 };

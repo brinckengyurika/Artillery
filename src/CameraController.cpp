@@ -17,7 +17,6 @@ bool CameraController::initialize(Ogre::Camera *camera) {
 
 void CameraController::update(const InputManager &input, float dt) {
     Ogre::Vector3 move = Ogre::Vector3::ZERO;
-
     if( input.keyDown( XK_w ) )
         move += Ogre::Vector3::NEGATIVE_UNIT_Z;
 
@@ -81,4 +80,5 @@ void CameraController::update(const InputManager &input, float dt) {
             -direction * wheelStep
         );
     }
+
 }

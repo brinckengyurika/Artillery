@@ -22,17 +22,16 @@ Scene::Scene( Renderer &renderer ) :
 bool Scene::initialize() {
     if( !createLight() )
         return false;
-
     if( !createObjects() )
         return false;
-
+    if (!createTerra())
+        return false;
     return true;
 }
 
 bool Scene::createLight() {
     Ogre::SceneManager *scene =
         mRenderer.getSceneManager();
-
     if (True) {
         Ogre::SceneNode *nodeOriginalLight =
             scene->getRootSceneNode()->createChildSceneNode();
@@ -74,7 +73,7 @@ bool Scene::createLight() {
         );
     }
 
-    std::cout << "-----------------------Scene Createlihjy finished" << std::endl;
+    std::cout << "-----------------------Scene Createlighy finished" << std::endl;
     return true;
 }
 
@@ -94,11 +93,6 @@ bool Scene::createObjects() {
 
     std::string err;
     std::string warn;
-
-    std::cout
-            << "Start load."
-            << std::endl;
-
     bool loaded =
         loader.LoadBinaryFromFile(
             &model,
@@ -106,21 +100,6 @@ bool Scene::createObjects() {
             &warn,
             filename
         );
-
-    if(!warn.empty()) {
-        std::cout
-                << "GLTF warning: "
-                << warn
-                << std::endl;
-    }
-
-    if(!err.empty()) {
-        std::cerr
-                << "GLTF error: "
-                << err
-                << std::endl;
-    }
-
     if(!loaded) {
         std::cerr
                 << "Failed to load GLB: "
@@ -130,16 +109,6 @@ bool Scene::createObjects() {
         return false;
     }
 
-    std::cout
-            << "Loaded GLB: "
-            << filename
-            << std::endl;
-
-    std::cout
-            << "Stop load."
-            << std::endl;
-
-
     //-------------------------------------------------------
     // Create parent node
     //-------------------------------------------------------
@@ -148,7 +117,6 @@ bool Scene::createObjects() {
         mRenderer.getSceneManager()
         ->getRootSceneNode()
         ->createChildSceneNode();
-
     parentNode->setPosition(
         0.0f,
         0.0f,
@@ -160,34 +128,20 @@ bool Scene::createObjects() {
     // Build GLTF
     //-------------------------------------------------------
 
-    std::cout
-            << "Start build."
-            << std::endl;
 
     GltfMeshBuilder builder(mRenderer);
-
     if(!builder.build(
                 model,
                 mRenderer.getSceneManager(),
                 parentNode,
                 "2CylinderEngine")) {
-        std::cerr
-                << "Failed to build GLTF model."
-                << std::endl;
-
+        std::cerr << "Failed to build GLTF model." << std::endl;
         return false;
     }
-
-    std::cout
-            << "Stop build."
-            << std::endl;
-
-
     return true;
 }
 
-void Scene::update(float dt)
-{
+void Scene::update(float dt) {
     if (mTerra)
         mTerra->update(
             Ogre::Vector3(0.0f, -1.0f, 0.0f)
@@ -195,4 +149,54 @@ void Scene::update(float dt)
 }
 
 void Scene::shutdown() {
+}
+
+bool Scene::createTerra() {
+    Ogre::SceneManager *scene = mRenderer.getSceneManager();
+    const ResourceManager& mResources = mRenderer.getResourceManager();
+
+    mTerra =
+        new Ogre::Terra(
+        Ogre::Id::generateNewId<Ogre::MovableObject>(),
+        &scene->_getEntityMemoryManager(            Ogre::SCENE_STATIC ),
+        scene,
+        11u,
+        mRenderer.getRoot()->getCompositorManager2(),
+        mRenderer.getCamera(),
+        false
+    );
+
+    Ogre::SceneNode *terrainNode =
+        scene->getRootSceneNode(
+            Ogre::SCENE_STATIC
+        )->createChildSceneNode(
+            Ogre::SCENE_STATIC
+        );
+    terrainNode->attachObject( mTerra );
+    std::cout << "load heightmap start" << std::endl;
+    mTerra->load(
+        "Heightmap.png",
+        Ogre::Vector3(0.0f, 500.0f, 0.0f),
+        Ogre::Vector3(4096.0f, 1000.0f, 4096.0f),
+        false,
+        false
+    );
+
+    Ogre::HlmsDatablock *terraDatablock =
+        mResources.getTerraDatablock();
+    if( !terraDatablock ) {
+        std::cerr << "ERROR: Terra datablock is NULL!"
+                  << std::endl;
+        return false;
+    }
+    std::cout << "Terra datablock: "
+              << terraDatablock << std::endl;
+
+    if( !terraDatablock ) {
+        std::cerr << "ERROR: Terra datablock is NULL!" << std::endl;
+        return false;
+    }
+    mTerra->setDatablock( terraDatablock );
+
+    return true;
 }
