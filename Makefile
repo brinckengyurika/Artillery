@@ -345,6 +345,30 @@ src/CameraController.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/CameraController.cpp.s
 .PHONY : src/CameraController.cpp.s
 
+src/ConfigLoader.o: src/ConfigLoader.cpp.o
+.PHONY : src/ConfigLoader.o
+
+# target to build an object file
+src/ConfigLoader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o
+.PHONY : src/ConfigLoader.cpp.o
+
+src/ConfigLoader.i: src/ConfigLoader.cpp.i
+.PHONY : src/ConfigLoader.i
+
+# target to preprocess a source file
+src/ConfigLoader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.i
+.PHONY : src/ConfigLoader.cpp.i
+
+src/ConfigLoader.s: src/ConfigLoader.cpp.s
+.PHONY : src/ConfigLoader.s
+
+# target to generate assembly for a file
+src/ConfigLoader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.s
+.PHONY : src/ConfigLoader.cpp.s
+
 src/Engine.o: src/Engine.cpp.o
 .PHONY : src/Engine.o
 
@@ -645,6 +669,9 @@ help:
 	@echo "... src/CameraController.o"
 	@echo "... src/CameraController.i"
 	@echo "... src/CameraController.s"
+	@echo "... src/ConfigLoader.o"
+	@echo "... src/ConfigLoader.i"
+	@echo "... src/ConfigLoader.s"
 	@echo "... src/Engine.o"
 	@echo "... src/Engine.i"
 	@echo "... src/Engine.s"

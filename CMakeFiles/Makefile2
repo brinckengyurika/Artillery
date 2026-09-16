@@ -85,12 +85,12 @@ clean: CMakeFiles/Artillery.dir/clean
 CMakeFiles/Artillery.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Built target Artillery"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 "Built target Artillery"
 .PHONY : CMakeFiles/Artillery.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Artillery.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/satch/Projects/Artillery/CMakeFiles 21
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/satch/Projects/Artillery/CMakeFiles 22
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Artillery.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/satch/Projects/Artillery/CMakeFiles 0
 .PHONY : CMakeFiles/Artillery.dir/rule
@@ -102,7 +102,7 @@ Artillery: CMakeFiles/Artillery.dir/rule
 # codegen rule for target.
 CMakeFiles/Artillery.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Finished codegen for target Artillery"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 "Finished codegen for target Artillery"
 .PHONY : CMakeFiles/Artillery.dir/codegen
 
 # clean rule for target.

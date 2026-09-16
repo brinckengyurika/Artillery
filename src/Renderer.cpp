@@ -116,7 +116,7 @@ bool Renderer::initialize() {
     // Camera
     //-------------------------------------------------------
 
- mCamera =
+    mCamera =
         mSceneManager->createCamera(
             "MainCamera"
         );

@@ -18,6 +18,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o.d"
   "CMakeFiles/Artillery.dir/src/CameraController.cpp.o"
   "CMakeFiles/Artillery.dir/src/CameraController.cpp.o.d"
+  "CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o"
+  "CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o.d"
   "CMakeFiles/Artillery.dir/src/Engine.cpp.o"
   "CMakeFiles/Artillery.dir/src/Engine.cpp.o.d"
   "CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o"

@@ -86,10 +86,24 @@ CMakeFiles/Artillery.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Artillery.dir/src/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/satch/Projects/Artillery/src/main.cpp -o CMakeFiles/Artillery.dir/src/main.cpp.s
 
+CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o: CMakeFiles/Artillery.dir/flags.make
+CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o: src/ConfigLoader.cpp
+CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o -MF CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o.d -o CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o -c /home/satch/Projects/Artillery/src/ConfigLoader.cpp
+
+CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/satch/Projects/Artillery/src/ConfigLoader.cpp > CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.i
+
+CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/satch/Projects/Artillery/src/ConfigLoader.cpp -o CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.s
+
 CMakeFiles/Artillery.dir/src/Engine.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/Engine.cpp.o: src/Engine.cpp
 CMakeFiles/Artillery.dir/src/Engine.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Artillery.dir/src/Engine.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Artillery.dir/src/Engine.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/Engine.cpp.o -MF CMakeFiles/Artillery.dir/src/Engine.cpp.o.d -o CMakeFiles/Artillery.dir/src/Engine.cpp.o -c /home/satch/Projects/Artillery/src/Engine.cpp
 
 CMakeFiles/Artillery.dir/src/Engine.cpp.i: cmake_force
@@ -103,7 +117,7 @@ CMakeFiles/Artillery.dir/src/Engine.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/Renderer.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/Renderer.cpp.o: src/Renderer.cpp
 CMakeFiles/Artillery.dir/src/Renderer.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Artillery.dir/src/Renderer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Artillery.dir/src/Renderer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/Renderer.cpp.o -MF CMakeFiles/Artillery.dir/src/Renderer.cpp.o.d -o CMakeFiles/Artillery.dir/src/Renderer.cpp.o -c /home/satch/Projects/Artillery/src/Renderer.cpp
 
 CMakeFiles/Artillery.dir/src/Renderer.cpp.i: cmake_force
@@ -117,7 +131,7 @@ CMakeFiles/Artillery.dir/src/Renderer.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o: src/ResourceManager.cpp
 CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o -MF CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o.d -o CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o -c /home/satch/Projects/Artillery/src/ResourceManager.cpp
 
 CMakeFiles/Artillery.dir/src/ResourceManager.cpp.i: cmake_force
@@ -131,7 +145,7 @@ CMakeFiles/Artillery.dir/src/ResourceManager.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/Scene.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/Scene.cpp.o: src/Scene.cpp
 CMakeFiles/Artillery.dir/src/Scene.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Artillery.dir/src/Scene.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Artillery.dir/src/Scene.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/Scene.cpp.o -MF CMakeFiles/Artillery.dir/src/Scene.cpp.o.d -o CMakeFiles/Artillery.dir/src/Scene.cpp.o -c /home/satch/Projects/Artillery/src/Scene.cpp
 
 CMakeFiles/Artillery.dir/src/Scene.cpp.i: cmake_force
@@ -145,7 +159,7 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o: src/MeshFactory.cpp
 CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o -MF CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o.d -o CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o -c /home/satch/Projects/Artillery/src/MeshFactory.cpp
 
 CMakeFiles/Artillery.dir/src/MeshFactory.cpp.i: cmake_force
@@ -159,7 +173,7 @@ CMakeFiles/Artillery.dir/src/MeshFactory.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/CameraController.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/CameraController.cpp.o: src/CameraController.cpp
 CMakeFiles/Artillery.dir/src/CameraController.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Artillery.dir/src/CameraController.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Artillery.dir/src/CameraController.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/CameraController.cpp.o -MF CMakeFiles/Artillery.dir/src/CameraController.cpp.o.d -o CMakeFiles/Artillery.dir/src/CameraController.cpp.o -c /home/satch/Projects/Artillery/src/CameraController.cpp
 
 CMakeFiles/Artillery.dir/src/CameraController.cpp.i: cmake_force
@@ -173,7 +187,7 @@ CMakeFiles/Artillery.dir/src/CameraController.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o: src/GltfLoader.cpp
 CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o -MF CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o.d -o CMakeFiles/Artillery.dir/src/GltfLoader.cpp.o -c /home/satch/Projects/Artillery/src/GltfLoader.cpp
 
 CMakeFiles/Artillery.dir/src/GltfLoader.cpp.i: cmake_force
@@ -187,7 +201,7 @@ CMakeFiles/Artillery.dir/src/GltfLoader.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: src/GltfMeshBuilder.cpp
 CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o -MF CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o.d -o CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o -c /home/satch/Projects/Artillery/src/GltfMeshBuilder.cpp
 
 CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.i: cmake_force
@@ -201,7 +215,7 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o: src/TinyGltfImplementation.cpp
 CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o -MF CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o.d -o CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o -c /home/satch/Projects/Artillery/src/TinyGltfImplementation.cpp
 
 CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.i: cmake_force
@@ -215,7 +229,7 @@ CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/InputManager.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/InputManager.cpp.o: src/InputManager.cpp
 CMakeFiles/Artillery.dir/src/InputManager.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Artillery.dir/src/InputManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Artillery.dir/src/InputManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/InputManager.cpp.o -MF CMakeFiles/Artillery.dir/src/InputManager.cpp.o.d -o CMakeFiles/Artillery.dir/src/InputManager.cpp.o -c /home/satch/Projects/Artillery/src/InputManager.cpp
 
 CMakeFiles/Artillery.dir/src/InputManager.cpp.i: cmake_force
@@ -229,7 +243,7 @@ CMakeFiles/Artillery.dir/src/InputManager.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o: src/Input/LinuxInputBackend.cpp
 CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o -MF CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o.d -o CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o -c /home/satch/Projects/Artillery/src/Input/LinuxInputBackend.cpp
 
 CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.i: cmake_force
@@ -243,7 +257,7 @@ CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.s: cmake_force
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.i: cmake_force
@@ -257,7 +271,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.i: cmake_force
@@ -271,7 +285,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.i: cmake_force
@@ -285,7 +299,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraWorkspaceListener.cpp.i: cmake_force
@@ -299,7 +313,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerra.cpp.i: cmake_force
@@ -313,7 +327,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsTerraDatablock.cpp.i: cmake_force
@@ -327,7 +341,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/OgreHlmsJsonTerra.cpp.i: cmake_force
@@ -341,7 +355,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o: CMakeFiles/Artillery.dir/flags.make
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o: /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o: CMakeFiles/Artillery.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o -MF CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o.d -o CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.o -c /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Hlms/PbsListener/OgreHlmsPbsTerraShadows.cpp.i: cmake_force
@@ -355,6 +369,7 @@ CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/
 # Object files for target Artillery
 Artillery_OBJECTS = \
 "CMakeFiles/Artillery.dir/src/main.cpp.o" \
+"CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o" \
 "CMakeFiles/Artillery.dir/src/Engine.cpp.o" \
 "CMakeFiles/Artillery.dir/src/Renderer.cpp.o" \
 "CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o" \
@@ -379,6 +394,7 @@ Artillery_OBJECTS = \
 Artillery_EXTERNAL_OBJECTS =
 
 bin/Artillery: CMakeFiles/Artillery.dir/src/main.cpp.o
+bin/Artillery: CMakeFiles/Artillery.dir/src/ConfigLoader.cpp.o
 bin/Artillery: CMakeFiles/Artillery.dir/src/Engine.cpp.o
 bin/Artillery: CMakeFiles/Artillery.dir/src/Renderer.cpp.o
 bin/Artillery: CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o
@@ -407,7 +423,7 @@ bin/Artillery: /usr/lib/x86_64-linux-gnu/libICE.so
 bin/Artillery: /usr/lib/x86_64-linux-gnu/libX11.so
 bin/Artillery: /usr/lib/x86_64-linux-gnu/libXext.so
 bin/Artillery: CMakeFiles/Artillery.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking CXX executable bin/Artillery"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/satch/Projects/Artillery/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable bin/Artillery"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Artillery.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -85,6 +85,7 @@ set(TERRA_SOURCE_FILES
 add_executable(Artillery
 
     src/main.cpp
+    src/ConfigLoader.cpp
     src/Engine.cpp
     src/Renderer.cpp
     src/ResourceManager.cpp
@@ -96,6 +97,7 @@ add_executable(Artillery
     src/TinyGltfImplementation.cpp
     src/InputManager.cpp
     src/Input/LinuxInputBackend.cpp
+
 
     # Terra
     ${TERRA_SOURCE_FILES}
