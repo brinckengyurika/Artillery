@@ -6,18 +6,16 @@
 
 class Renderer;
 
-namespace tinygltf{
-    class Model;
+namespace tinygltf {
+class Model;
 }
 
-namespace Ogre
-{
-    class SceneManager;
-    class SceneNode;
+namespace Ogre {
+class SceneManager;
+class SceneNode;
 }
 
-class GltfMeshBuilder
-{
+class GltfMeshBuilder {
 public:
     explicit GltfMeshBuilder( Renderer &renderer );
     bool inspect( const tinygltf::Model &model );

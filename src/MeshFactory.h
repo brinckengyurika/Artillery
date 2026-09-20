@@ -1,14 +1,12 @@
 #pragma once
 
-namespace Ogre
-{
-    class Item;
+namespace Ogre {
+class Item;
 }
 
 class Renderer;
 
-class MeshFactory
-{
+class MeshFactory {
 public:
     explicit MeshFactory(Renderer &renderer);
 

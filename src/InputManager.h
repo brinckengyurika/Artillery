@@ -7,8 +7,7 @@
 
 class IInputBackend;
 
-class InputManager
-{
+class InputManager {
 public:
     InputManager();
     ~InputManager();

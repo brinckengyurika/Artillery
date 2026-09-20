@@ -5,6 +5,7 @@
 using json = nlohmann::json;
 
 ConfigLoader::ConfigLoader(const std::string& filename) {
+    std::cout << "Filename: " << filename << std::endl;
     loadFromFile(filename);
 }
 

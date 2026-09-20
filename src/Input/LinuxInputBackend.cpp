@@ -362,12 +362,10 @@ void LinuxInputBackend::shutdown() {
     mInitialized = false;
 }
 
-bool LinuxInputBackend::mouseWheelForward() const
-{
+bool LinuxInputBackend::mouseWheelForward() const {
     return mMouseWheelForward;
 }
 
-bool LinuxInputBackend::mouseWheelBackward() const
-{
+bool LinuxInputBackend::mouseWheelBackward() const {
     return mMouseWheelBackward;
 }

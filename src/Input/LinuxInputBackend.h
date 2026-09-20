@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "IInputBackend.h"
@@ -8,8 +7,7 @@
 
 #include <unordered_set>
 
-class LinuxInputBackend : public IInputBackend
-{
+class LinuxInputBackend : public IInputBackend {
 public:
     LinuxInputBackend(Display *display, ::Window window);
     ~LinuxInputBackend() override;
@@ -46,7 +44,7 @@ private:
     bool mQuit{false};
     bool mMouseCaptured{false};
 
-    bool mMouseButtons[8]{};
+    bool mMouseButtons[8] {};
 
     bool mMouseWheelForward{false};
     bool mMouseWheelBackward{false};

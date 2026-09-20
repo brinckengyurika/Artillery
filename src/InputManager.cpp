@@ -2,19 +2,16 @@
 
 #include "Input/LinuxInputBackend.h"
 
-InputManager::InputManager()
-{
+InputManager::InputManager() {
 }
 
-InputManager::~InputManager()
-{
+InputManager::~InputManager() {
     shutdown();
 }
 
 bool InputManager::initialize(
     Display *display,
-    ::Window window)
-{
+    ::Window window) {
     mBackend =
         std::make_unique<LinuxInputBackend>(
             display,
@@ -24,22 +21,19 @@ bool InputManager::initialize(
     return mBackend->initialize();
 }
 
-void InputManager::shutdown()
-{
+void InputManager::shutdown() {
     if(mBackend)
         mBackend->shutdown();
 
     mBackend.reset();
 }
 
-void InputManager::update()
-{
+void InputManager::update() {
     if(mBackend)
         mBackend->update();
 }
 
-bool InputManager::keyDown(KeySym key) const
-{
+bool InputManager::keyDown(KeySym key) const {
     if(!mBackend)
         return false;
 
@@ -47,16 +41,14 @@ bool InputManager::keyDown(KeySym key) const
 }
 
 bool InputManager::mouseButtonDown(
-    unsigned int button) const
-{
+    unsigned int button) const {
     if(!mBackend)
         return false;
 
     return mBackend->mouseButtonDown(button);
 }
 
-bool InputManager::mouseCaptured() const
-{
+bool InputManager::mouseCaptured() const {
     if(!mBackend)
         return false;
 
@@ -64,45 +56,39 @@ bool InputManager::mouseCaptured() const
 }
 
 void InputManager::setMouseCaptured(
-    bool captured)
-{
+    bool captured) {
     if(mBackend)
         mBackend->setMouseCaptured(captured);
 }
 
-int InputManager::mouseDeltaX() const
-{
+int InputManager::mouseDeltaX() const {
     if(!mBackend)
         return 0;
 
     return mBackend->mouseDeltaX();
 }
 
-int InputManager::mouseDeltaY() const
-{
+int InputManager::mouseDeltaY() const {
     if(!mBackend)
         return 0;
 
     return mBackend->mouseDeltaY();
 }
 
-bool InputManager::shouldQuit() const
-{
+bool InputManager::shouldQuit() const {
     if(!mBackend)
         return true;
 
     return mBackend->shouldQuit();
 }
-bool InputManager::mouseWheelForward() const
-{
+bool InputManager::mouseWheelForward() const {
     if(!mBackend)
         return false;
 
     return mBackend->mouseWheelForward();
 }
 
-bool InputManager::mouseWheelBackward() const
-{
+bool InputManager::mouseWheelBackward() const {
     if(!mBackend)
         return false;
 

@@ -32,44 +32,41 @@ bool Scene::initialize() {
 bool Scene::createLight() {
     Ogre::SceneManager *scene =
         mRenderer.getSceneManager();
-    if (True) {
+    int lighcount = mRenderer.getConfig().getLights().size();
+    for (int lc = 0; lc < lighcount; ++lc) {
         Ogre::SceneNode *nodeOriginalLight =
             scene->getRootSceneNode()->createChildSceneNode();
         Ogre::Light *light =
             scene->createLight();
-        light->setName("OriginalLight");
-        light->setType( Ogre::Light::LT_DIRECTIONAL );
+        light->setName(mRenderer.getConfig().getLights()[lc].getName());
+        if ( mRenderer.getConfig().getLights()[lc].getType() == "LT_DIRECTIONAL") {
+            light->setType( Ogre::Light::LT_DIRECTIONAL );
+        } else {
+            std::cout << "THE TYPE OF THE LIGHT IS NOT RECOGNIZABLE!" << std::endl;
+        }
 
         light->setDiffuseColour(
-            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+            Ogre::ColourValue(
+                mRenderer.getConfig().getLights()[lc].getColor()[0],
+                mRenderer.getConfig().getLights()[lc].getColor()[1],
+                mRenderer.getConfig().getLights()[lc].getColor()[2]
+            )
         );
         light->setSpecularColour(
-            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
+            Ogre::ColourValue(
+                mRenderer.getConfig().getLights()[lc].getSpecularColor()[0],
+                mRenderer.getConfig().getLights()[lc].getSpecularColor()[1],
+                mRenderer.getConfig().getLights()[lc].getSpecularColor()[2]
+            )
         );
         nodeOriginalLight->attachObject( light );
         nodeOriginalLight->setDirection(
-            Ogre::Vector3( -1, -1, -1 ).normalisedCopy()
-        );
-    }
-
-//new light
-    if (True) {
-        Ogre::SceneNode *nodeSunShine =
-            scene->getRootSceneNode()->createChildSceneNode();
-        Ogre::Light *sunLight =
-            scene->createLight();
-        sunLight->setName("Sunligh");
-        sunLight->setType(Ogre::Light::LT_DIRECTIONAL);
-
-        sunLight->setDiffuseColour(
-            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
-        );
-        sunLight->setSpecularColour(
-            Ogre::ColourValue(1.0f, 1.0f, 1.0f)
-        );
-        nodeSunShine->attachObject( sunLight );
-        sunLight->setDirection(
-            Ogre::Vector3(-0.5f, -1.0f, -0.3f).normalisedCopy()
+            Ogre::Vector3(
+//             -1, -1, -1
+                mRenderer.getConfig().getLights()[lc].getDirection()[0],
+                mRenderer.getConfig().getLights()[lc].getDirection()[1],
+                mRenderer.getConfig().getLights()[lc].getDirection()[2]
+             ).normalisedCopy()
         );
     }
 

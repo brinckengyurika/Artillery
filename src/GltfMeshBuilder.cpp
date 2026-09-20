@@ -705,12 +705,12 @@ GltfMeshBuilder::buildMesh (
 
             const auto &factor =
                 material.pbrMetallicRoughness.baseColorFactor;
-/*
-            for (double v : factor)
-                std::cout << v << " ";
+            /*
+                        for (double v : factor)
+                            std::cout << v << " ";
 
-            std::cout << std::endl;
-*/
+                        std::cout << std::endl;
+            */
             if (factor.size() >= 4) {
                 baseColour =
                     Ogre::ColourValue(

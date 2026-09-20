@@ -252,35 +252,34 @@ bool ResourceManager::registerHlms() {
         );
 
 
-std::cout << "Registering HLMS Terra..." << std::endl;
+    std::cout << "Registering HLMS Terra..." << std::endl;
 
-mRenderer.getRoot()
+    mRenderer.getRoot()
     ->getHlmsManager()
     ->registerHlms( hlmsTerra );
 
-std::cout << "HLMS Terra registered." << std::endl;
+    std::cout << "HLMS Terra registered." << std::endl;
 
 //mRenderer.setHlmsTerra( hlmsTerra );
 
-mHlmsTerra = hlmsTerra;
+    mHlmsTerra = hlmsTerra;
 
-Ogre::HlmsDatablock *terraDatablock =
-    hlmsTerra->createDatablock(
-        Ogre::IdString("TerraExampleMaterial"),
-        "TerraExampleMaterial",
-        macroblock,
-        blendblock,
-        params
-    );
+    Ogre::HlmsDatablock *terraDatablock =
+        hlmsTerra->createDatablock(
+            Ogre::IdString("TerraExampleMaterial"),
+            "TerraExampleMaterial",
+            macroblock,
+            blendblock,
+            params
+        );
 
-if( !terraDatablock )
-{
-    std::cerr << "ERROR: Cannot create Terra datablock!"
-              << std::endl;
-    return false;
-}
+    if( !terraDatablock ) {
+        std::cerr << "ERROR: Cannot create Terra datablock!"
+                  << std::endl;
+        return false;
+    }
 
-mTerraDatablock = terraDatablock;
+    mTerraDatablock = terraDatablock;
 
 
     Ogre::HlmsParamVec paramVec;

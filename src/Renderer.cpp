@@ -12,7 +12,8 @@
 #include <vector>
 #include <map>
 
-Renderer::Renderer() :
+Renderer::Renderer(const Config& config ) :
+    config(config),
     mRoot( nullptr ),
     mWindow( nullptr ),
     mSceneManager( nullptr ),
@@ -29,8 +30,6 @@ Renderer::~Renderer() {
 
 
 bool Renderer::initialize() {
-    std::cout << "Creating Ogre Root..." << std::endl;
-
     mRoot = new Ogre::Root(
         ARTILLERY_CFG_DIR "/plugins.cfg",
         "",
@@ -46,10 +45,18 @@ bool Renderer::initialize() {
     }
 
     Ogre::RenderSystem *rs = renderers.front();
+    if (config.getWindow().isFullscreen()) {
+        rs->setConfigOption( "Full Screen", "Yes" );
+    } else {
+        rs->setConfigOption( "Full Screen", "No" );
+    }
+    if (config.getWindow().isVsyncEnabled()) {
+        rs->setConfigOption( "VSync", "Yes" );
+    } else {
+        rs->setConfigOption( "VSync", "No" );
+    }
+    rs->setConfigOption( "Video Mode", config.getWindow().getResolution() );
 
-    rs->setConfigOption( "Full Screen", "No" );
-    rs->setConfigOption( "Video Mode", "1280x720" );
-    rs->setConfigOption( "VSync", "No" );
 
     mRoot->setRenderSystem( rs );
 
@@ -116,24 +123,36 @@ bool Renderer::initialize() {
     // Camera
     //-------------------------------------------------------
 
+    int cameranum = 0;
+    const std::vector<CameraConfig> &m_cameras = config.getCameras();
     mCamera =
         mSceneManager->createCamera(
-            "MainCamera"
+            config.getCameras()[cameranum].getName()
+        );
+    mCamera->setNearClipDistance( config.getCameras()[cameranum].getNearClip() );
+    mCamera->setFarClipDistance( config.getCameras()[cameranum].getFarClip() );
+    mCamera->setAutoAspectRatio( true );
+    /*
+        mCamera->setPosition(
+            0.0f,
+            2.0f,
+            8.0f
         );
 
-    mCamera->setNearClipDistance( 0.1f );
-    mCamera->setFarClipDistance( 100000.0f );
-    mCamera->setAutoAspectRatio( true );
-/*
+    */
+    //mCamera->setPosition(0.0f, 800.0f, 1200.0f);
     mCamera->setPosition(
-        0.0f,
-        2.0f,
-        8.0f
+        config.getCameras()[cameranum].getPosition()[0],
+        config.getCameras()[cameranum].getPosition()[1],
+        config.getCameras()[cameranum].getPosition()[2]
     );
+    //mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
+    mCamera->lookAt(Ogre::Vector3(
+        config.getCameras()[cameranum].getLookAt()[0],
+        config.getCameras()[cameranum].getLookAt()[1],
+        config.getCameras()[cameranum].getLookAt()[2]
 
-*/
-    mCamera->setPosition(0.0f, 800.0f, 1200.0f);
-    mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
+    ));
 
 //    mCamera->setNearClipDistance(1.0f);
 //    mCamera->setFarClipDistance(10000.0f);
@@ -169,13 +188,13 @@ bool Renderer::initialize() {
             workspaceDefName,
             true
         );
-/*
-    mCamera->setPosition(0.0f, 800.0f, 1200.0f);
-    mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
+    /*
+        mCamera->setPosition(0.0f, 800.0f, 1200.0f);
+        mCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f));
 
-    mCamera->setNearClipDistance(1.0f);
-    mCamera->setFarClipDistance(10000.0f);
-*/
+        mCamera->setNearClipDistance(1.0f);
+        mCamera->setFarClipDistance(10000.0f);
+    */
     if( !mScene.initialize() )
         return false;
 
@@ -210,8 +229,7 @@ bool Renderer::renderFrame() {
     return mRoot->renderOneFrame();
 }
 */
-bool Renderer::renderFrame()
-{
+bool Renderer::renderFrame() {
     float timestep = 0.016f;
     Ogre::WindowEventUtilities::messagePump();
 
@@ -224,9 +242,9 @@ bool Renderer::renderFrame()
         mInputManager,
         timestep
     );
-/*Refactoring
-    mScene.update(0.016f);
-*/
+    /*Refactoring
+        mScene.update(0.016f);
+    */
     mScene.update(timestep);
     return mRoot->renderOneFrame();
 }

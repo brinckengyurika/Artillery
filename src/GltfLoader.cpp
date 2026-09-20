@@ -7,12 +7,10 @@
 #include "Renderer.h"
 
 GltfLoader::GltfLoader( Renderer &renderer ) :
-    mRenderer( renderer )
-{
+    mRenderer( renderer ) {
 }
 
-bool GltfLoader::load( const std::string &filename )
-{
+bool GltfLoader::load( const std::string &filename ) {
     tinygltf::Model model;
 
     if( !load( filename, model ) )
@@ -22,19 +20,18 @@ bool GltfLoader::load( const std::string &filename )
 }
 
 bool GltfLoader::load( const std::string &filename,
-                       tinygltf::Model &model )
-{
+                       tinygltf::Model &model ) {
     tinygltf::TinyGLTF loader;
 
     std::string err;
     std::string warn;
 
     bool ok = loader.LoadBinaryFromFile(
-        &model,
-        &err,
-        &warn,
-        filename
-    );
+                  &model,
+                  &err,
+                  &warn,
+                  filename
+              );
 
     if( !warn.empty() )
         std::cout << "TinyGLTF warning: "

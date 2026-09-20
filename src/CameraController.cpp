@@ -67,15 +67,13 @@ void CameraController::update(const InputManager &input, float dt) {
     }
     constexpr float wheelStep = 5.0f;
     Ogre::Vector3 direction = mCamera->getDerivedDirection();
-    if(input.mouseWheelForward())
-    {
+    if(input.mouseWheelForward()) {
         mCamera->move(
             direction * wheelStep
         );
     }
 
-    if(input.mouseWheelBackward())
-    {
+    if(input.mouseWheelBackward()) {
         mCamera->move(
             -direction * wheelStep
         );

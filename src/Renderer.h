@@ -22,6 +22,7 @@
 #endif
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsUnlit.h>
+#include "Config.h"
 
 /*
 #include "Terra/Hlms/OgreHlmsTerra.h"
@@ -32,17 +33,21 @@ class Model;
 
 class Renderer {
 public:
-    Renderer();
+    Renderer(const Config& config );
     ~Renderer();
-/*Refactoring
-    bool initialize();
-    bool renderFrame();
-    void shutdown();
-*/
+    /*Refactoring
+        bool initialize();
+        bool renderFrame();
+        void shutdown();
+    */
     bool initialize();
     void update(float dt);
     bool renderFrame();
     void shutdown();
+
+    const Config& getConfig() const {
+        return config;
+    }
 
     Ogre::Root *getRoot() const {
         return mRoot;
@@ -78,27 +83,28 @@ public:
     const ResourceManager& getResourceManager() const {
         return mResources;
     }
-/*
-    Ogre::HlmsTerra *getHlmsTerra() const {
-        return mHlmsTerra;
-    }
+    /*
+        Ogre::HlmsTerra *getHlmsTerra() const {
+            return mHlmsTerra;
+        }
 
-    void setHlmsTerra(Ogre::HlmsTerra *hlms) {
-        mHlmsTerra = hlms;
+        void setHlmsTerra(Ogre::HlmsTerra *hlms) {
+            mHlmsTerra = hlms;
+        }
+    */
+    /*
+        Ogre::Terra *getTerra() const {
+            return mTerra;
+        }
+    */
+    /*
+    Ogre::HlmsDatablock *getTerraDatablock() const
+    {
+        return mResources.getTerraDatablock();
     }
-*/
-/*
-    Ogre::Terra *getTerra() const {
-        return mTerra;
-    }
-*/
-/*
-Ogre::HlmsDatablock *getTerraDatablock() const
-{
-    return mResources.getTerraDatablock();
-}
-*/
+    */
 private:
+    const Config& config;
     Ogre::HlmsPbs   *mHlmsPbs = nullptr;
     Ogre::HlmsUnlit *mHlmsUnlit = nullptr;
 
@@ -121,10 +127,10 @@ private:
 
 
 //    Ogre::Terra *mTerra = nullptr;
-/*
-    bool createLight();
-    bool createTerrain();
-    bool createObjects();
-*/
+    /*
+        bool createLight();
+        bool createTerrain();
+        bool createObjects();
+    */
 
 };

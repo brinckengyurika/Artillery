@@ -5,8 +5,7 @@
 class Renderer;
 
 
-class Scene
-{
+class Scene {
 public:
     explicit Scene( Renderer &renderer );
     bool initialize();

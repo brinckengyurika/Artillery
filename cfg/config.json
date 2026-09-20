@@ -1,34 +1,51 @@
 {
+     "lights": [
+      {
+        "name" :"light1",
+        "position": [0.0, 800.0, 1200.0],
+        "direction": [-1.0, -1.0, -1.0],
+        "type": "LT_DIRECTIONAL",
+        "color": [1.0, 1.0, 1.0],
+        "specularcolor": [1.0, 1.0, 1.0]
+      },
+      {
+        "name" :"light2",
+        "position": [400.0, 800.0, 1200.0],
+        "direction": [-0.5, -1.0, -1.0],
+        "type": "LT_DIRECTIONAL",
+        "color": [1.0, 1.0, 1.0],
+        "specularcolor": [1.0, 1.0, 1.0]
+      }
+    ],
     "cameras": [
-      { 
+      {
         "name" :"camera1",
         "position": [0.0, 800.0, 1200.0],
-        "look_at": [0.0, 0.0, 0.0],
+        "look_at": [300.0, 200.0, 0.0],
         "near_clip": 1.0,
         "far_clip": 10000.0
       },
-      { 
+      {
         "name" :"camera2",
         "position": [0.0, 800.0, 1200.0],
         "look_at": [0.0, 0.0, 0.0],
         "near_clip": 1.0,
         "far_clip": 10000.0
       },
-      { 
+      {
         "name" :"camera3",
         "position": [0.0, 800.0, 1200.0],
         "look_at": [0.0, 0.0, 0.0],
         "near_clip": 1.0,
         "far_clip": 10000.0
       },
-      { 
+      {
         "name" :"camera4",
         "position": [0.0, 800.0, 1200.0],
         "look_at": [0.0, 0.0, 0.0],
         "near_clip": 1.0,
         "far_clip": 10000.0
-      }      
-      
+      }
     ],
     "terrains": [
       {
@@ -54,16 +71,120 @@
         "heightmap": "Heightmap.png",
         "position": [0.0, 500.0, 0.0],
         "size": [4096.0, 1000.0, 4096.0]
-      }            
+      }
     ],
-    "scene": {
-        "model": "models/2CylinderEngine.glb"
-    },
+    "models":[
+        {
+            "name":"engine",
+            "model":"models/2CylinderEngine.glb"
+
+        },
+        {
+            "name":"eiffel",
+            "model":"models/Eiffel3.glb"
+
+        }
+    ],
+    "scenes": [
+        {
+            "name":"scnene1",
+            "models": [
+                {
+                    "name":"engine1",
+                    "modelname":"engine",
+                    "scale":[1.0, 1.0, 1.0],
+                    "position":[ 300.0, 1.0, 400.0],
+                    "rotation":[0.0, 90.0, 0.0]
+                },
+                {
+                    "name":"engine2",
+                    "modelname":"engine",
+                    "scale":[0.5, 0.5, 0.5],
+                    "position":[ 900.0, 1.0, 100.0],
+                    "rotation":[90.0, 180.0, 0.0]
+                },
+                {
+                    "name":"tower2",
+                    "modelname":"eiffel",
+                    "scale":[1.5, 1.5, 0.5],
+                    "position":[ 400.0, 1.0, 300.0],
+                    "rotation":[0.0, 0.0, 0.0]
+                }
+            ],
+            "cameras": [
+                {
+                    "name":"Cam1",
+                    "cameraname":"camera1"
+                },
+                {
+                    "name":"Cam2",
+                    "cameraname":"camera2"
+                }
+            ],
+            "lights" : [
+                {
+                    "name":"Light1",
+                    "lightname":"light1"
+                },
+                {
+                    "name":"Light2",
+                    "lightname":"light2"
+                }
+            ],
+            "terrain" : "terrain1"
+        },
+        {
+            "name":"scnene1",
+            "models": [
+                {
+                    "name":"engine1",
+                    "modelname":"engine",
+                    "scale":[1.0, 1.0, 1.0],
+                    "position":[ 300.0, 1.0, 400.0],
+                    "rotation":[0.0, 90.0, 0.0]
+                },
+                {
+                    "name":"engine2",
+                    "modelname":"engine",
+                    "scale":[0.5, 0.5, 0.5],
+                    "position":[ 900.0, 1.0, 100.0],
+                    "rotation":[90.0, 180.0, 0.0]
+                },
+                {
+                    "name":"tower2",
+                    "modelname":"eiffel",
+                    "scale":[1.5, 1.5, 0.5],
+                    "position":[ 400.0, 1.0, 300.0],
+                    "rotation":[0.0, 0.0, 0.0]
+                }
+            ],
+            "cameras": [
+                {
+                    "name":"Cam1",
+                    "cameraname":"camera1"
+                },
+                {
+                    "name":"Cam2",
+                    "cameraname":"camera2"
+                }
+            ],
+            "lights" : [
+                {
+                    "name":"Light1",
+                    "lightname":"light1"
+                },
+                {
+                    "name":"Light2",
+                    "lightname":"light2"
+                }
+            ],
+            "terrain" : "terrain1"
+        }
+    ],
     "window": {
-        "width": 1280,
-        "height": 720,
-        "fullscreen": false,
-        "vsync": true
+        "resolution": "1600x720",
+        "vsync": "No",
+        "fullscreen": "No"
     }
-    
+
 }

@@ -1,17 +1,14 @@
-
 #pragma once
 
 #include <string>
 
-namespace tinygltf
-{
-    class Model;
+namespace tinygltf {
+class Model;
 }
 
 class Renderer;
 
-class GltfLoader
-{
+class GltfLoader {
 public:
     explicit GltfLoader(Renderer &renderer);
 

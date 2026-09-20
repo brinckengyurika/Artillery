@@ -4,8 +4,7 @@
 
 class InputManager;
 
-class CameraController
-{
+class CameraController {
 public:
     CameraController();
 
