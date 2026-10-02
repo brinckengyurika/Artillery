@@ -13,6 +13,7 @@ public:
     void update(float dt);
     void shutdown();
 
+
 private:
     Renderer &mRenderer;
     MeshFactory mMeshFactory;
@@ -21,4 +22,6 @@ private:
 
     bool createLight();
     bool createObjects();
+    bool createObjectsNew(int sceneindex);
+    bool createTerra(int sceneindex);
 };

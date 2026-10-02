@@ -1,8 +1,10 @@
 #pragma once
-#pragma once
-
-#include <string>
+#include <iostream>
+#include <fstream>
 #include <vector>
+#include <map>
+#include <string>
+#include <filesystem>
 #include <array>
 #include <nlohmann/json.hpp>
 
@@ -100,7 +102,6 @@ public:
 
     const std::string& getName() const { return m_name; }
     const std::string& getModelPath() const { return m_modelPath; }
-
     friend void from_json(const nlohmann::json& j, ModelAssetConfig& item) {
         j.at("name").get_to(item.m_name);
         j.at("model").get_to(item.m_modelPath);
@@ -177,6 +178,7 @@ private:
     std::vector<SceneLightInstance> m_lights;
     std::string m_terrain;
 
+
 public:
     SceneConfig() = default;
 
@@ -192,7 +194,10 @@ public:
         j.at("cameras").get_to(item.m_cameras);
         j.at("lights").get_to(item.m_lights);
         j.at("terrain").get_to(item.m_terrain);
+
     }
+
+
 };
 
 // --- 7. WINDOW CONFIG CLASS ---
@@ -225,16 +230,28 @@ private:
     std::vector<ModelAssetConfig> m_models;
     std::vector<SceneConfig> m_scenes;
     WindowConfig m_window;
+    std::map<std::string, std::vector<unsigned char>> m_binaryFiles;
 
 public:
-    Config() = default;
 
+    Config() = default;
     const std::vector<LightConfig>& getLights() const { return m_lights; }
     const std::vector<CameraConfig>& getCameras() const { return m_cameras; }
     const std::vector<TerrainConfig>& getTerrains() const { return m_terrains; }
     const std::vector<ModelAssetConfig>& getModels() const { return m_models; }
     const std::vector<SceneConfig>& getScenes() const { return m_scenes; }
     const WindowConfig& getWindow() const { return m_window; }
+
+    const TerrainConfig* getTerrainConfigbyName(std::string& terrainname) {
+        std::vector<TerrainConfig>::iterator it;
+        for(it = m_terrains.begin(); it != m_terrains.end(); ++it )    {
+            if (  it->getName() == terrainname) {
+                return &(*it);
+            }
+        }
+        return nullptr;
+    }
+
 
     friend void from_json(const nlohmann::json& j, Config& item) {
         j.at("lights").get_to(item.m_lights);
@@ -243,5 +260,50 @@ public:
         j.at("models").get_to(item.m_models);
         j.at("scenes").get_to(item.m_scenes);
         j.at("window").get_to(item.m_window);
+
+        std::vector<ModelAssetConfig>::iterator it;
+        for(it = item.m_models.begin(); it != item.m_models.end(); ++it )    {
+            std::cout << "Cacheba betoltendo object: " << it->getName() << std::endl;
+            std::cout << "Cacheba betoltendo object filenameja: " << it->getModelPath() << std::endl;
+            item.loadBinaryFile(it->getModelPath(), it->getName());
+        }
     }
+
+    bool loadBinaryFile(const std::string& filename, const std::string& objectname){
+        std::ifstream file(filename, std::ios::binary | std::ios::ate);
+
+        if (!file)
+            return false;
+
+        const std::streamsize size = file.tellg();
+
+        if (size < 0)
+            return false;
+
+        file.seekg(0, std::ios::beg);
+
+        std::vector<unsigned char> data(
+            static_cast<size_t>(size)
+        );
+
+        if (!file.read(
+                reinterpret_cast<char*>(data.data()),
+                size))
+        {
+            return false;
+        }
+
+        m_binaryFiles[objectname] = std::move(data);
+
+        return true;
+    }
+    const std::vector<unsigned char>& getBinaryFile(const std::string& filename) const {
+        return m_binaryFiles.at(filename);
+    }
+
+    size_t getBinaryFileSize(const std::string& filename) const{
+        return m_binaryFiles.at(filename).size();
+    }
+
+
 };
