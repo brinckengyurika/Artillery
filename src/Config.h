@@ -242,13 +242,11 @@ public:
     const std::vector<SceneConfig>& getScenes() const { return m_scenes; }
     const WindowConfig& getWindow() const { return m_window; }
 
-    const TerrainConfig* getTerrainConfigbyName(std::string& terrainname) {
-        std::vector<TerrainConfig>::iterator it;
-        for(it = m_terrains.begin(); it != m_terrains.end(); ++it )    {
-            if (  it->getName() == terrainname) {
-                return &(*it);
+    const TerrainConfig* getTerrainConfigByName(const std::string& terrainname) const {
+        for (const auto& terrain : m_terrains)    {
+            if (terrain.getName() == terrainname)
+                return &terrain;
             }
-        }
         return nullptr;
     }
 

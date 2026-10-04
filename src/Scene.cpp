@@ -323,19 +323,27 @@ bool Scene::createTerra(int sceneindex) {
         );
     terrainNode->attachObject( mTerra );
     std::cout << "load heightmap start" << std::endl;
-    std::string terrain_ref = mRenderer.getConfig().getScenes()[sceneindex].getTerrain();
+    const std::string& terrain_ref = mRenderer.getConfig().getScenes()[sceneindex].getTerrain();
+    const TerrainConfig* terrainconfig = mRenderer.getConfig().getTerrainConfigByName(terrain_ref);
+    if (!terrainconfig)    {
+    // nincs ilyen terrain
+    // hibakezelés
+        return false;
+    }
 
+    const TerrainConfig& terrain = *terrainconfig;
+    std::cout<< " ==================================== EZEGYDEBUG: " << terrain.getHeightmap() <<std::endl;
     mTerra->load(
-        mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getHeightmap(),
+        terrain.getHeightmap(),
         Ogre::Vector3(
-            mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getPosition()[0],
-            mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getPosition()[1],
-            mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getPosition()[2]
+            terrain.getPosition()[0],
+            terrain.getPosition()[1],
+            terrain.getPosition()[2]
         ),
         Ogre::Vector3(
-            mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getSize()[0],
-            mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getSize()[1],
-            mRenderer.getConfig()->getTerrainConfigbyName(terrain_ref).getSize()[2]
+            terrain.getSize()[0],
+            terrain.getSize()[1],
+            terrain.getSize()[2]
         ),
         false,
         false

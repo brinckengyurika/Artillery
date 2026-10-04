@@ -50,9 +50,9 @@
     "terrains": [
       {
         "name": "terrain1",
-        "heightmap": "Heightmap2.png",
-        "position": [0.0, 500.0, 0.0],
-        "size": [4096.0, 1000.0, 4096.0]
+        "heightmap": "heightmap3.png",
+        "position": [0.0, -500.0, 0.0],
+        "size": [8192.0, 1000.0, 8192.0]
       },
       {
         "name": "terrain2",
