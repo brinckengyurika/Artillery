@@ -3,6 +3,7 @@
 #include <tiny_gltf.h>
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
+#include <filesystem>
 
 class Renderer;
 
@@ -27,7 +28,17 @@ public:
         const std::string &meshName
     );
 
+    static std::string saveGltfImageAsPng(
+        const tinygltf::Image& image,
+        const std::filesystem::path& outputDir,
+        const std::string& modelKey,
+        int imageIndex
+    );
+
+
 private:
+
+
 
     Ogre::SceneNode* buildNode(
         const tinygltf::Model &model,

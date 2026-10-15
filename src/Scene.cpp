@@ -2,6 +2,9 @@
 
 #include "Renderer.h"
 #include "MeshFactory.h"
+#include <iostream>
+#include <filesystem> // C++17
+
 
 
 #include <OgreSceneManager.h>
@@ -13,6 +16,10 @@
 #include "GltfMeshBuilder.h"
 #include <tiny_gltf.h>
 #include <string>
+
+
+namespace fs = std::filesystem;
+
 
 Scene::Scene( Renderer &renderer ) :
     mRenderer( renderer ),
@@ -91,23 +98,47 @@ bool Scene::createObjectsNew(int sceneindex) {
     std::string err;
     std::string warn;
     std::string name;
+    const std::string* modelfilename;
+    fs::path filePath;
 
     bool loaded;
     tinygltf::TinyGLTF loader;
+    std::string baseDir = "./";
     std::cout << "Betoltendo objectek szama: " << ol << std::endl;
     for (int i = 0; i < ol; ++i) {
+        loaded = false;
         name = mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getModelName();
         std::cout << "Betoltendo object: " << name << std::endl;
         tinygltf::Model model;
         const auto& data = mRenderer.getConfig().getBinaryFile(name);
-        loaded =
-            loader.LoadBinaryFromMemory(
-                &model,
-                &err,
-                &warn,
-                data.data(),
-                data.size()
-            );
+        modelfilename = mRenderer.getConfig().getModelFileName(name);
+        if (modelfilename != nullptr) {
+            fs::path filePath(*modelfilename);
+            if (filePath.extension()==".glb") {
+                std::cout << "Betoltendo object .glb: " << name << std::endl;
+                loaded =
+                    loader.LoadBinaryFromMemory(
+                        &model,
+                        &err,
+                        &warn,
+                        data.data(),
+                        data.size()
+                    );
+            } else if (filePath.extension()==".gltf") {
+                std::cout << "Betoltendo object .gltf: " << name << std::endl;
+                const char* str = reinterpret_cast<const char*>(data.data());
+                unsigned int length = static_cast<unsigned int>(data.size());
+                loaded =
+                    loader.LoadASCIIFromString(
+                        &model,
+                        &err,
+                        &warn,
+                        str,
+                        length,
+                        baseDir
+                    );
+            }
+        }
         if(!loaded) {
             std::cerr
                     << "Failed to load GLB: "
@@ -116,9 +147,6 @@ bool Scene::createObjectsNew(int sceneindex) {
 
             return false;
         }
-
-        const std::string filename =
-            ARTILLERY_MEDIA_DIR "/models/2CylinderEngine.glb";
         //-------------------------------------------------------
         // Create parent node
         //-------------------------------------------------------
@@ -152,15 +180,9 @@ bool Scene::createObjectsNew(int sceneindex) {
             mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getRotation()[0]
             )
         );
-
-
-
-
         //-------------------------------------------------------
         // Build GLTF
         //-------------------------------------------------------
-
-
         GltfMeshBuilder builder(mRenderer);
         if(!builder.build(
                     model,

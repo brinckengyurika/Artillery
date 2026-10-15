@@ -250,6 +250,15 @@ public:
         return nullptr;
     }
 
+    const std::string* getModelFileName(const std::string& modelname) const {
+        for (const auto& model : m_models)    {
+            if (model.getName() == modelname)
+                return &model.getModelPath();
+            }
+        return nullptr;
+    }
+
+
 
     friend void from_json(const nlohmann::json& j, Config& item) {
         j.at("lights").get_to(item.m_lights);
@@ -302,6 +311,5 @@ public:
     size_t getBinaryFileSize(const std::string& filename) const{
         return m_binaryFiles.at(filename).size();
     }
-
 
 };

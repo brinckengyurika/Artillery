@@ -416,6 +416,19 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/Threading/OgreThreads.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSharedPtr.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneNode.h \
+ /usr/include/c++/14/filesystem /usr/include/c++/14/bits/fs_fwd.h \
+ /usr/include/c++/14/bits/chrono.h /usr/include/c++/14/ratio \
+ /usr/include/c++/14/bits/parse_numbers.h \
+ /usr/include/c++/14/bits/fs_path.h /usr/include/c++/14/locale \
+ /usr/include/c++/14/bits/locale_facets_nonio.h \
+ /usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h \
+ /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
+ /usr/include/libintl.h /usr/include/c++/14/bits/codecvt.h \
+ /usr/include/c++/14/bits/locale_facets_nonio.tcc \
+ /usr/include/c++/14/bits/locale_conv.h /usr/include/c++/14/iomanip \
+ /usr/include/c++/14/bits/quoted_string.h /usr/include/c++/14/sstream \
+ /usr/include/c++/14/bits/sstream.tcc /usr/include/c++/14/codecvt \
+ /usr/include/c++/14/bits/fs_dir.h /usr/include/c++/14/bits/fs_ops.h \
  /home/satch/Projects/Artillery/src/Renderer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreRoot.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManagerEnumerator.h \
@@ -466,23 +479,11 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Unlit/OgreHlmsUnlit.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Unlit/OgreHlmsUnlitPrerequisites.h \
  /home/satch/Projects/Artillery/src/Config.h /usr/include/c++/14/iostream \
- /usr/include/c++/14/fstream /usr/include/c++/14/bits/codecvt.h \
+ /usr/include/c++/14/fstream \
  /usr/include/x86_64-linux-gnu/c++/14/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++io.h \
- /usr/include/c++/14/bits/fstream.tcc /usr/include/c++/14/filesystem \
- /usr/include/c++/14/bits/fs_fwd.h /usr/include/c++/14/bits/chrono.h \
- /usr/include/c++/14/ratio /usr/include/c++/14/bits/parse_numbers.h \
- /usr/include/c++/14/bits/fs_path.h /usr/include/c++/14/locale \
- /usr/include/c++/14/bits/locale_facets_nonio.h \
- /usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h \
- /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
- /usr/include/libintl.h /usr/include/c++/14/bits/locale_facets_nonio.tcc \
- /usr/include/c++/14/bits/locale_conv.h /usr/include/c++/14/iomanip \
- /usr/include/c++/14/bits/quoted_string.h /usr/include/c++/14/sstream \
- /usr/include/c++/14/bits/sstream.tcc /usr/include/c++/14/codecvt \
- /usr/include/c++/14/bits/fs_dir.h /usr/include/c++/14/bits/fs_ops.h \
- /usr/include/nlohmann/json.hpp /usr/include/c++/14/iterator \
- /usr/include/c++/14/bits/stream_iterator.h \
+ /usr/include/c++/14/bits/fstream.tcc /usr/include/nlohmann/json.hpp \
+ /usr/include/c++/14/iterator /usr/include/c++/14/bits/stream_iterator.h \
  /usr/include/nlohmann/adl_serializer.hpp \
  /usr/include/nlohmann/detail/abi_macros.hpp \
  /usr/include/nlohmann/detail/conversions/from_json.hpp \
@@ -560,4 +561,5 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Common/OgreHlmsTextureBaseClass.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHlmsDatablock.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreTextureGpuListener.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Pbs/OgreHlmsPbsDatablock.h
+ /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Pbs/OgreHlmsPbsDatablock.h \
+ /usr/include/stb/stb_image_write.h

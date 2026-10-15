@@ -6172,6 +6172,7 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: src/GltfMeshBuilder.cpp \
   /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
   /usr/include/pthread.h \
   /usr/include/sched.h \
+  /usr/include/stb/stb_image_write.h \
   /usr/include/stdc-predef.h \
   /usr/include/stdint.h \
   /usr/include/stdio.h \

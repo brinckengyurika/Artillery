@@ -11,6 +11,11 @@
 #include "tiny_gltf.h"
 #include <vector>
 #include <map>
+#include <OgreResourceGroupManager.h>
+
+#include <filesystem>
+#include <string>
+
 
 Renderer::Renderer(const Config& config ) :
     config(config),
@@ -35,6 +40,18 @@ bool Renderer::initialize() {
         "",
         "Ogre.log"
     );
+
+
+
+    const std::filesystem::path gltfTextureDir =
+        std::filesystem::absolute("gltf_texture_cache");
+
+    std::filesystem::create_directories(gltfTextureDir);
+
+    Ogre::ResourceGroupManager::getSingleton().addResourceLocation(    gltfTextureDir.string(),    "FileSystem",
+    Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+
 
     const Ogre::RenderSystemList &renderers =
         mRoot->getAvailableRenderers();

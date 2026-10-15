@@ -8,6 +8,10 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <cstdint>
+#include <cstring>
+
+#include <stdexcept>
 
 #include <OgreManualObject2.h>
 #include <OgreMeshManager.h>
@@ -19,10 +23,109 @@
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsPbsDatablock.h>
 
+/*
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
+*/
+#include <stb_image_write.h>
 
 GltfMeshBuilder::GltfMeshBuilder (Renderer & renderer):
     mRenderer (renderer) {
 }
+
+
+std::string GltfMeshBuilder::saveGltfImageAsPng(
+    const tinygltf::Image& image,
+    const std::filesystem::path& outputDir,
+    const std::string& modelKey,
+    int imageIndex) {
+
+    if (image.width <= 0 || image.height <= 0 ||
+        image.component < 1 || image.component > 4)
+    {
+        throw std::runtime_error("Invalid glTF image dimensions or channel count");
+    }
+
+    const std::size_t pixelCount =
+        static_cast<std::size_t>(image.width) *
+        static_cast<std::size_t>(image.height);
+
+    const std::size_t valueCount =
+        pixelCount * static_cast<std::size_t>(image.component);
+
+    std::vector<unsigned char> pixels8;
+
+    if (image.bits == 8 &&
+        image.pixel_type == TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE)
+    {
+        if (image.image.size() < valueCount)
+            throw std::runtime_error("Incomplete 8-bit glTF image data");
+
+        pixels8 = image.image;
+    }
+    else if (image.bits == 16 &&
+             image.pixel_type == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT)
+    {
+        if (image.image.size() < valueCount * 2)
+            throw std::runtime_error("Incomplete 16-bit glTF image data");
+
+        pixels8.resize(valueCount);
+
+        for (std::size_t i = 0; i < valueCount; ++i)
+        {
+            std::uint16_t value;
+            std::memcpy(&value, image.image.data() + i * 2, sizeof(value));
+            pixels8[i] = static_cast<unsigned char>(value >> 8);
+        }
+    }
+    else
+    {
+        throw std::runtime_error(
+            "Unsupported glTF image pixel format: bits=" +
+            std::to_string(image.bits) +
+            ", pixel_type=" + std::to_string(image.pixel_type));
+    }
+
+    std::filesystem::create_directories(outputDir);
+
+    // A fájlnév legyen biztonságos, és modellenként különbözzön.
+    std::string safeKey = modelKey;
+    for (char& c : safeKey)
+    {
+        if (!((c >= 'a' && c <= 'z') ||
+              (c >= 'A' && c <= 'Z') ||
+              (c >= '0' && c <= '9') ||
+              c == '_' || c == '-'))
+        {
+            c = '_';
+        }
+    }
+
+    const std::string filename =
+        safeKey + "_image_" + std::to_string(imageIndex) + ".png";
+
+    const std::filesystem::path outputPath = outputDir / filename;
+
+    const int stride = image.width * image.component;
+
+    if (!stbi_write_png(
+            outputPath.string().c_str(),
+            image.width,
+            image.height,
+            image.component,
+            pixels8.data(),
+            stride))
+    {
+        throw std::runtime_error(
+            "Failed to write PNG: " + outputPath.string());
+    }
+
+    return filename;
+}
+
 
 
 bool
@@ -695,22 +798,91 @@ GltfMeshBuilder::buildMesh (
         Ogre::ColourValue baseColour =
             Ogre::ColourValue::White;
 
-        bool hasGltfMaterial = false;
+
+        int textureIndex = -1;
+        int imageIndex = -1;
 
         if (primitive.material >= 0 &&
-                primitive.material <
-                static_cast<int>(model.materials.size())) {
-            const tinygltf::Material &material =
+            primitive.material < static_cast<int>(model.materials.size()))
+        {
+            const tinygltf::Material& material =
                 model.materials[primitive.material];
 
+            const auto& pbr = material.pbrMetallicRoughness;
+
+            textureIndex = pbr.baseColorTexture.index;
+
+            if (textureIndex >= 0 &&
+                textureIndex < static_cast<int>(model.textures.size()))
+            {
+                imageIndex = model.textures[textureIndex].source;
+            }
+        }
+
+        std::string textureName;
+
+        if (imageIndex >= 0 &&
+            imageIndex < static_cast<int>(model.images.size()))
+        {
+            try
+            {
+                const std::filesystem::path gltfTextureDir = std::filesystem::absolute("gltf_texture_cache");
+                textureName = saveGltfImageAsPng(
+                    model.images[imageIndex],
+                    gltfTextureDir,
+//                    modelKey,       // Például a modell fájlnevének törzse
+                    "EZMOSTCSAKEGYTESZTNEV",
+
+                    imageIndex);
+            }
+            catch (const std::exception& e)
+            {
+                std::cout << "Valami exceptiona textura fileba torteno kiirasakor" << ' ';
+                std::cout << std::endl;
+
+//                Ogre::LogManager::getSingleton().logMessage(                    "glTF texture error: " + Ogre::String(e.what()));
+            }
+        }
+
+        bool hasGltfMaterial = false;
+
+
+
+
+        if (primitive.material >= 0 && primitive.material < static_cast<int>(model.materials.size())) {
+            const tinygltf::Material &material = model.materials[primitive.material];
+            const auto &pbr = material.pbrMetallicRoughness;
+            std::cout
+                    << "Material: " << material.name
+                    << ", baseColorTexture index: "
+                    << pbr.baseColorTexture.index
+                    << ", baseColorFactor: ";
+            for (double c : pbr.baseColorFactor)
+                std::cout << c << ' ';
+
+            std::cout << std::endl;
+            if (pbr.baseColorTexture.index >= 0) {
+                const int textureIndex = pbr.baseColorTexture.index;
+
+                const auto& texture = model.textures[textureIndex];
+                const int imageIndex = texture.source;
+
+                const auto& image = model.images[imageIndex];
+                std::cout << "Material: " << material.name << std::endl;
+                std::cout << "Base color texture index: " << pbr.baseColorTexture.index << std::endl;
+                std::cout << "Base color factor: "
+                          << pbr.baseColorFactor[0] << ", "
+                          << pbr.baseColorFactor[1] << ", "
+                          << pbr.baseColorFactor[2] << ", "
+                          << pbr.baseColorFactor[3] << std::endl;
+                std::cout << "Texture index: " << textureIndex << std::endl;
+                std::cout << "Image index: " << imageIndex << std::endl;
+                std::cout << "Image name: " << image.name << std::endl;
+                std::cout << "Image size: " << image.width << "x" << image.height << std::endl;
+            }
             const auto &factor =
                 material.pbrMetallicRoughness.baseColorFactor;
-            /*
-                        for (double v : factor)
-                            std::cout << v << " ";
 
-                        std::cout << std::endl;
-            */
             if (factor.size() >= 4) {
                 baseColour =
                     Ogre::ColourValue(
@@ -723,6 +895,16 @@ GltfMeshBuilder::buildMesh (
                 hasGltfMaterial = true;
             }
         }
+
+
+
+
+
+
+
+
+
+
 
 //-----------------------------------------------------
 // Get PBS HLMS
@@ -755,6 +937,9 @@ GltfMeshBuilder::buildMesh (
             sceneManager->destroyManualObject(manual);
             return;
         }
+
+
+
 
 //-----------------------------------------------------
 // Create/select material-specific PBS datablock
@@ -821,6 +1006,22 @@ GltfMeshBuilder::buildMesh (
                 return;
             }
 
+
+
+if (!textureName.empty())
+{
+    pbsDatablock->setTexture(
+        Ogre::PBSM_DIFFUSE,
+        textureName);
+
+    // A glTF baseColorTexture a TEXCOORD_0 attribútumot használja,
+    // hacsak a material textureInfo.texCoord mezője mást nem ad meg.
+    pbsDatablock->setTextureUvSource(
+        Ogre::PBSM_DIFFUSE,
+        0);
+}
+
+
             //-------------------------------------------------
             // Apply glTF baseColorFactor
             //-------------------------------------------------
@@ -845,7 +1046,7 @@ GltfMeshBuilder::buildMesh (
             //-------------------------------------------------
             // Roughness
             //-------------------------------------------------
-
+/*
             pbsDatablock->setRoughness(
                 0.6f
             );
@@ -857,7 +1058,50 @@ GltfMeshBuilder::buildMesh (
             pbsDatablock->setMetalness(
                 0.0f
             );
+*/
+            const auto& pbr = material.pbrMetallicRoughness;
+
+pbsDatablock->setRoughness(
+    static_cast<float>(pbr.roughnessFactor)
+);
+
+pbsDatablock->setMetalness(
+    static_cast<float>(pbr.metallicFactor)
+);
+
         }
+
+
+        if (primitive.material < 0 ||
+                primitive.material >=
+                static_cast<int>(model.materials.size())) {
+            std::cout << "Primitive has no valid material; "
+                      << "using default PBS datablock."
+                      << std::endl;
+
+            // A default datablock marad érvényben.
+        } else {
+            const auto& gltfMaterial =
+                model.materials[primitive.material];
+
+            const auto& pbr =
+                gltfMaterial.pbrMetallicRoughness;
+
+            const int textureIndex =
+                pbr.baseColorTexture.index;
+
+            if (textureIndex >= 0 &&
+                    textureIndex <
+                    static_cast<int>(model.textures.size())) {
+                std::cout << "Valid base color texture: "
+                          << textureIndex << std::endl;
+            } else {
+                std::cout << "No valid base color texture; "
+                          << "material may use only a color factor."
+                          << std::endl;
+            }
+        }
+
 
 //-----------------------------------------------------
 // Begin ManualObject

@@ -83,6 +83,11 @@
             "name":"eiffel",
             "model":"/home/satch/Projects/Artillery/media/models/Eiffel3.glb"
 
+        },
+        {
+            "name":"haziko",
+            "model":"/home/satch/Projects/Artillery/media/models/haziko.gltf"
+
         }
     ],
     "scenes": [
@@ -108,6 +113,13 @@
                     "modelname":"eiffel",
                     "scale":[60.5, 60.5, 60.5],
                     "position":[ 100.0, 111.0, 200.0],
+                    "rotation":[0.0, 0.0, 0.0]
+                },
+		{
+                    "name":"haziko1",
+                    "modelname":"haziko",
+                    "scale":[10.5, 10.5, 10.5],
+                    "position":[ 60.0, 111.0, 200.0],
                     "rotation":[0.0, 0.0, 0.0]
                 }
             ],
