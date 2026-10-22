@@ -4,6 +4,7 @@
 #include <OgreSceneManager.h>
 #include <OgreSceneNode.h>
 #include <filesystem>
+#include "ModelCache.h"
 
 class Renderer;
 
@@ -18,14 +19,19 @@ class SceneNode;
 
 class GltfMeshBuilder {
 public:
-    explicit GltfMeshBuilder( Renderer &renderer );
+//    explicit GltfMeshBuilder( Renderer &renderer );
+    explicit GltfMeshBuilder(
+    Renderer& renderer,
+    ModelCache& modelCache);
+
     bool inspect( const tinygltf::Model &model );
 
     bool build(
         const tinygltf::Model &model,
         Ogre::SceneManager *sceneManager,
         Ogre::SceneNode *parentNode,
-        const std::string &meshName
+        const std::string &meshName,
+        const std::string & assetKey
     );
 
     static std::string saveGltfImageAsPng(
@@ -37,7 +43,8 @@ public:
 
 
 private:
-
+    Renderer& mRenderer;
+    ModelCache& mModelCache;
 
 
     Ogre::SceneNode* buildNode(
@@ -45,7 +52,8 @@ private:
         int nodeIndex,
         Ogre::SceneManager *sceneManager,
         Ogre::SceneNode *parentNode,
-        const std::string &meshName
+        const std::string &meshName,
+        const std::string & assetKey
     );
 
     void buildMesh(
@@ -54,8 +62,9 @@ private:
         Ogre::SceneManager *sceneManager,
         Ogre::SceneNode *parentNode,
         const std::string &meshName,
-        int nodeIndex
+        int nodeIndex,
+        const std::string & assetKey
     );
-    Renderer &mRenderer;
+
 
 };

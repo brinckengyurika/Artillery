@@ -445,6 +445,10 @@ CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreConstBufferPool.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Pbs/OgreHlmsPbs.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Pbs/OgreHlmsPbsPrerequisites.h \
+ /home/satch/Projects/Artillery/src/ModelCache.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMesh2.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Simple/OgreAabb.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreVertexBoneAssignment.h \
  /home/satch/Projects/Artillery/src/Scene.h \
  /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/Terra.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMovableObject.h \

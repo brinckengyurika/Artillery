@@ -97,6 +97,7 @@ add_executable(Artillery
     src/TinyGltfImplementation.cpp
     src/InputManager.cpp
     src/Input/LinuxInputBackend.cpp
+    src/ModelCache.cpp
 
 
     # Terra

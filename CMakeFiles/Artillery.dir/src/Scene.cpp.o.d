@@ -346,6 +346,12 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/unordered_map.h \
  /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/TerrainCell.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreRenderable.h \
+ /home/satch/Projects/Artillery/src/ModelCache.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMesh2.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Simple/OgreAabb.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Vao/OgreBufferPacked.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreResourceTransition.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreVertexBoneAssignment.h \
  /home/satch/Projects/Artillery/src/Renderer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreRoot.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManagerEnumerator.h \
@@ -381,8 +387,6 @@ CMakeFiles/Artillery.dir/src/Scene.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreTextureGpu.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreGpuResource.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgrePixelFormatGpu.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreResourceTransition.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/Vao/OgreBufferPacked.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreResourceTransition.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreRenderSystemCapabilities.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreStringConverter.h \

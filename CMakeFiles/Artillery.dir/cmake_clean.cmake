@@ -32,6 +32,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Artillery.dir/src/InputManager.cpp.o.d"
   "CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o"
   "CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o.d"
+  "CMakeFiles/Artillery.dir/src/ModelCache.cpp.o"
+  "CMakeFiles/Artillery.dir/src/ModelCache.cpp.o.d"
   "CMakeFiles/Artillery.dir/src/Renderer.cpp.o"
   "CMakeFiles/Artillery.dir/src/Renderer.cpp.o.d"
   "CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o"

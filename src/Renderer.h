@@ -11,6 +11,7 @@
 
 #include "ResourceManager.h"
 #include "Scene.h"
+#include "ModelCache.h"
 #include "CameraController.h"
 
 #include "GltfLoader.h"
@@ -33,7 +34,7 @@ class Model;
 
 class Renderer {
 public:
-    Renderer(const Config& config );
+    Renderer(const Config& config, ModelCache& mModelCache );
     ~Renderer();
     /*Refactoring
         bool initialize();

@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
-
 #include "Renderer.h"
+
 
 #include <iostream>
 #include <OgreArchiveManager.h>
@@ -20,8 +20,11 @@
 #include "Terra/Hlms/OgreHlmsTerra.h"
 #include <OgreMaterialManager.h>
 
-ResourceManager::ResourceManager(Renderer &renderer) :
-    mRenderer(renderer) {
+
+
+ResourceManager::ResourceManager(Renderer &renderer, ModelCache& mModelCache) :
+    mRenderer(renderer),
+    mModelCache(mModelCache) {
 }
 
 bool ResourceManager::initialize() {

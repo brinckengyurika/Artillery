@@ -513,6 +513,30 @@ src/MeshFactory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/MeshFactory.cpp.s
 .PHONY : src/MeshFactory.cpp.s
 
+src/ModelCache.o: src/ModelCache.cpp.o
+.PHONY : src/ModelCache.o
+
+# target to build an object file
+src/ModelCache.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ModelCache.cpp.o
+.PHONY : src/ModelCache.cpp.o
+
+src/ModelCache.i: src/ModelCache.cpp.i
+.PHONY : src/ModelCache.i
+
+# target to preprocess a source file
+src/ModelCache.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ModelCache.cpp.i
+.PHONY : src/ModelCache.cpp.i
+
+src/ModelCache.s: src/ModelCache.cpp.s
+.PHONY : src/ModelCache.s
+
+# target to generate assembly for a file
+src/ModelCache.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ModelCache.cpp.s
+.PHONY : src/ModelCache.cpp.s
+
 src/Renderer.o: src/Renderer.cpp.o
 .PHONY : src/Renderer.o
 
@@ -690,6 +714,9 @@ help:
 	@echo "... src/MeshFactory.o"
 	@echo "... src/MeshFactory.i"
 	@echo "... src/MeshFactory.s"
+	@echo "... src/ModelCache.o"
+	@echo "... src/ModelCache.i"
+	@echo "... src/ModelCache.s"
 	@echo "... src/Renderer.o"
 	@echo "... src/Renderer.i"
 	@echo "... src/Renderer.s"

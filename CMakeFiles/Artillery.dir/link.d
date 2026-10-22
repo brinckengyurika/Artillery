@@ -15,6 +15,7 @@ bin/Artillery: \
   CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o \
   CMakeFiles/Artillery.dir/src/InputManager.cpp.o \
   CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o \
+  CMakeFiles/Artillery.dir/src/ModelCache.cpp.o \
   CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o \
   CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerrainCell.cpp.o \
   CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/TerraShadowMapper.cpp.o \
@@ -171,6 +172,8 @@ CMakeFiles/Artillery.dir/src/TinyGltfImplementation.cpp.o:
 CMakeFiles/Artillery.dir/src/InputManager.cpp.o:
 
 CMakeFiles/Artillery.dir/src/Input/LinuxInputBackend.cpp.o:
+
+CMakeFiles/Artillery.dir/src/ModelCache.cpp.o:
 
 CMakeFiles/Artillery.dir/home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/src/Terra/Terra.cpp.o:
 

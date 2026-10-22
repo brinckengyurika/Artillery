@@ -1,6 +1,7 @@
 #pragma once
 #include "MeshFactory.h"
 #include "Terra/Terra.h"
+#include "ModelCache.h"
 
 class Renderer;
 
@@ -15,6 +16,7 @@ public:
 
 
 private:
+    ModelCache modelCache;
     Renderer &mRenderer;
     MeshFactory mMeshFactory;
 

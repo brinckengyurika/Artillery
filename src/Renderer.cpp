@@ -17,16 +17,16 @@
 #include <string>
 
 
-Renderer::Renderer(const Config& config ) :
+Renderer::Renderer(const Config& config, ModelCache& modelCache ) :
     config(config),
     mRoot( nullptr ),
     mWindow( nullptr ),
     mSceneManager( nullptr ),
     mCamera( nullptr ),
-    mResources( *this ),
+    mResources( *this, modelCache ),
     mScene( *this ),
     mGltfLoader(*this),
-    mMeshBuilder( *this ) {
+    mMeshBuilder( *this, modelCache ){
 }
 
 Renderer::~Renderer() {

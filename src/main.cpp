@@ -17,8 +17,8 @@ int main() {
     const Config& config = loader.getConfig();
 
     // Használat:
-
-    Engine engine(config);
+    ModelCache mModelCache;
+    Engine engine(config, mModelCache);
     if( !engine.initialize() )
         return 1;
 

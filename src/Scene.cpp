@@ -156,6 +156,7 @@ bool Scene::createObjectsNew(int sceneindex) {
             mRenderer.getSceneManager()
             ->getRootSceneNode()
             ->createChildSceneNode();
+
         parentNode->setPosition(
             mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getPosition()[0],
             mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getPosition()[1],
@@ -183,14 +184,19 @@ bool Scene::createObjectsNew(int sceneindex) {
         //-------------------------------------------------------
         // Build GLTF
         //-------------------------------------------------------
-        GltfMeshBuilder builder(mRenderer);
+        GltfMeshBuilder builder(mRenderer, modelCache);
+        const std::string modelname = mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getModelName();
+        const std::string *modelfilename = mRenderer.getConfig().getModelFileName(modelname);
         if(!builder.build(
                     model,
                     mRenderer.getSceneManager(),
                     parentNode,
-                    mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getName())) {
-            std::cerr << "Failed to build GLTF model." << std::endl;
-            return false;
+                    mRenderer.getConfig().getScenes()[sceneindex].getModels()[i].getName(),
+                    *modelfilename
+                )
+        ) {
+                std::cerr << "Failed to build GLTF model." << std::endl;
+                return false;
         }
         std::cout << "Betoltott object: " << name << std::endl;
     }
@@ -247,7 +253,8 @@ bool Scene::createObjects() {
     //-------------------------------------------------------
 
 
-    GltfMeshBuilder builder(mRenderer);
+    GltfMeshBuilder builder(mRenderer, modelCache);
+    /*
     if(!builder.build(
                 model,
                 mRenderer.getSceneManager(),
@@ -256,6 +263,7 @@ bool Scene::createObjects() {
         std::cerr << "Failed to build GLTF model." << std::endl;
         return false;
     }
+*/
     return true;
 }
 

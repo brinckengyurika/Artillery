@@ -3,9 +3,9 @@
 #include <iostream>
 
 
-Engine::Engine(const Config& config ):
+Engine::Engine(const Config& config, ModelCache& mModelCache ):
     config(config),
-    mRenderer(config) {
+    mRenderer(config , mModelCache) {
     //mRenderer(config);
 }
 

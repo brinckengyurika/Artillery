@@ -429,6 +429,10 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: \
  /usr/include/c++/14/bits/quoted_string.h /usr/include/c++/14/sstream \
  /usr/include/c++/14/bits/sstream.tcc /usr/include/c++/14/codecvt \
  /usr/include/c++/14/bits/fs_dir.h /usr/include/c++/14/bits/fs_ops.h \
+ /home/satch/Projects/Artillery/src/ModelCache.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMesh2.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Simple/OgreAabb.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreVertexBoneAssignment.h \
  /home/satch/Projects/Artillery/src/Renderer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreRoot.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneManagerEnumerator.h \
@@ -562,4 +566,16 @@ CMakeFiles/Artillery.dir/src/GltfMeshBuilder.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreHlmsDatablock.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreTextureGpuListener.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Hlms/Pbs/OgreHlmsPbsDatablock.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreEntity.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreHardwareBufferManager.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreHardwareCounterBuffer.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreHardwareUniformBuffer.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreHlmsManager.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreDescriptorSetTexture.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreDescriptorSetSampler.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreDescriptorSetUav.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSubEntity.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreItem.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSubItem.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreResourceGroupManager.h \
  /usr/include/stb/stb_image_write.h

@@ -428,6 +428,10 @@ CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/ogrestd/deque.h \
  /usr/include/c++/14/deque /usr/include/c++/14/bits/stl_deque.h \
  /usr/include/c++/14/bits/deque.tcc \
+ /home/satch/Projects/Artillery/src/ModelCache.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreMesh2.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/Math/Simple/OgreAabb.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreVertexBoneAssignment.h \
  /home/satch/Projects/Artillery/src/Renderer.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreWindow.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreWindowEventUtilities.h \
