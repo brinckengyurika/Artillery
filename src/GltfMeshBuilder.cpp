@@ -26,7 +26,6 @@
 /*
 CACHEOSITAS
 */
-#include <OgreEntity.h>
 #include <OgreItem.h>
 #include <OgreMesh2.h>
 #include <OgreResourceGroupManager.h>
@@ -49,8 +48,7 @@ GltfMeshBuilder::GltfMeshBuilder(
     Renderer& renderer,
     ModelCache& modelCache)
     : mRenderer(renderer),
-      mModelCache(modelCache)
-{
+      mModelCache(modelCache) {
 }
 
 std::string GltfMeshBuilder::saveGltfImageAsPng(
@@ -260,6 +258,11 @@ GltfMeshBuilder::build (const tinygltf::Model & model,
         return false;
     }
 
+    std::cout << "-----------------------------------------------------build debug-------------------- " << assetKey << std::endl;
+    std::cout << "Meshname: " << meshName << std::endl;
+    std::cout << "Assetkey: " << assetKey << std::endl;
+    std::cout << "-----------------------------------------------------build debug end --------------- " << assetKey << std::endl;
+
     //---------------------------------------------------------
     // Root node for the imported model
     //---------------------------------------------------------
@@ -399,6 +402,7 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
         );
 
         node->setPosition (position);
+
         node->setScale (scale);
         node->setOrientation (orientation);
 
@@ -498,6 +502,14 @@ GltfMeshBuilder::buildMesh (
     int nodeIndex,
     const std::string & assetKey) {
 
+
+    std::cout << "+++++++++++++++++++++++++++++++++++++ ALtalanos info ++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+    std::cout << "Have meshName: " << meshName << std::endl;
+    std::cout << "Have assetKey: " << assetKey << std::endl;
+    std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+
+
+
     if (meshIndex < 0 ||
             meshIndex >=
             static_cast < int >(model.meshes.size ())) {
@@ -518,19 +530,21 @@ GltfMeshBuilder::buildMesh (
     size_t primitiveIndex = 0;
 
     for (const tinygltf::Primitive & primitive : mesh.primitives) {
-/*
-EZ MAR A CACHE HASZANALT BEVEZETESE
-*/
+        /*
+        EZ MAR A CACHE HASZANALT BEVEZETESE
+        */
         const std::string cacheKey = assetKey
-            + "_mesh_" + std::to_string(meshIndex)
-            + "_primitive_" + std::to_string(primitiveIndex);
+                                     + "_mesh_" + std::to_string(meshIndex)
+                                     + "_primitive_" + std::to_string(primitiveIndex);
         std::cout << cacheKey << std::endl;
 
         Ogre::MeshPtr cachedMesh =
-        mModelCache.getMesh(cacheKey);
+            mModelCache.getMesh(cacheKey);
 
         if (!cachedMesh.isNull()) {
+            std::cout << "++++++++++++++++++++++++++++++++Cacheinfo++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
             std::cout << "Have cache: " << cacheKey << std::endl;
+            std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
             Ogre::Item* item = sceneManager->createItem(cachedMesh);
             parentNode->attachObject(item);
@@ -538,9 +552,12 @@ EZ MAR A CACHE HASZANALT BEVEZETESE
             ++primitiveIndex;
             continue;
         } else {
-    /*
-    EZ MAR A CACHE HASZANALT BEVEZETESE -EDDIG
-    */
+            /*
+            EZ MAR A CACHE HASZANALT BEVEZETESE -EDDIG
+            */
+            std::cout << "++++++++++++++++++++++++++++++++Cacheinfo++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+            std::cout << "No cache: " << cacheKey << std::endl;
+            std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
 
 
@@ -831,9 +848,9 @@ EZ MAR A CACHE HASZANALT BEVEZETESE
 
             Ogre::ManualObject *manual = sceneManager->createManualObject();
             manual->setName(objectName);
-    //-----------------------------------------------------
-    // GLTF material
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // GLTF material
+            //-----------------------------------------------------
 
             Ogre::ColourValue baseColour =
                 Ogre::ColourValue::White;
@@ -860,56 +877,54 @@ EZ MAR A CACHE HASZANALT BEVEZETESE
 
 
 
-std::string textureName;
+            std::string textureName;
 
-if (imageIndex >= 0 &&
-    imageIndex < static_cast<int>(model.images.size()))
-{
-    const std::filesystem::path textureDir =
-        std::filesystem::absolute("gltf_texture_cache");
+            if (imageIndex >= 0 &&
+                    imageIndex < static_cast<int>(model.images.size())) {
+                const std::filesystem::path textureDir =
+                    std::filesystem::absolute("gltf_texture_cache");
 
-    // A fájlnév ugyanazt a szabályt használja,
-    // mint a saveGltfImageAsPng().
-    std::string safeKey = assetKey;
+                // A fájlnév ugyanazt a szabályt használja,
+                // mint a saveGltfImageAsPng().
+                std::string safeKey = assetKey;
 
-    for (char& c : safeKey) {
-        if (!((c >= 'a' && c <= 'z') ||
-              (c >= 'A' && c <= 'Z') ||
-              (c >= '0' && c <= '9') ||
-              c == '_' || c == '-')) {
-            c = '_';
-        }
-    }
+                for (char& c : safeKey) {
+                    if (!((c >= 'a' && c <= 'z') ||
+                            (c >= 'A' && c <= 'Z') ||
+                            (c >= '0' && c <= '9') ||
+                            c == '_' || c == '-')) {
+                        c = '_';
+                    }
+                }
 
-    textureName =
-        safeKey + "_image_" +
-        std::to_string(imageIndex) + ".png";
+                textureName =
+                    safeKey + "_image_" +
+                    std::to_string(imageIndex) + ".png";
 
-    const std::filesystem::path texturePath =
-        textureDir / textureName;
+                const std::filesystem::path texturePath =
+                    textureDir / textureName;
 
-    if (!std::filesystem::exists(texturePath)) {
-        try {
-            textureName = saveGltfImageAsPng(
-                model.images[imageIndex],
-                textureDir,
-                assetKey,
-                imageIndex
-            );
-        }
-        catch (const std::exception& e) {
-            std::cerr << "Texture save error: "
-                      << e.what() << std::endl;
+                if (!std::filesystem::exists(texturePath)) {
+                    try {
+                        textureName = saveGltfImageAsPng(
+                                          model.images[imageIndex],
+                                          textureDir,
+                                          assetKey,
+                                          imageIndex
+                                      );
+                    } catch (const std::exception& e) {
+                        std::cerr << "Texture save error: "
+                                  << e.what() << std::endl;
 
-            textureName.clear();
-        }
-    }
-}
+                        textureName.clear();
+                    }
+                }
+            }
 
             bool hasGltfMaterial = false;
             if (primitive.material >= 0 && primitive.material < static_cast<int>(model.materials.size())) {
                 const tinygltf::Material &material = model.materials[primitive.material];
-    //            const auto &pbr = material.pbrMetallicRoughness;
+                //            const auto &pbr = material.pbrMetallicRoughness;
                 const auto &pbr = material.pbrMetallicRoughness;
                 std::cout
                         << "Material: " << material.name
@@ -955,9 +970,9 @@ if (imageIndex >= 0 &&
                 }
             }
 
-    //-----------------------------------------------------
-    // Get PBS HLMS
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Get PBS HLMS
+            //-----------------------------------------------------
 
             Ogre::HlmsPbs *hlmsPbs =
                 mRenderer.getHlmsPbs();
@@ -971,9 +986,9 @@ if (imageIndex >= 0 &&
                 return;
             }
 
-    //-----------------------------------------------------
-    // Get the base PBS datablock
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Get the base PBS datablock
+            //-----------------------------------------------------
 
             Ogre::HlmsDatablock *defaultPbsDatablock =
                 hlmsPbs->getDatablock("GltfPbsTest");
@@ -987,19 +1002,19 @@ if (imageIndex >= 0 &&
                 return;
             }
 
-bool createdDatablock = false;
+            bool createdDatablock = false;
 
 
-    //-----------------------------------------------------
-    // Create/select material-specific PBS datablock
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Create/select material-specific PBS datablock
+            //-----------------------------------------------------
 
             Ogre::HlmsDatablock *datablock =
                 defaultPbsDatablock;
 
             if (hasGltfMaterial) {
                 const std::string materialDatablockName =
-                    meshName
+                    assetKey
                     + "_GltfPbsMaterial_"
                     + std::to_string(primitive.material);
 
@@ -1016,26 +1031,26 @@ bool createdDatablock = false;
                 // Create it if necessary
                 //-------------------------------------------------
 
-if (!datablock) {
-    datablock =
-        defaultPbsDatablock->clone(
-            materialDatablockName
-        );
+                if (!datablock) {
+                    datablock =
+                        defaultPbsDatablock->clone(
+                            materialDatablockName
+                        );
 
-    if (!datablock) {
-        std::cerr
-            << "ERROR: Could not clone GltfPbsTest "
-            << "for material "
-            << primitive.material
-            << std::endl;
+                    if (!datablock) {
+                        std::cerr
+                                << "ERROR: Could not clone GltfPbsTest "
+                                << "for material "
+                                << primitive.material
+                                << std::endl;
 
-        sceneManager->destroyManualObject(manual);
-        return;
-    }
+                        sceneManager->destroyManualObject(manual);
+                        return;
+                    }
 
-    // Ezt a datablockot most hoztuk létre.
-    createdDatablock = true;
-}
+                    // Ezt a datablockot most hoztuk létre.
+                    createdDatablock = true;
+                }
 
                 //-------------------------------------------------
                 // Convert to PBS datablock
@@ -1057,89 +1072,55 @@ if (!datablock) {
                     return;
                 }
 
-if (createdDatablock) {
+                if (createdDatablock) {
 
-    // Base color texture
-    if (!textureName.empty()) {
-                    std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-                    std::cout << "+++++++++++++++++++++++++++++++++++HANYSZOR ADOM AT ATEXTURAFILET?++++++++++++++++++++" << std::endl;
-                    std::cout << textureName << std::endl;
-                    std::cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+                    // Base color texture
+                    if (!textureName.empty()) {
+                        std::cout << "Initializing material texture: " << textureName << std::endl;
 
-        pbsDatablock->setTexture(
-            Ogre::PBSM_DIFFUSE,
-            textureName);
+                        pbsDatablock->setTexture(
+                            Ogre::PBSM_DIFFUSE,
+                            textureName);
 
-        pbsDatablock->setTextureUvSource(
-            Ogre::PBSM_DIFFUSE,
-            0);
-    }
+                        pbsDatablock->setTextureUvSource(
+                            Ogre::PBSM_DIFFUSE,
+                            0);
+                    }
 
-    // glTF baseColorFactor
-    pbsDatablock->setDiffuse(
-        Ogre::Vector3(
-            baseColour.r,
-            baseColour.g,
-            baseColour.b
-        )
-    );
-
-    // glTF metallic-roughness parameters
-    if (primitive.material >= 0 &&
-        primitive.material <
-            static_cast<int>(model.materials.size())) {
-
-        const tinygltf::Material& material =
-            model.materials[primitive.material];
-
-        const auto& pbr =
-            material.pbrMetallicRoughness;
-
-        pbsDatablock->setRoughness(
-            static_cast<float>(pbr.roughnessFactor)
-        );
-
-        pbsDatablock->setMetalness(
-            static_cast<float>(pbr.metallicFactor)
-        );
-    }
-}
-
-
-
-                //-------------------------------------------------
-                // Apply glTF baseColorFactor
-                //-------------------------------------------------
-
-                pbsDatablock->setDiffuse(
-                    Ogre::Vector3(
-                        baseColour.r,
-                        baseColour.g,
-                        baseColour.b
-                    )
-                );
-
-                //-------------------------------------------------
-                // glTF alpha
-                //-------------------------------------------------
-
-                if (primitive.material >= 0 && primitive.material < static_cast<int>(model.materials.size())) {
-                    const tinygltf::Material &material = model.materials[primitive.material];
-                    //            const auto &pbr = material.pbrMetallicRoughness;
-                    const auto &pbr2 = material.pbrMetallicRoughness;
-
-
-
-                    pbsDatablock->setRoughness(
-                        static_cast<float>(pbr2.roughnessFactor)
+                    // glTF baseColorFactor
+                    pbsDatablock->setDiffuse(
+                        Ogre::Vector3(
+                            baseColour.r,
+                            baseColour.g,
+                            baseColour.b
+                        )
                     );
 
-                    pbsDatablock->setMetalness(
-                        static_cast<float>(pbr2.metallicFactor)
-                    );
+                    // glTF metallic-roughness parameters
+                    if (primitive.material >= 0 &&
+                            primitive.material <
+                            static_cast<int>(model.materials.size())) {
+
+                        const tinygltf::Material& material =
+                            model.materials[primitive.material];
+
+                        const auto& pbr =
+                            material.pbrMetallicRoughness;
+
+                        pbsDatablock->setRoughness(
+                            static_cast<float>(pbr.roughnessFactor)
+                        );
+
+                        pbsDatablock->setMetalness(
+                            static_cast<float>(pbr.metallicFactor)
+                        );
+                    }
                 }
 
 
+
+                // A material parametereit csak uj datablock eseten allitjuk be.
+                // A mar letezo datablockot nem modositjuk.
             }
 
 
@@ -1174,9 +1155,9 @@ if (createdDatablock) {
             }
 
 
-    //-----------------------------------------------------
-    // Begin ManualObject
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Begin ManualObject
+            //-----------------------------------------------------
 
 
             manual->begin(
@@ -1184,9 +1165,9 @@ if (createdDatablock) {
                 Ogre::OT_TRIANGLE_LIST
             );
 
-    //-----------------------------------------------------
-    // Vertices
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Vertices
+            //-----------------------------------------------------
 
             for (size_t i = 0;
                     i < positions.size();
@@ -1208,17 +1189,17 @@ if (createdDatablock) {
                 }
             }
 
-    //-----------------------------------------------------
-    // Indices
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Indices
+            //-----------------------------------------------------
 
             for (unsigned int index : indices) {
                 manual->index(index);
             }
 
-    //-----------------------------------------------------
-    // Finish ManualObject
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Finish ManualObject
+            //-----------------------------------------------------
 
             Ogre::ManualObject::ManualObjectSection *section =
                 manual->end();
@@ -1227,9 +1208,9 @@ if (createdDatablock) {
                 section->setDatablock(datablock);
             }
 
-    //-----------------------------------------------------
-    // Finalize
-    //-----------------------------------------------------
+            //-----------------------------------------------------
+            // Finalize
+            //-----------------------------------------------------
 
             manual->setCastShadows(true);
 
@@ -1237,67 +1218,24 @@ if (createdDatablock) {
                 0xFFFFFFFF
             );
 
-    //-----------------------------------------------------
-    // Attach object
-    //-----------------------------------------------------
-            /* eredeti, szetesett
-            Ogre::SceneNode *node =
-                sceneManager->getRootSceneNode()
-                    ->createChildSceneNode();
-
-            node->attachObject(manual);
-            */
-            /*Javasolt 1
-            Ogre::SceneNode *node = parentNode;
-
-            if (!node)
-            {
-                node =
-                    sceneManager->getRootSceneNode()
-                        ->createChildSceneNode();
-            }
-
-            node->attachObject(manual);
-            */
-
-    /*
-    EZT KIHAGYJUK A CACHEOSITAS MIATT
-    */
+            //-----------------------------------------------------
+            // Convert geometry to a reusable Ogre v2 mesh
+            //-----------------------------------------------------
             if (!parentNode) {
                 sceneManager->destroyManualObject(manual);
                 return;
             }
 
-            parentNode->attachObject(manual);
-    /*
-    EDDIG
-    */
+            Ogre::MeshPtr meshResource = manual->convertToMesh(
+                cacheKey,
+                Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
+            );
 
-    /*
-    EZ MEG A CACHESOITAS
-    */
-    Ogre::MeshPtr meshResource =
-        manual->convertToMesh(
-            cacheKey,
-            Ogre::ResourceGroupManager::
-                DEFAULT_RESOURCE_GROUP_NAME);
+            mModelCache.storeMesh(cacheKey, meshResource);
+            sceneManager->destroyManualObject(manual);
 
-    mModelCache.storeMesh(cacheKey, meshResource);
-
-    sceneManager->destroyManualObject(manual);
-
-
-    Ogre::Item* item = sceneManager->createItem(meshResource);
-    parentNode->attachObject(item);
-    /*
-    EDDIG
-    */
-
-
-    //-----------------------------------------------------
-    // Debug information
-    //-----------------------------------------------------
-
+            Ogre::Item* item = sceneManager->createItem(meshResource);
+            parentNode->attachObject(item);
 
             ++primitiveIndex;
         }
