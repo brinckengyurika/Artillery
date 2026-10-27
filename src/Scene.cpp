@@ -276,7 +276,7 @@ void Scene::update(float dt) {
 
 void Scene::shutdown() {
 }
-
+/*
 bool Scene::createTerra() {
     Ogre::SceneManager *scene = mRenderer.getSceneManager();
     const ResourceManager& mResources = mRenderer.getResourceManager();
@@ -326,7 +326,7 @@ bool Scene::createTerra() {
 
     return true;
 }
-
+*/
 
 
 bool Scene::createTerra(int sceneindex) {

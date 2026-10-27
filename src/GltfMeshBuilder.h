@@ -46,7 +46,6 @@ private:
     Renderer& mRenderer;
     ModelCache& mModelCache;
 
-
     Ogre::SceneNode* buildNode(
         const tinygltf::Model &model,
         int nodeIndex,

@@ -10,7 +10,7 @@ class Scene {
 public:
     explicit Scene( Renderer &renderer );
     bool initialize();
-    bool createTerra();
+//    bool createTerra();
     void update(float dt);
     void shutdown();
 

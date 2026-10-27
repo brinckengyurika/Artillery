@@ -308,14 +308,23 @@ GltfMeshBuilder::build (const tinygltf::Model & model,
             model.nodes[nodeIndex];
     }
 
-    for (int nodeIndex : scene.nodes) {
 
-        buildNode (model,
-                   nodeIndex,
-                   sceneManager,
-                   mainNode,
-                   meshName,
-                   assetKey);
+
+    for (int nodeIndex : scene.nodes) {
+        Ogre::SceneNode * buildednode = buildNode ( model,
+                                                    nodeIndex,
+                                                    sceneManager,
+                                                    mainNode,
+                                                    meshName,
+                                                    assetKey);
+
+        buildednode->setName(meshName);
+        std::cout << "-----------------------------------------------------Node build debug-------------------- " << std::endl;
+        std::cout << "meshName:\t\t"<< meshName << std::endl;
+        std::cout << "assetKey:\t\t"<< assetKey << std::endl;
+        std::cout << "ID:\t\t"<< buildednode->getId() << std::endl;
+        std::cout << "Name:\t\t"<< buildednode->getName() << std::endl;
+        std::cout << "----------------------------------------------------------------------------------------- " << std::endl;
     }
 
     return true;
@@ -477,7 +486,6 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
     //---------------------------------------------------------
 
     for (int childIndex : gltfNode.children) {
-
         buildNode (
             model,
             childIndex,
@@ -492,6 +500,8 @@ GltfMeshBuilder::buildNode (const tinygltf::Model & model,
 }
 
 
+
+
 void
 GltfMeshBuilder::buildMesh (
     const tinygltf::Model & model,
@@ -502,78 +512,32 @@ GltfMeshBuilder::buildMesh (
     int nodeIndex,
     const std::string & assetKey) {
 
-
-    std::cout << "+++++++++++++++++++++++++++++++++++++ ALtalanos info ++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-    std::cout << "Have meshName: " << meshName << std::endl;
-    std::cout << "Have assetKey: " << assetKey << std::endl;
-    std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-
-
-
     if (meshIndex < 0 ||
             meshIndex >=
             static_cast < int >(model.meshes.size ())) {
-
-        std::cerr
-                << "Invalid mesh index: "
-                << meshIndex
-                << std::endl;
-
+        std::cerr  << "Invalid mesh index: " << meshIndex << std::endl;
         return;
     }
 
-
-
-    const tinygltf::Mesh & mesh =
-        model.meshes[meshIndex];
-
+    const tinygltf::Mesh & mesh = model.meshes[meshIndex];
     size_t primitiveIndex = 0;
 
     for (const tinygltf::Primitive & primitive : mesh.primitives) {
-        /*
-        EZ MAR A CACHE HASZANALT BEVEZETESE
-        */
-        const std::string cacheKey = assetKey
-                                     + "_mesh_" + std::to_string(meshIndex)
-                                     + "_primitive_" + std::to_string(primitiveIndex);
-        std::cout << cacheKey << std::endl;
+        const std::string cacheKey = assetKey + "_mesh_" + std::to_string(meshIndex) + "_primitive_" + std::to_string(primitiveIndex);
 
-        Ogre::MeshPtr cachedMesh =
-            mModelCache.getMesh(cacheKey);
+        Ogre::MeshPtr cachedMesh = mModelCache.getMesh(cacheKey);
 
         if (!cachedMesh.isNull()) {
-            std::cout << "++++++++++++++++++++++++++++++++Cacheinfo++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-            std::cout << "Have cache: " << cacheKey << std::endl;
-            std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-
             Ogre::Item* item = sceneManager->createItem(cachedMesh);
-            parentNode->attachObject(item);
 
+            parentNode->attachObject(item);
             ++primitiveIndex;
             continue;
         } else {
-            /*
-            EZ MAR A CACHE HASZANALT BEVEZETESE -EDDIG
-            */
-            std::cout << "++++++++++++++++++++++++++++++++Cacheinfo++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-            std::cout << "No cache: " << cacheKey << std::endl;
-            std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
-
-
-
             for (const auto & attribute : primitive.attributes) {
             }
             for (const auto & attr : primitive.attributes) {
             }
-
-
-
-
-
-            //-----------------------------------------------------
-            // Only triangles for now
-            //-----------------------------------------------------
-
             if (primitive.mode != TINYGLTF_MODE_TRIANGLES) {
 
                 std::cerr
