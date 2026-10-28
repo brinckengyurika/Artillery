@@ -447,6 +447,11 @@ CMakeFiles/Artillery.dir/src/Renderer.cpp.o: \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreMesh2.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/Math/Simple/OgreAabb.h \
  /home/satch/Projects/Ogre2/install/include/OGRE/OgreVertexBoneAssignment.h \
+ /home/satch/Projects/Artillery/src/SceneNodeStorage.h \
+ /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneNode.h \
+ /home/satch/Projects/Artillery/src/NodeMetadataStorage.h \
+ /usr/include/c++/14/utility /usr/include/c++/14/bits/stl_relops.h \
+ /home/satch/Projects/Artillery/src/NodeAndMetadata.h \
  /home/satch/Projects/Artillery/src/Scene.h \
  /home/satch/Projects/Artillery/src/MeshFactory.h \
  /home/satch/Projects/Ogre2/source/Samples/2.0/Tutorials/Tutorial_Terrain/include/Terra/Terra.h \
@@ -459,8 +464,6 @@ CMakeFiles/Artillery.dir/src/Renderer.cpp.o: \
  /home/satch/Projects/Artillery/src/GltfMeshBuilder.h \
  /usr/include/tiny_gltf.h /usr/include/c++/14/cassert \
  /usr/include/c++/14/cstdint /usr/include/c++/14/cstring \
- /usr/include/c++/14/utility /usr/include/c++/14/bits/stl_relops.h \
- /home/satch/Projects/Ogre2/install/include/OGRE/OgreSceneNode.h \
  /usr/include/c++/14/filesystem /usr/include/c++/14/bits/fs_fwd.h \
  /usr/include/c++/14/bits/chrono.h /usr/include/c++/14/ratio \
  /usr/include/c++/14/bits/parse_numbers.h \

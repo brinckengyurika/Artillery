@@ -25,6 +25,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/satch/Projects/Artillery/src/InputManager.cpp" "CMakeFiles/Artillery.dir/src/InputManager.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/InputManager.cpp.o.d"
   "/home/satch/Projects/Artillery/src/MeshFactory.cpp" "CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/MeshFactory.cpp.o.d"
   "/home/satch/Projects/Artillery/src/ModelCache.cpp" "CMakeFiles/Artillery.dir/src/ModelCache.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/ModelCache.cpp.o.d"
+  "/home/satch/Projects/Artillery/src/NodeMetadataStorage.cpp" "CMakeFiles/Artillery.dir/src/NodeMetadataStorage.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/NodeMetadataStorage.cpp.o.d"
   "/home/satch/Projects/Artillery/src/Renderer.cpp" "CMakeFiles/Artillery.dir/src/Renderer.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/Renderer.cpp.o.d"
   "/home/satch/Projects/Artillery/src/ResourceManager.cpp" "CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/ResourceManager.cpp.o.d"
   "/home/satch/Projects/Artillery/src/Scene.cpp" "CMakeFiles/Artillery.dir/src/Scene.cpp.o" "gcc" "CMakeFiles/Artillery.dir/src/Scene.cpp.o.d"

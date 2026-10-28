@@ -98,6 +98,7 @@ add_executable(Artillery
     src/InputManager.cpp
     src/Input/LinuxInputBackend.cpp
     src/ModelCache.cpp
+    src/NodeMetadataStorage.cpp
 
 
     # Terra

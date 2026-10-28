@@ -537,6 +537,30 @@ src/ModelCache.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/ModelCache.cpp.s
 .PHONY : src/ModelCache.cpp.s
 
+src/NodeMetadataStorage.o: src/NodeMetadataStorage.cpp.o
+.PHONY : src/NodeMetadataStorage.o
+
+# target to build an object file
+src/NodeMetadataStorage.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/NodeMetadataStorage.cpp.o
+.PHONY : src/NodeMetadataStorage.cpp.o
+
+src/NodeMetadataStorage.i: src/NodeMetadataStorage.cpp.i
+.PHONY : src/NodeMetadataStorage.i
+
+# target to preprocess a source file
+src/NodeMetadataStorage.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/NodeMetadataStorage.cpp.i
+.PHONY : src/NodeMetadataStorage.cpp.i
+
+src/NodeMetadataStorage.s: src/NodeMetadataStorage.cpp.s
+.PHONY : src/NodeMetadataStorage.s
+
+# target to generate assembly for a file
+src/NodeMetadataStorage.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Artillery.dir/build.make CMakeFiles/Artillery.dir/src/NodeMetadataStorage.cpp.s
+.PHONY : src/NodeMetadataStorage.cpp.s
+
 src/Renderer.o: src/Renderer.cpp.o
 .PHONY : src/Renderer.o
 
@@ -717,6 +741,9 @@ help:
 	@echo "... src/ModelCache.o"
 	@echo "... src/ModelCache.i"
 	@echo "... src/ModelCache.s"
+	@echo "... src/NodeMetadataStorage.o"
+	@echo "... src/NodeMetadataStorage.i"
+	@echo "... src/NodeMetadataStorage.s"
 	@echo "... src/Renderer.o"
 	@echo "... src/Renderer.i"
 	@echo "... src/Renderer.s"
