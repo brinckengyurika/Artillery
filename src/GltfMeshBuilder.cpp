@@ -324,6 +324,10 @@ GltfMeshBuilder::build (const tinygltf::Model & model,
         std::cout << "assetKey:\t\t"<< assetKey << std::endl;
         std::cout << "ID:\t\t"<< buildednode->getId() << std::endl;
         std::cout << "Name:\t\t"<< buildednode->getName() << std::endl;
+        NodeAndMetadata nodeandmeta;
+        nodeandmeta.node = buildednode;
+        nodeandmeta.statuses[0]=1;
+        mModelCache.storage.store("building", buildednode->getName(), nodeandmeta);
         std::cout << "----------------------------------------------------------------------------------------- " << std::endl;
     }
 

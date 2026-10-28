@@ -3,6 +3,7 @@
 #include "Terra/Terra.h"
 #include "ModelCache.h"
 
+
 class Renderer;
 
 
@@ -15,8 +16,11 @@ public:
     void shutdown();
 
 
+
+
 private:
     ModelCache modelCache;
+
     Renderer &mRenderer;
     MeshFactory mMeshFactory;
 

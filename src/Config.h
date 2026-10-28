@@ -113,6 +113,7 @@ class SceneModelInstance {
 private:
     std::string m_name;
     std::string m_modelName;
+    std::string m_type;
     Vec3 m_scale{1.0f, 1.0f, 1.0f};
     Vec3 m_position{0.0f, 0.0f, 0.0f};
     Vec3 m_rotation{0.0f, 0.0f, 0.0f};
@@ -122,6 +123,7 @@ public:
 
     const std::string& getName() const { return m_name; }
     const std::string& getModelName() const { return m_modelName; }
+    const std::string& getType() const { return m_type; }
     const Vec3& getScale() const { return m_scale; }
     const Vec3& getPosition() const { return m_position; }
     const Vec3& getRotation() const { return m_rotation; }
@@ -129,6 +131,8 @@ public:
     friend void from_json(const nlohmann::json& j, SceneModelInstance& item) {
         j.at("name").get_to(item.m_name);
         j.at("modelname").get_to(item.m_modelName);
+        item.m_type = j.value("type", std::string("unknown"));
+//        j.at("type").get_to(item.m_type);
         j.at("scale").get_to(item.m_scale);
         j.at("position").get_to(item.m_position);
         j.at("rotation").get_to(item.m_rotation);

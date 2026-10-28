@@ -1,17 +1,20 @@
 #include "NodeAndMetadata.h"
 
-NodeAndMetadata::NodeAndMetadata(Ogre::SceneNode* node, unsigned int status):
-    node(node) {
-    for (int i =0 ; i < STATUSLIST ; ++i) {
+NodeAndMetadata::NodeAndMetadata(const std::string& type, const std::string& name, Ogre::SceneNode* node, unsigned int status):
+    node(node),
+    type(type),
+    name(name){
+        for (int i =0 ; i < STATUSLIST ; ++i) {
             statuses[i]=0;
-    }
-
+        }
 }
 
 NodeAndMetadata::~NodeAndMetadata()
 {
     //dtor
 }
+
+
 
 void NodeAndMetadata::Setcurrentstatus(unsigned int val) {
     if (statuses[0] != val) {

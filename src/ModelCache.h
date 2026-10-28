@@ -7,11 +7,15 @@
 #include <OgreMesh2.h>
 #include "SceneNodeStorage.h"
 #include <OgreSceneNode.h>
+#include "NodeMetadataStorage.h"
 
 class ModelCache
 {
 public:
     ModelCache() = default;
+    NodeMetadataStorage storage;
+
+
 
     struct Entry
     {

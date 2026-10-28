@@ -37,4 +37,3 @@ void ModelCache::clear()
 {
     m_meshes.clear();
 }
-
