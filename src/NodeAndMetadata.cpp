@@ -9,8 +9,7 @@ NodeAndMetadata::NodeAndMetadata(const std::string& type, const std::string& nam
         }
 }
 
-NodeAndMetadata::~NodeAndMetadata()
-{
+NodeAndMetadata::~NodeAndMetadata(){
     //dtor
 }
 

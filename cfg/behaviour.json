@@ -1,0 +1,78 @@
+{
+  "statuslist": [
+    { "id": 0, "name": "DEFAULT" },
+    { "id": 1, "name": "INITIAL" },
+    { "id": 2, "name": "STALL" },
+    { "id": 3, "name": "FALLING" },
+    { "id": 4, "name": "SQUEEZE" },
+    { "id": 5, "name": "SPRINGBACK" },
+    { "id": 6, "name": "RAISING" },
+  ],
+
+  "initialstatuses": [      {      "type": "default",      "status": 2    },
+                            {      "type": "machine",      "status": 2    },
+                            {      "type": "vehicle",      "status": 2    },
+                            {      "type": "building",      "status": 1    }  ],
+
+  "transitions": [
+    {
+      "type": "building",
+      "from": 1,
+      "to": 2,
+      "condition": {
+        "comparision" : "height_from_local_ground"
+        "variable": "height",
+        "operator": "==",
+        "value": true
+        "error_limit" = 1.0
+      }
+    },
+    {
+      "type": "building",
+      "from": 1,
+      "to": 3,
+      "condition": {
+        "comparision" : "height_from_local_ground"
+        "variable": "height",
+        "operator": ">",
+        "value": true
+      }
+    },
+    {
+      "type": "building",
+      "from": 1,
+      "to": 6,
+      "condition": {
+        "comparision" : "height_from_local_ground"
+        "variable": "height",
+        "operator": "<",
+        "value": true
+      }
+    },
+    {
+      "type": "building",
+      "from": 3,
+      "to": 2,
+      "condition": {
+        "comparision" : "height_from_local_ground"
+        "variable": "height",
+        "operator": "==",
+        "value": true
+        "error_limit" = 1.0
+      }
+    },
+    {
+      "type": "building",
+      "from": 6,
+      "to": 2,
+      "condition": {
+        "comparision" : "height_from_local_ground"
+        "variable": "height",
+        "operator": "==",
+        "value": true
+        "error_limit" = 1.0
+      }
+    },
+  ]
+}
+

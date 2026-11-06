@@ -317,6 +317,26 @@
         "resolution": "1600x720",
         "vsync": "No",
         "fullscreen": "No"
-    }
+    },
+    "transitions": [
+        {
+            "building" : {
+                    "2" : "3",
+                    "3" : "1"
+            }
+        },
+        {
+            "engine" : {
+                    "5" : "4",
+                    "4" : "5"
+            }
+        },
+        {
+            "others" : {
+                    "6" : "8",
+                    "8" : "1"
+            }
+        }
+    ]
 
 }

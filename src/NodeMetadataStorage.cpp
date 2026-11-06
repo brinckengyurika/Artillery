@@ -143,10 +143,9 @@ bool NodeMetadataStorage::remove(
 
 std::size_t NodeMetadataStorage::size(
     const std::string& type) const
-{
-    const TypeStorage* storage = getType(type);
-
-    return storage ? storage->objects.size() : 0;
+    {
+        const TypeStorage* storage = getType(type);
+        return storage ? storage->objects.size() : 0;
 }
 
 void NodeMetadataStorage::clear()
